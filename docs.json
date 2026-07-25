@@ -1,13 +1,14 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Nightfall Security Docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#5865F2",
+    "light": "#6D78FF",
+    "dark": "#4B54C7"
   },
   "favicon": "/favicon.svg",
+
   "navigation": {
     "pages": [
       {
@@ -16,40 +17,65 @@
           "index",
           "quickstart"
         ]
+      },
+      {
+        "group": "Core Systems",
+        "pages": [
+          "security-systems",
+          "architecture"
+        ]
+      },
+      {
+        "group": "Advanced Features",
+        "pages": [
+          "premium",
+          "affiliate",
+          "owner-controls"
+        ]
+      },
+      {
+        "group": "Support",
+        "pages": [
+          "troubleshooting"
+        ]
       }
     ],
+
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
+          "anchor": "Support Server",
+          "href": "https://discord.gg/CXzX38Z7J9",
+          "icon": "headset"
         },
         {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
+          "anchor": "Nightfall Bot Invite",
+          "href": "https://discord.com/oauth2/authorize?client_id=1528576288938266694",
+          "icon": "shield"
         }
       ]
     }
   },
+
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
   },
+
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Support Server",
+        "href": "https://discord.gg/CXzX38Z7J9"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
+      "label": "Invite Nightfall",
+      "href": "https://discord.com/oauth2/authorize?client_id=1528576288938266694"
     }
   },
+
   "contextual": {
     "options": [
       "copy",
@@ -62,11 +88,11 @@
       "vscode"
     ]
   },
+
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "discord": "https://discord.gg/CXzX38Z7J9"
     }
   }
 }
+

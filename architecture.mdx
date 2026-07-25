@@ -1,0 +1,35 @@
+---
+title: "Architecture"
+description: "How Nightfall’s multi-process system ensures reliability and stability."
+---
+
+# Architecture
+
+Nightfall uses a professional multi‑process architecture to ensure stability, uptime, and consistent protection.
+
+## Process Overview
+
+### Gateway
+Handles Discord connection, events, and command processing.
+
+### Workers
+Perform database writes, event processing, and background tasks.
+
+### Supervisor
+Monitors all processes and restarts them if they crash.
+
+### Status Server
+Provides a local dashboard with JSON status output.
+
+## Scheduler
+
+The scheduler runs periodic tasks:
+
+- Health checks  
+- Cleanup tasks  
+- Security scans  
+- Affiliate checks  
+
+This ensures Nightfall remains responsive and stable.
+
+[View troubleshooting guide](/troubleshooting)
