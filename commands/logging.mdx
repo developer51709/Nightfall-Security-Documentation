@@ -1,0 +1,135 @@
+---
+title: "/logging"
+description: "Assign dedicated channels to receive detailed audit logs for each category of server activity."
+---
+
+The `/logging` command group lets administrators assign specific text channels to receive detailed audit logs for different categories of server activity.
+
+All `/logging` commands require the **Administrator** permission.
+
+---
+
+## Log categories
+
+| Category | Events logged |
+|----------|--------------|
+| `members` | Member joins, leaves, bans, kicks, nickname changes, role changes |
+| `messages` | Message edits, message deletes, bulk deletes |
+| `channels` | Channel creation, deletion, name / topic / permission changes |
+| `roles` | Role creation, deletion, permission changes, colour changes |
+| `voice` | Voice channel joins, leaves, moves, mutes, deafens |
+| `server` | Server name, icon, region, and settings changes |
+| `moderation` | All actions taken by `/mod` commands |
+| `security` | Security events (useful as a dedicated audit log alongside the real‑time alert channel) |
+
+---
+
+## Commands
+
+### `/logging set`
+
+Assign a channel to receive logs for a specific category.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | The log category |
+| `channel` | TextChannel | ✅ | Channel to post logs to |
+
+Each category maps to one channel. Running `/logging set` again for the same category replaces the previous assignment.
+
+**Examples:**
+```
+/logging set category:messages channel:#message-logs
+/logging set category:moderation channel:#mod-audit
+/logging set category:security channel:#security-log
+```
+
+---
+
+### `/logging remove`
+
+Stop sending logs for a specific category.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | The log category to remove |
+
+---
+
+### `/logging status`
+
+Display all current logging channel assignments for this server.
+
+---
+
+### `/logging test`
+
+Post a sample log card to the assigned channel for a category, so you can verify formatting and permissions before relying on it.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | The category to test |
+
+---
+
+## Example log cards
+
+### Member join
+```
+👥  Member Joined
+────────────────────────────────
+User:         @newmember (123456789)
+Account age:  3 days ⚠️
+Joined at:    <timestamp>
+Member count: 247
+
+─  Nightfall Security  •  Member Logging
+```
+
+### Message delete
+```
+💬  Message Deleted
+────────────────────────────────
+Author:   @user (987654321)
+Channel:  #general
+Content:  "deleted message content here"
+Deleted:  <timestamp>
+
+─  Nightfall Security  •  Message Logging
+```
+
+### Moderation action
+```
+⚖️  Member Banned
+────────────────────────────────
+Target:     @user (111222333)
+Moderator:  @mod (444555666)
+Reason:     Repeated spam violations
+
+─  Nightfall Security  •  Moderation Logging
+```
+
+---
+
+## Permission requirements
+
+For Nightfall to post logs, it needs these permissions in the log channel:
+
+- `View Channel`
+- `Send Messages`
+- `Embed Links`
+
+If any of these are missing, the log entry is silently dropped.
+
+---
+
+## Tips
+
+- Create a **private log category** visible only to administrators, with one channel per log type
+- Use `security` logging as a permanent audit trail separate from the real‑time alert channel
+- The `moderation` log is automatically populated by all `/mod` commands — no extra configuration needed
+- Use `/logging test` to verify each channel before relying on it
+
+---
+
+*Related: [Moderation commands](/commands/moderation) · [Security commands](/commands/security)*

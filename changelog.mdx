@@ -1,0 +1,82 @@
+---
+title: "Changelog"
+description: "Notable changes and new features in Nightfall Security."
+---
+
+All notable changes to Nightfall Security are documented here. Nightfall uses [Semantic Versioning](https://semver.org/).
+
+---
+
+## Upcoming
+
+### New features
+
+**Support Bot** (optional secondary bot)
+- Ticket system with a 3‑step creation flow, 9 categories, and private per‑user channels
+- Staff management panel: claim, release, transfer, status, and close
+- Persistent FAQ and rules panels
+
+**Redesigned `/whitelist`**
+- Replaced the previous `/whitelist add` subcommands with a single interactive panel
+- Add User / Add Role / Remove buttons open private ephemeral pickers
+- Strict edit‑permission model: server owner, or an Administrator role positioned above the bot's role — re‑checked on every change
+
+### Fixes
+
+- **Team‑owned applications** — owner authorization now correctly resolves the authoritative owner for team‑owned Discord applications, preventing lockouts
+- **Global mention suppression** — all response and component helpers now consistently suppress `@everyone`, role, and user pings
+- **Support tickets** — resolved a confirmation‑step error on close; member issue descriptions are now posted into the ticket channel; ticket counter is reconnect‑safe; duplicate tickets are re‑checked before channel creation
+
+---
+
+## v2.0.0 — Current
+
+### New features
+
+**Interactive Setup Wizard** (`/setup`)
+- Multi‑step guided onboarding for new servers
+- Covers alert channel selection, protection level preset, and feature toggles
+- Ends with a Premium upgrade prompt
+
+**Affiliate Trial System**
+- Affiliate codes now grant a **7‑day free trial** instead of immediate full Premium
+- One trial per guild, ever — enforced permanently at the database level
+- Post‑trial discount DM sent automatically by the scheduler (20% off first month)
+
+**`/affiliate` Command Group**
+- `/affiliate code` — view your code, share instructions, and see your current tier
+- `/affiliate stats` — full analytics dashboard (trials, conversions, rate, tier progress)
+- `/affiliate perks` — tier ladder with locked / unlocked perk display
+- `/affiliate leaderboard` — top affiliates ranked by conversions (bot owners only)
+- Five affiliate tiers: Partner → Bronze → Silver → Gold → Diamond
+
+**Conversion Tracking**
+- Guilds that purchase paid Premium after an affiliate trial are automatically marked as converted
+
+**Multi‑owner Support**
+- `/owner add` / `/owner remove` — grant or revoke bot‑owner status for additional users
+
+**Premium Code Types**
+- `onetime` — single guild, then disabled
+- `multiuse` — redeemable by up to N guilds
+- `affiliate` — unlimited use, tracks referrer, grants 7‑day trial
+
+### Security features
+
+- **Anti‑Nuke** — sliding‑window rate detection for channel / role deletes and mass bans
+- **Anti‑Raid** — join‑surge and new‑account‑flood detection
+- **Mass Mention** — per‑message mention flood detection
+- **Whitelist** — per‑guild user / role exemptions
+- **AutoMod** — link, invite, caps, word, emoji, duplicate, and mention filters
+- **Moderation** — ban, kick, warn, timeout with formatted action cards
+- **Verification** — image captcha with a persistent panel button
+- **Logging** — full audit log across members, messages, channels, roles, voice, and server events
+
+---
+
+## v1.0.0
+
+- Initial release
+- Basic Anti‑Nuke and Anti‑Raid detection
+- Prefix command support (`!ping`, `!status`, `!info`, `!help`)
+- Single‑process architecture

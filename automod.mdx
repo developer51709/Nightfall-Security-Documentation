@@ -1,0 +1,143 @@
+---
+title: "AutoMod"
+description: "Automatically filter unsafe and disruptive content with configurable per‑guild rules."
+---
+
+Nightfall's AutoMod system automatically scans every message in the server and enforces configurable content policies — deleting violations, warning members, or escalating to kicks and bans.
+
+---
+
+## Available filters
+
+| Filter | What it detects |
+|--------|----------------|
+| `links` | Any URL in a message (HTTP, HTTPS, or bare domain) |
+| `invites` | Discord server invite links (`discord.gg/...`, `discord.com/invite/...`) |
+| `caps` | Messages with an excessive proportion of uppercase characters |
+| `words` | Messages containing words or phrases from a custom blocklist |
+| `emojis` | Messages with an excessive number of emoji characters |
+| `duplicate` | Repeated identical or near‑identical messages from the same user |
+| `mentions` | Messages that ping an excessive number of users or roles |
+
+---
+
+## Actions
+
+Each rule can be configured with one of the following actions:
+
+| Action | Effect |
+|--------|--------|
+| `delete` | The offending message is silently deleted |
+| `warn` | Message deleted + formal warning recorded + DM sent to member |
+| `timeout` | Message deleted + warning + member temporarily muted (10 minutes) |
+| `kick` | Message deleted + member kicked from server |
+| `ban` | Message deleted + member permanently banned |
+
+---
+
+## Rule priority
+
+When a message matches multiple rules, only the highest‑priority matching rule is applied:
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Filter details
+
+### Links
+
+Detects any URL in a message. Useful for preventing spam bots from posting phishing links or locking channels to text‑only.
+
+### Invites
+
+Detects Discord server invite links specifically. Use this to stop members from advertising other servers while still allowing other URLs.
+
+### Caps
+
+Detects messages with an excessive proportion of uppercase characters. Configure the threshold percentage with `/automod config rule:caps value:70` (default: 70%).
+
+Messages under 8 characters are ignored to avoid false positives on short exclamations.
+
+### Words
+
+Detects messages containing words or phrases from a custom blocklist. Case‑insensitive.
+
+**Example:**
+```
+/automod config rule:words value:spam,advertisement,phishingdomain.com
+```
+
+### Emojis
+
+Detects messages with an excessive number of emoji characters (standard Unicode and custom Discord emojis). Default threshold: 15 emojis.
+
+### Duplicate
+
+Detects repeated identical or near‑identical messages from the same user within a short window. Default: 3 identical messages within 30 seconds.
+
+### Mentions
+
+Detects messages that ping an excessive number of users or roles in a single message. Default threshold: 8 mentions.
+
+---
+
+## Example configuration
+
+Protect a public server from common threats:
+
+```
+# Block invite links with a warning
+/automod enable rule:invites action:warn
+
+# Block external links with silent deletion
+/automod enable rule:links action:delete
+
+# Flag excessive caps with deletion
+/automod enable rule:caps action:delete
+/automod config rule:caps value:80
+
+# Custom word blocklist
+/automod enable rule:words action:warn
+/automod config rule:words value:badword,spamphrase,phishingdomain.com
+
+# Mass‑mention protection
+/automod enable rule:mentions action:timeout
+/automod config rule:mentions value:6
+
+# Duplicate message spam
+/automod enable rule:duplicate action:warn
+/automod config rule:duplicate value:3
+```
+
+---
+
+## Whitelist integration
+
+Users and roles added to the guild whitelist bypass all AutoMod checks. This is useful for staff who may legitimately post links or invites.
+
+Manage exemptions with `/whitelist`. See the [Whitelist reference](/commands/whitelist).
+
+---
+
+## Integration with Anti‑Nuke / Anti‑Raid
+
+AutoMod and the security detection systems are **independent**:
+
+- AutoMod handles individual message‑level violations
+- Anti‑Raid handles join‑surge patterns
+- Anti‑Nuke handles structural attacks (channel / role deletions, mass bans)
+
+A single event that triggers both (e.g. a mass‑mention during a raid) will fire both the AutoMod action and the security alert simultaneously.
+
+---
+
+*Related: [AutoMod commands](/commands/automod) · [Moderation commands](/commands/moderation)*

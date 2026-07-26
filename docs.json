@@ -19,10 +19,25 @@
         ]
       },
       {
-        "group": "Core Systems",
+        "group": "Security Systems",
         "pages": [
           "security-systems",
-          "architecture"
+          "anti-nuke",
+          "anti-raid",
+          "automod",
+          "verification"
+        ]
+      },
+      {
+        "group": "Command Reference",
+        "pages": [
+          "commands/security",
+          "commands/moderation",
+          "commands/automod",
+          "commands/logging",
+          "commands/verification",
+          "commands/whitelist",
+          "commands/utility"
         ]
       },
       {
@@ -35,7 +50,15 @@
       {
         "group": "Support",
         "pages": [
-          "troubleshooting"
+          "troubleshooting",
+          "changelog"
+        ]
+      },
+      {
+        "group": "Legal",
+        "pages": [
+          "legal/terms-of-service",
+          "legal/privacy-policy"
         ]
       }
     ],
@@ -48,7 +71,7 @@
           "icon": "headset"
         },
         {
-          "anchor": "Nightfall Bot Invite",
+          "anchor": "Invite Nightfall",
           "href": "https://discord.com/oauth2/authorize?client_id=1528576288938266694",
           "icon": "shield"
         }
@@ -94,4 +117,3 @@
     }
   }
 }
-

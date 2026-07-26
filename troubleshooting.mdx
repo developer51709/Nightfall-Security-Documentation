@@ -3,46 +3,172 @@ title: "Troubleshooting"
 description: "Common issues and how to resolve them."
 ---
 
-# Troubleshooting
+If something isn't working as expected, this guide covers the most common issues and their solutions. For anything not listed here, join the [official support server](https://discord.gg/CXzX38Z7J9).
 
-## Bot Not Responding
+---
 
-Check:
-- Permissions  
-- Role hierarchy  
-- Logging channel access  
+## Bot not responding to commands
 
-## Anti‑Raid Not Triggering
+<AccordionGroup>
+  <Accordion title="Slash commands don't appear">
+    Discord can take up to **1 hour** to propagate newly registered slash commands to all members. Try:
 
-Verify:
-```
-/security overview
-```
+    1. Fully close and reopen your Discord client
+    2. Test with `/ping` — if this works, other commands should appear shortly
+    3. Verify Nightfall has the `applications.commands` scope (re‑invite with the official link if unsure)
+  </Accordion>
 
-Ensure:
-- Thresholds are configured  
-- Raid action is set  
+  <Accordion title="Commands appear but do nothing">
+    Check Nightfall's permissions in your server:
 
-## AutoMod Not Filtering
+    - **Administrator** permission is recommended for full functionality
+    - If using specific permissions, ensure `Send Messages`, `Embed Links`, and `Read Message History` are granted in the channels where commands are used
+    - Verify Nightfall's role is not below a role that restricts bot actions
+  </Accordion>
 
-Check:
-```
-/automod list
-```
+  <Accordion title="'Missing Permissions' error">
+    Nightfall needs specific permissions for specific features:
 
-Ensure rules are enabled.
+    | Feature | Required permission |
+    |---------|-------------------|
+    | Security alerts | `Send Messages` + `Embed Links` in the alert channel |
+    | Anti‑Nuke actor detection | `View Audit Log` |
+    | Kick/ban actions | `Kick Members` / `Ban Members` |
+    | Verification role assignment | `Manage Roles` + bot role above the verified role |
+    | Timeout | `Moderate Members` |
+    | Moderation log | `Send Messages` + `Embed Links` in the log channel |
+  </Accordion>
+</AccordionGroup>
 
-## Verification Not Working
+---
 
-Verify:
-- Verification channel exists  
-- Bot can send messages  
-- Captcha mode is configured  
+## Security alerts not triggering
 
-## Need Help?
+<AccordionGroup>
+  <Accordion title="Anti‑Raid not alerting on joins">
+    1. Run `/security overview` and check that anti‑nuke is enabled
+    2. Verify an alert channel is set (`/security config alert_channel:#your-channel`)
+    3. Check the `max_joins` threshold — if it's high, a small join rate won't trigger it
+    4. Ensure Nightfall has permission to post in the alert channel
+  </Accordion>
 
-Join the official support server:  
-**https://discord.gg/CXzX38Z7J9**
+  <Accordion title="Anti‑Nuke not alerting on deletions">
+    1. Confirm anti‑nuke is enabled via `/security overview`
+    2. Check `max_channel_deletes` and `max_role_deletes` thresholds
+    3. Verify `View Audit Log` permission is granted (needed for actor detection, but not for the alert itself)
+    4. Trusted admins performing bulk operations may be on the whitelist — check `/whitelist`
+  </Accordion>
 
-[Learn more about Nightfall Security](/security-systems)
+  <Accordion title="Alert fires but no action is taken">
+    By default, all actions are set to `alert_only`. To enable automated kick or ban responses, configure:
 
+    ```
+    /security config raid_action:kick
+    /security config nuke_action:kick
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## AutoMod issues
+
+<AccordionGroup>
+  <Accordion title="AutoMod not filtering messages">
+    1. Run `/automod status` to confirm the relevant rule is enabled
+    2. Check the rule's action — `delete` removes the message silently; `warn` also records a warning
+    3. Confirm the user isn't on the whitelist (`/whitelist`)
+    4. Ensure Nightfall has `Manage Messages` permission in the channel
+  </Accordion>
+
+  <Accordion title="Staff messages are being filtered">
+    Add your staff roles or specific users to the whitelist — whitelisted users bypass all AutoMod rules:
+
+    ```
+    /whitelist
+    ```
+
+    Then use **Add Role** to exempt your staff role.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Verification issues
+
+<AccordionGroup>
+  <Accordion title="Members get no captcha DM">
+    The member likely has DMs disabled. Ask them to:
+
+    1. Open **User Settings → Privacy & Safety**
+    2. Enable **Allow direct messages from server members**
+    3. Click **Verify** again
+
+    Nightfall cannot send DMs to users who have them disabled — this is a Discord privacy setting outside the bot's control.
+  </Accordion>
+
+  <Accordion title="Verify button does nothing">
+    Ensure Nightfall has `Manage Roles` permission in your server.
+  </Accordion>
+
+  <Accordion title="Members can still see all channels after verifying">
+    Review your channel permissions:
+
+    - `@everyone` must have **View Channel** denied (or not granted) for channels outside the verification area
+    - The `@Verified` role must have **View Channel** permitted for those channels
+  </Accordion>
+
+  <Accordion title="Bot can't assign the verified role">
+    Move Nightfall's bot role **above** the verified role in **Server Settings → Roles**. Discord only allows bots to assign roles that are lower than their own highest role.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Premium issues
+
+<AccordionGroup>
+  <Accordion title="Payment confirmed but Premium not activated">
+    1. Ensure you clicked **I've Paid — Confirm** in the checkout DM card
+    2. If payment is still confirming on the blockchain, wait a few minutes and click the button again
+    3. Run `/premium status` to check your current subscription state
+    4. If the invoice shows **Expired**, create a new one with `/premium buy`
+  </Accordion>
+
+  <Accordion title="Premium features not working after activation">
+    Run `/security overview` to confirm Premium is active for your server. If it shows as active but features aren't working, rejoin the bot (remove and re‑invite) or contact support.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Logging issues
+
+<AccordionGroup>
+  <Accordion title="Logs not posting to the assigned channel">
+    Nightfall needs `View Channel`, `Send Messages`, and `Embed Links` in the log channel. Check:
+
+    1. Nightfall's role has these permissions in the channel (check channel‑specific overrides)
+    2. The channel exists and hasn't been deleted
+    3. Run `/logging status` to confirm the assignment is still set
+  </Accordion>
+
+  <Accordion title="Checking log assignments">
+    Run `/logging status` to see all current log channel assignments for your server.
+
+    Use `/logging test category:members` (or any category) to post a sample card and verify the bot can post there.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Still stuck?
+
+Join the [official support server](https://discord.gg/CXzX38Z7J9) and open a support ticket. Include:
+
+- A description of the issue
+- The output of `/security overview` and `/status`
+- Any error messages you've seen
+- What you've already tried
+
+Our team will help you get things running correctly.

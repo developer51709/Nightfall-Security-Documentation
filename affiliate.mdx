@@ -1,34 +1,125 @@
 ---
-title: "Affiliate Program"
-description: "Earn rewards by helping communities stay safe with Nightfall."
+title: "Affiliate Programme"
+description: "Earn recognition and rewards by referring Discord servers to Nightfall Premium."
 ---
 
-# Affiliate Program
+The Nightfall Affiliate Programme lets approved partners earn recognition and perks by referring Discord servers to the bot's premium tier. Affiliates share a unique code; every server that redeems the code starts a 7‑day free trial, and servers that convert to paid Premium count toward the affiliate's tier.
 
-The Nightfall Affiliate Program allows creators, server owners, and community managers to earn rewards when users purchase Premium using their referral code.
+---
 
-## Tiers
+## How it works
 
-### Bronze Tier
-- No minimum requirement  
-- Track referrals and conversions  
+<Steps>
+  <Step title="Get your code">
+    Affiliate codes are issued by Nightfall bot administrators. Once approved, you receive a unique code to share.
+  </Step>
 
-### Gold Tier
-- **7 conversions required**  
-- Unlocks **instant payouts**  
-- Higher commission rate  
+  <Step title="Share your code">
+    Share your code with Discord server administrators. They redeem it with:
 
-## Payouts
+    ```
+    /premium redeem code:YOUR-AFFILIATE-CODE
+    ```
+  </Step>
 
-- Minimum withdrawal: **$1**  
-- Instant payouts for Gold Tier  
-- OxaPay crypto withdrawals  
+  <Step title="Trial activates">
+    The server receives a **7‑day free trial** of Nightfall Premium immediately. Each server can only redeem one affiliate trial ever.
+  </Step>
+
+  <Step title="Track conversions">
+    Monitor your trials, conversions, and tier progress with `/affiliate stats`.
+  </Step>
+
+  <Step title="Earn perks">
+    As your conversions accumulate, you advance through tiers and unlock recognition, priority support, and payout eligibility.
+  </Step>
+</Steps>
+
+---
+
+## Tier system
+
+| Tier | Conversions required | Payout eligible | Perks |
+|------|---------------------|:---------------:|-------|
+| **Partner** | 0 | ❌ | Start tracking — share your code and earn conversions |
+| **Bronze** | 1+ | ❌ | Affiliate badge in `/affiliate stats` |
+| **Silver** | 3+ | ❌ | Priority support mention + custom analytics |
+| **Gold** | 7+ | ✅ | Revenue‑share eligibility + payout wallet + priority support |
+| **Diamond** | 15+ | ✅ | Partner spotlight eligibility + all Gold perks |
+
+Tiers are calculated live from your conversion count — no manual tier assignment is needed.
+
+---
+
+## Analytics
+
+View your full analytics dashboard with:
+
+```
+/affiliate stats
+```
+
+| Metric | Description |
+|--------|-------------|
+| Total trials | Guilds that redeemed your code |
+| Active trials | Trials currently running |
+| Pending conversions | Trials expired, discount sent, awaiting purchase |
+| Conversions | Guilds that purchased Premium after the trial |
+| Conversion rate | `conversions ÷ total_trials × 100` |
+
+---
+
+## Payout system
+
+Affiliates at **Gold tier or above** (7+ conversions) may register a crypto wallet for payouts.
+
+```
+/affiliate payout
+```
+
+Use the **Set / Update Wallet** button in the panel to enter your wallet address and network. Supported networks include Bitcoin (BTC), Ethereum (ETH), Solana (SOL), USDT‑TRC20, USDT‑ERC20, USDC‑ERC20, Litecoin (LTC), and others.
+
+Payouts are processed by the Nightfall team on a rolling schedule for eligible affiliates.
+
+---
+
+## Post‑trial discount
+
+When a trial expires without the server converting to paid Premium, Nightfall automatically sends the server owner a **one‑time DM** with a discount offer (20% off the first month). If the server owner later purchases, a conversion is credited to your account.
+
+---
 
 ## Commands
 
-- `/affiliate code`
-- `/affiliate stats`
-- `/affiliate withdraw`
-- `/affiliate leaderboard`
+| Command | Description |
+|---------|-------------|
+| `/affiliate code` | View your code, copy share instructions, and see your current tier |
+| `/affiliate stats` | Full analytics dashboard — trials, conversions, rate, and tier progress |
+| `/affiliate perks` | Browse the tier ladder with locked and unlocked perk indicators |
+| `/affiliate payout` | Register or update your payout wallet (Gold tier and above) |
+| `/affiliate leaderboard` | Top affiliates ranked by conversions (visible to bot administrators) |
 
-[View premium features](/premium)
+---
+
+## Becoming an affiliate
+
+Affiliate codes are issued by registered Nightfall bot administrators. To apply:
+
+1. Join the [official support server](https://discord.gg/CXzX38Z7J9)
+2. Contact the team to express interest
+3. If approved, your code is activated immediately
+4. Reach **Gold tier** (7+ conversions) to unlock payout registration
+
+---
+
+## Rules
+
+- **Accurate representation** — affiliates must represent Nightfall and the trial offer honestly. Misleading or deceptive promotion is prohibited.
+- **No fraudulent activity** — creating fake trial redemptions, coordinating false conversions, or any other affiliate fraud results in immediate removal and cancellation of pending perks.
+- **Code ownership** — affiliate codes remain the property of Nightfall bot administrators and may be revoked at any time.
+
+See the [Terms of Service](/legal/terms-of-service) for the full affiliate policy.
+
+---
+
+*Related: [Premium](/premium) · [Terms of Service](/legal/terms-of-service)*

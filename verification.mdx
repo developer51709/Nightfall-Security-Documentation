@@ -1,0 +1,149 @@
+---
+title: "Verification"
+description: "Gate server entry with a captcha challenge to block bots and alt accounts."
+---
+
+Nightfall's verification system adds a **controlled entry gate** to your server. New members must complete a verification step before gaining access to channels, significantly reducing bot raids, alt account abuse, and casual trolling.
+
+---
+
+## How it works
+
+```
+New member joins
+       │
+       ▼
+ Sees only #verify-here channel
+       │
+       ▼
+ Clicks "Verify" button
+       │
+   ┌───┴──────────────────────────┐
+   │ Captcha disabled             │ Captcha enabled
+   │                              │
+   ▼                              ▼
+Role assigned                Bot sends a DM
+immediately                  with a challenge card:
+                             ┌──────────────────┐
+                             │ Instructions      │
+                             │ ──────────────── │
+                             │ [ captcha image ] │
+                             └──────────────────┘
+                                      │
+                             Member types the 5
+                             characters into DM
+                                      │
+                             ┌────────┴─────────┐
+                             │ Correct           │ Wrong
+                             │                   │
+                             ▼                   ▼
+                        DM is edited:        Error card sent —
+                        image goes grey     click Verify again
+                        + ✓ checkmark       for a fresh challenge
+                        Role assigned
+```
+
+---
+
+## Image captcha
+
+When captcha is enabled, each verification challenge is a **uniquely rendered image**:
+
+| Property | Value |
+|----------|-------|
+| Size | 340 × 110 px |
+| Answer length | 5 characters |
+| Character set | `A–Z`, `2–9` — no ambiguous characters (`O`, `0`, `I`, `1`, `l`) |
+| Case sensitivity | None — `a7k2m` and `A7K2M` both accepted |
+| Expiry | 10 minutes |
+
+### Anti‑bypass properties
+
+| Bypass attempt | Nightfall's response |
+|---------------|---------------------|
+| Re‑joining after verification | Role is not automatically re‑assigned on rejoin; must verify again |
+| Attempting to script the button | DM replies cannot be scripted by standard bot libraries |
+| OCR attacks on the captcha | Noise, per‑character colour variation, jitter, and blur hinder automated OCR |
+| Bot restart during verification | Database‑backed sessions ensure the challenge is still validated after restart |
+
+---
+
+## Setup
+
+### Requirements
+
+1. A **verified role** that grants access to the rest of the server
+2. A **`#verify-here` channel** configured so:
+   - `@everyone` — can see the channel, cannot send messages, cannot see other channels
+   - `@Verified` — full server access
+3. A verification panel posted via `/verification post`
+
+### Recommended setup steps
+
+1. Create a `#verify-here` channel
+2. Set channel permissions:
+   - `@everyone` → View Channel ✅ · Send Messages ❌ · all other channels ❌
+   - `@Verified` → all channels ✅
+3. Create a `@Verified` role
+4. Run `/verification panel` → select the role → enable → turn on Image Captcha
+5. Run `/verification post channel:#verify-here`
+6. Move Nightfall's bot role **above** the `@Verified` role in **Server Settings → Roles**
+
+---
+
+## DM card
+
+**Challenge card (sent when Verify is clicked):**
+
+```
+🔍  Verification Challenge
+──────────────────────────────────
+To access ServerName you must complete this captcha.
+
+ℹ  Instructions:
+› Look at the image below — it contains 5 characters
+› Type only those characters in your reply to this DM
+› Case‑insensitive — A7K2M and a7k2m both work
+
+⏱️  You have 10 minutes to reply.
+──────────────────────────────────
+[ captcha image — 340 × 110 px ]
+─ Nightfall Security  •  ServerName
+```
+
+**Completed card (DM edited after correct answer):**
+
+```
+✅  Captcha Complete!
+──────────────────────────────────
+You've been successfully verified in ServerName.
+✨  Welcome — you now have full server access.
+──────────────────────────────────
+[ greyed captcha + large green ✓ overlay ]
+─ Nightfall Security  •  ServerName
+```
+
+---
+
+## Integration with Anti‑Raid
+
+Verification acts as the **first line of defence** against raids:
+
+1. Joining members land in the locked verification channel
+2. Bot accounts that cannot receive or process DMs are stopped here
+3. If raiders bypass verification and a join surge is still detected, the **Anti‑Raid** rate counter fires as a secondary layer
+
+---
+
+## Troubleshooting
+
+| Problem | Likely cause | Fix |
+|---------|-------------|-----|
+| Member gets no DM | DMs disabled | Ask them to enable **Allow direct messages from server members** in Privacy Settings |
+| Verify button does nothing | Missing permission | Ensure bot has `Manage Roles` |
+| Can't see other channels after verifying | Wrong channel permissions | Review `@everyone` channel permission overrides |
+| "Role no longer exists" error | Verified role deleted | Set a new one via `/verification panel` |
+
+---
+
+*Related: [Verification commands](/commands/verification) · [Anti‑Raid](/anti-raid)*

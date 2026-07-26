@@ -1,58 +1,100 @@
 ---
 title: "Security Systems"
-description: "Learn how Nightfall protects your server from raids, nukes, spam, and unauthorized access."
+description: "Learn how Nightfall's protection layers keep your server safe from raids, nukes, spam, and unauthorized access."
 ---
 
-# Nightfall Security Systems
+Nightfall provides multiple independent protection layers, each targeting a distinct class of threat. They work together seamlessly — a single event can trigger more than one layer simultaneously.
 
-Nightfall provides multiple independent protection layers designed to keep your community safe from destructive actions, malicious behavior, and unsafe content.
+<CardGroup cols={2}>
+  <Card title="Anti‑Nuke" icon="shield-halved" href="/anti-nuke">
+    Detect and respond to coordinated server destruction — mass channel/role deletions, mass bans, and permission escalations.
+  </Card>
 
-## Anti‑Raid
+  <Card title="Anti‑Raid" icon="users-slash" href="/anti-raid">
+    Detect coordinated mass‑join attacks, bot floods, and suspicious account clusters before they cause damage.
+  </Card>
 
-Nightfall detects coordinated raid patterns such as:
+  <Card title="AutoMod" icon="filter" href="/automod">
+    Automatically filter unsafe or disruptive content — links, invites, caps, custom words, emoji spam, and mass mentions.
+  </Card>
 
-- Mass joins  
-- Bot floods  
-- High‑velocity join spikes  
-- Suspicious account clusters  
+  <Card title="Verification" icon="circle-check" href="/verification">
+    Gate server entry behind a verification step to block bots and alt accounts before they can interact.
+  </Card>
+</CardGroup>
 
-Actions include:
-- Alerting moderators  
-- Auto‑kicking or banning raid accounts  
-- Locking channels during active raids  
+---
 
-## Anti‑Nuke
+## How threats are detected
 
-Anti‑Nuke protects your server from destructive admin actions:
+Nightfall uses **sliding‑window rate counters** to track event frequency in real time. A counter per guild tracks how many events of each type (channel deletions, role deletions, joins, bans, mentions) occurred in the last 60 seconds. When a counter exceeds the configured threshold, an alert fires immediately.
 
-- Mass channel deletion  
-- Mass role deletion  
-- Permission escalations  
-- Dangerous configuration changes  
+This approach is:
+- **Fast** — no database overhead per event; counters live in memory
+- **Accurate** — a true 60‑second rolling window rather than a fixed time bucket
+- **Per‑guild** — each server has its own independent counters and thresholds
 
-Nightfall automatically intervenes when thresholds are exceeded.
+---
 
-## AutoMod
+## Alert cards
 
-AutoMod filters unsafe or disruptive content:
+When a threshold is exceeded, Nightfall posts a formatted alert to your configured alert channel:
 
-- Links  
-- Invites  
-- Caps  
-- Words  
-- Emojis  
-- Mentions  
-- Duplicate messages  
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
 
-Rules can be customized per guild.
+👥  Actor:    @username (123456789)
+⏰  Detected: just now
 
-## Verification
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
 
-Nightfall includes multiple verification modes:
+Severity levels:
 
-- Button verification  
-- Math captcha  
-- Account age checks  
-- Anti‑alt detection  
+| Level | Meaning |
+|-------|---------|
+| **Low** | Minor anomaly — informational |
+| **Medium** | Suspicious activity |
+| **High** | Active threat detected |
+| **Critical** | Severe coordinated attack |
 
-Verification helps prevent unauthorized access and bot infiltration.
+---
+
+## Defensive‑only model
+
+Nightfall is designed exclusively to **protect**, never to harm:
+
+- ✅ Alert moderators via the configured alert channel
+- ✅ Take configurable automated actions (kick, ban) on detected threats
+- ✅ Engage soft locks to pause destructive‑action tracking
+- ❌ Never initiates offensive actions against other servers or users
+- ❌ Never takes action beyond what the server administrator has explicitly configured
+
+---
+
+## Threshold presets
+
+The `/setup` wizard offers three threshold presets as a starting point:
+
+| Preset | Joins/min | Channel deletes/min | Role deletes/min | Bans/min | Mentions |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Strict** | 5 | 2 | 2 | 3 | 5 |
+| **Balanced** | 10 | 3 | 3 | 5 | 8 |
+| **Relaxed** | 20 | 6 | 6 | 10 | 15 |
+
+All thresholds can be fine‑tuned at any time with `/security config`. See the [Security command reference](/commands/security) for all available options.
+
+---
+
+## Whitelist
+
+Trusted administrators, bots, or roles can be exempted from all detection. Whitelisted entities' actions do not increment any rate counters.
+
+Manage exemptions with the `/whitelist` command. See the [Whitelist reference](/commands/whitelist) for permission requirements and usage.
+
+<Warning>
+  Whitelisting is powerful — a whitelisted role exempts every member who holds it. Avoid whitelisting broad roles or you will effectively disable protection for those members.
+</Warning>

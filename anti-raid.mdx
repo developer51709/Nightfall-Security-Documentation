@@ -1,0 +1,140 @@
+---
+title: "Anti‑Raid"
+description: "Detect and respond to coordinated mass‑join attacks and bot floods."
+---
+
+Nightfall's Anti‑Raid system detects **coordinated mass‑join attacks** — where many accounts join a server in a short window with the intent to spam, abuse, or overwhelm the community.
+
+---
+
+## What is a raid?
+
+A Discord raid is a coordinated attack where many accounts (often bots or alts) join a server simultaneously. Objectives typically include:
+
+- Spamming offensive content in every channel
+- Pinging everyone / mass‑mentioning members
+- Overwhelming moderation with sheer numbers
+- Destabilising a community through harassment
+
+---
+
+## Detection layers
+
+Nightfall uses two complementary detection signals:
+
+### 1. Join rate (primary signal)
+
+A real‑time counter tracks how many members joined in the last 60 seconds. If this count exceeds `max_joins_per_minute`, a raid alert fires immediately.
+
+**Default threshold:** 10 joins per minute
+**Configure:** `/security config max_joins:8`
+
+### 2. New account flooding (secondary signal)
+
+During join‑surge events, Nightfall also checks **account age**. If a significant proportion of joining accounts are younger than `min_account_age_days`, the raid confidence level escalates.
+
+**Default:** 7 days (accounts younger than 7 days are flagged)
+**Configure:** `/security config min_account_age_days:14`
+
+---
+
+## Alert cards
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
+New accounts in wave: 8 / 14 (57%)
+
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Automated actions
+
+| `raid_action` setting | What happens |
+|----------------------|-------------|
+| `alert_only` *(default)* | Alert posted; no further action |
+| `kick` | All members who joined during the surge window are kicked |
+| `ban` | All members who joined during the surge window are banned |
+
+Configure via:
+```
+/security config raid_action:kick
+```
+
+<Note>
+  Automated kick/ban affects members who joined during the detection window. Review the audit log after any automated action to confirm the scope.
+</Note>
+
+---
+
+## Account age gating
+
+Nightfall can reject or flag new members based on account age, independent of a full raid surge:
+
+| Setting | Values | Description |
+|---------|--------|-------------|
+| `min_account_age_days` | 0–365 | Minimum age for joining members (0 = disabled) |
+| `account_age_action` | `kick`, `ban`, `alert_only` | What to do when an underage account joins |
+
+**Example:** Require accounts to be at least 30 days old:
+```
+/security config min_account_age_days:30 account_age_action:kick
+```
+
+When enabled, every joining member is checked individually — not just during surge events.
+
+---
+
+## Recommended configuration
+
+| Server type | `max_joins` | `min_account_age_days` | `raid_action` |
+|-------------|------------|----------------------|---------------|
+| Public / large server | 8–12 | 7–30 | `kick` |
+| Medium community | 10–15 | 7 | `alert_only` |
+| Private / small server | 5–8 | 14–30 | `kick` |
+| High‑risk (past raids) | 5 | 30 | `ban` |
+
+---
+
+## Verification integration
+
+The most effective anti‑raid defence combines Nightfall's rate detection with **member verification**:
+
+1. New members land in a locked verification channel
+2. They must pass a captcha challenge before gaining server access
+3. Bot accounts and many human raiders are deterred at this stage
+4. If they pass verification and a surge is still detected, the rate alert fires as a secondary layer
+
+See [Verification](/verification) for setup instructions.
+
+---
+
+## Whitelist
+
+Members and roles in the whitelist bypass join‑surge tracking. Useful for:
+
+- Dedicated partnership bots that add many members at once
+- Migration events where a large number of members are expected to join quickly
+
+Manage exemptions with `/whitelist`.
+
+---
+
+## Post‑raid recovery
+
+Nightfall detects and alerts — it does not restore removed members or undo message spam. After a raid:
+
+1. Use Discord's built‑in **Server Ban** tools to remove remaining raiders
+2. Temporarily **pause invites** via Server Settings
+3. Enable stricter verification or raise the `min_account_age_days` threshold
+4. Review recent events via `/security overview` for the full timeline
+
+---
+
+*Related: [Anti‑Nuke](/anti-nuke) · [Verification](/verification) · [Security commands](/commands/security)*

@@ -1,0 +1,122 @@
+---
+title: "/automod"
+description: "Configure automated message filtering rules — enable, disable, and tune each filter independently."
+---
+
+The `/automod` command group lets administrators configure Nightfall's automated message filtering. Each rule can be independently enabled or disabled and configured with its own action and threshold.
+
+All `/automod` commands require the **Administrator** permission and are guild‑only.
+
+---
+
+## Available filters
+
+| Filter | What it detects |
+|--------|----------------|
+| `links` | Any URL in a message |
+| `invites` | Discord server invite links (`discord.gg/...`) |
+| `caps` | Messages with an excessive proportion of uppercase characters |
+| `words` | Messages containing words from a custom blocklist |
+| `duplicate` | Identical or near‑identical messages sent repeatedly by the same user |
+| `emojis` | Messages with an excessive number of emoji characters |
+| `mentions` | Messages that ping an excessive number of users or roles |
+
+---
+
+## Commands
+
+### `/automod enable`
+
+Enable a filter rule with a specified action.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | The filter to enable |
+| `action` | Choice | ✅ | What to do when the rule triggers |
+
+**Available actions:**
+
+| Action | Description |
+|--------|-------------|
+| `delete` | Delete the offending message silently |
+| `warn` | Delete + issue a formal warning to the author |
+| `timeout` | Delete + warn + temporarily mute the author |
+| `kick` | Delete + kick the author |
+| `ban` | Delete + ban the author |
+
+---
+
+### `/automod disable`
+
+Disable an active filter rule.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | The filter to disable |
+
+---
+
+### `/automod config`
+
+Configure rule‑specific options (e.g. custom word list, caps threshold).
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | The filter to configure |
+| `value` | String | ✅ | Configuration value (format depends on rule) |
+
+**Rule‑specific formats:**
+
+| Rule | `value` format | Example |
+|------|---------------|---------|
+| `caps` | Integer (percentage threshold) | `70` — flag if 70%+ of letters are uppercase |
+| `words` | Comma‑separated word list | `badword1,badword2,badword3` |
+| `duplicate` | Integer (repeat count threshold) | `3` — flag after 3 identical messages within 30 seconds |
+| `emojis` | Integer (emoji count threshold) | `15` — flag if 15 or more emojis |
+| `mentions` | Integer (mention count threshold) | `5` — flag if 5 or more pings |
+
+---
+
+### `/automod status`
+
+Display the current AutoMod configuration for this server — a table of all rules with their enabled state, action, and any extra configuration.
+
+---
+
+### `/automod stats`
+
+*(Premium feature)* View AutoMod trigger statistics for the server.
+
+Shows per‑rule trigger counts over the past 7 and 30 days, top offending channels, and top offending users.
+
+---
+
+## Rule evaluation order
+
+When a message matches multiple rules, only the highest‑priority matching rule is applied:
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Whitelist integration
+
+Users and roles in the server whitelist bypass all AutoMod filters. Manage exemptions from the interactive panel:
+
+```
+/whitelist
+```
+
+This is useful for staff who may legitimately post links or invites. See the [Whitelist reference](/commands/whitelist).
+
+---
+
+*Related: [AutoMod feature guide](/automod) · [Moderation commands](/commands/moderation) · [Whitelist](/commands/whitelist)*

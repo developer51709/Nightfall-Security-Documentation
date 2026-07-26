@@ -1,31 +1,145 @@
 ---
 title: "Premium"
-description: "Unlock advanced protection, automation, and priority processing."
+description: "Unlock advanced protection, automation, and priority processing with Nightfall Premium."
 ---
 
-# Nightfall Premium
+Nightfall Premium enhances your server with extended detection, improved automation, priority processing, and full bot profile customisation. Core protections remain free for everyone — Premium is for servers that want more.
 
-Nightfall Premium enhances your server with advanced detection, improved automation, and priority processing.
+---
+
+## Free vs. Premium
+
+| Feature | Free | Premium |
+|---------|:----:|:-------:|
+| Anti‑Nuke detection | ✅ | ✅ |
+| Anti‑Raid detection | ✅ | ✅ |
+| Mass mention protection | ✅ | ✅ |
+| AutoMod filters | ✅ | ✅ |
+| Basic moderation commands | ✅ | ✅ |
+| Member verification | ✅ | ✅ |
+| Audit logging | ✅ | ✅ |
+| Security alert channel | ✅ | ✅ |
+| Log retention | 30 days | 90 days |
+| Bot response priority | Standard queue | Priority queue |
+| Custom security alert messages | ❌ | ✅ |
+| Advanced AutoMod statistics | ❌ | ✅ |
+| Global threat intelligence | ❌ | ✅ |
+| Premium badge in status | ❌ | ✅ |
+| Early access to new features | ❌ | ✅ |
+| Full bot profile customisation | ❌ | ✅ |
+
+---
 
 ## Pricing
 
-Nightfall Premium costs **$6.00/month**.  
-Payments are handled through **OxaPay** (crypto).
+| Plan | Price | Duration |
+|------|-------|----------|
+| Monthly | **$9.99** | 30 days |
+| Via affiliate trial | Free | 7 days |
+| Affiliate post‑trial offer | ~$7.99 (20% off) | 30 days |
 
-## Premium Commands
+Subscriptions are **not** automatically renewed. You will receive DM reminders at 7 days, 3 days, and 1 day before expiry.
 
-- `/premium buy`
-- `/premium status`
-- `/premium cancel`
-- `/premium customize`
+---
 
-## Premium Benefits
+## Purchasing Premium
 
-- Faster Anti‑Raid detection  
-- Enhanced Anti‑Nuke thresholds  
-- Priority event processing  
-- Extended AutoMod rule limits  
-- Premium verification modes  
-- Additional logging categories  
+Nightfall uses **OxaPay** — a crypto‑native payment gateway — for premium purchases.
 
-Premium is optional — Nightfall’s core protections remain free.
+<Steps>
+  <Step title="Start the checkout">
+    Run `/premium buy` in your Discord server. Nightfall creates a payment invoice and sends you a checkout card via DM.
+  </Step>
+
+  <Step title="Complete payment">
+    Click **Pay Now** in the DM card to open the OxaPay payment page. Complete your crypto payment there.
+  </Step>
+
+  <Step title="Confirm">
+    Return to Discord and click **I've Paid — Confirm** in the checkout card. Nightfall polls the payment gateway and activates your subscription immediately if payment is confirmed.
+
+    If the payment is still processing on the blockchain, the bot will prompt you to try again in a few minutes.
+  </Step>
+</Steps>
+
+<Note>
+  Crypto payments are irreversible. Refunds are not available except at the sole discretion of the bot operators. See the [Terms of Service](/legal/terms-of-service) for full details.
+</Note>
+
+### Invoice statuses
+
+| Status | Meaning |
+|--------|---------|
+| **Waiting** | Invoice created; no payment received yet |
+| **Confirming** | Payment received; awaiting blockchain confirmations |
+| **Paid** | Confirmed — Premium activated |
+| **Expired** | 24 hours elapsed; no payment received |
+| **Failed** | Payment failed or was insufficient |
+
+---
+
+## Redeeming a code
+
+If you have a Premium redemption code (issued by a bot administrator), redeem it with:
+
+```
+/premium redeem code:YOUR-CODE-HERE
+```
+
+If your server already has an active subscription, the duration is **extended** — not replaced.
+
+---
+
+## Premium commands
+
+| Command | Description |
+|---------|-------------|
+| `/premium buy` | Start the checkout flow and receive a DM with the payment card |
+| `/premium status` | View your server's current subscription status and expiry date |
+| `/premium redeem` | Redeem a Premium code |
+| `/premium cancel` | Cancel and remove your active subscription |
+| `/premium customize` | Open the bot profile customisation panel (see below) |
+
+---
+
+## Bot profile customisation
+
+Premium servers can customise how Nightfall appears within their server:
+
+| Feature | Description |
+|---------|-------------|
+| Guild avatar | Custom bot avatar shown only in this server |
+| Guild banner | Custom banner on the bot's server profile |
+| Guild bio | Custom "About Me" text |
+| Nameplate style | Font choice for the bot's display name |
+| Nameplate effect | Animated effect on the bot's display name |
+| Alert colour | Custom accent colour on security alert cards |
+| Alert message | Custom text appended to all security alert cards |
+
+These customisations apply only within your server — they do not affect how Nightfall appears in any other server.
+
+---
+
+## Expiry reminders
+
+Nightfall sends DM reminders to the server owner before a subscription expires:
+
+- 7 days before expiry
+- 3 days before expiry
+- 1 day before expiry
+
+Each reminder is sent exactly once. Use `/premium status` at any time to check your current expiry date.
+
+---
+
+## Affiliate trial
+
+Approved affiliates can share a code that gives your server a **7‑day free trial** of Premium. Each server may redeem one affiliate trial ever — this limit is enforced permanently and cannot be bypassed by removing and re‑adding the bot.
+
+After the trial expires, the server owner may receive a one‑time **20% discount offer** via DM.
+
+See the [Affiliate Programme](/affiliate) for more information.
+
+---
+
+*Related: [Affiliate Programme](/affiliate) · [Premium commands](/commands/utility)*

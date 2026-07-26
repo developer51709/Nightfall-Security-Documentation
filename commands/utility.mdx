@@ -1,0 +1,133 @@
+---
+title: "Utility commands"
+description: "General‑purpose commands for bot status, server information, and configuration."
+---
+
+Utility commands provide general bot information and configuration. Most are available to all server members.
+
+---
+
+## Slash commands
+
+### `/ping`
+
+Check the bot's gateway latency.
+
+**Response:** Latency in milliseconds with a colour‑coded status indicator:
+- 🟢 **Green** — under 150 ms (excellent)
+- 🟡 **Amber** — 150–300 ms (acceptable)
+- 🔴 **Red** — over 300 ms (degraded)
+
+**Prefix equivalent:** `!ping`
+
+---
+
+### `/status`
+
+Display comprehensive bot health information.
+
+**Shows:**
+- Bot uptime
+- Gateway latency
+- Guild count and total member count
+- Number of active event workers
+- Premium subscription count
+
+**Prefix equivalent:** `!status`
+
+---
+
+### `/info`
+
+Display information about the current server.
+
+**Shows:**
+- Server name, ID, and icon
+- Owner mention
+- Member count (total, humans, bots)
+- Channel and role counts
+- Server creation date and age
+- Verification level and boost tier
+- Active security features (Anti‑Nuke, Verification)
+- Premium status
+
+**Prefix equivalent:** `!info`
+
+---
+
+### `/help`
+
+Display the full command reference organised by category.
+
+Lists all commands grouped by: Security, Moderation, AutoMod, Logging, Verification, Premium, Affiliate, Utility, and Owner (owners only).
+
+**Prefix equivalent:** `!help`
+
+---
+
+### `/setprefix`
+
+Change the bot's command prefix for this server.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `prefix` | String | ✅ | New prefix (1–5 characters) |
+
+**Required permission:** Administrator
+
+The new prefix is stored and applied immediately. The bot mention (`@Nightfall`) always works as a prefix regardless of the custom setting.
+
+**Prefix equivalent:** `!setprefix <new>`
+
+---
+
+### `/setup`
+
+Run the interactive setup wizard for new server onboarding.
+
+The wizard guides you through:
+1. **Alert Channel** — where security alerts are posted
+2. **Protection Level** — Strict, Balanced, or Relaxed threshold presets
+3. **Feature Toggles** — Anti‑Nuke, Verification
+4. **Completion** — summary and optional Premium upgrade prompt
+
+---
+
+## Prefix commands
+
+All prefix commands use the server's configured prefix (default: `!`). The bot mention works in place of the prefix at any time.
+
+| Command | Description |
+|---------|-------------|
+| `!ping` | Gateway latency |
+| `!status` | Bot health |
+| `!info` | Server info |
+| `!help` | Command listing |
+| `!setprefix <prefix>` | Change prefix (admin only) |
+
+---
+
+## Mention response
+
+Pinging the bot with nothing else (`@Nightfall`) triggers a quick‑info card showing:
+
+- Current prefix
+- Gateway latency
+- Guild count
+- Summary of active protections
+- Key command shortcuts
+
+---
+
+## Finding your prefix
+
+If you've forgotten the custom prefix, always use the bot mention:
+
+```
+@Nightfall help
+@Nightfall ping
+```
+
+---
+
+*Related: [Security commands](/commands/security) · [Quickstart](/quickstart)*

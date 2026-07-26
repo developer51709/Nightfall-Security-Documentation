@@ -1,0 +1,103 @@
+---
+title: "/security"
+description: "Configure threat detection thresholds, view live security status, and toggle protection."
+---
+
+The `/security` command group lets server administrators configure Nightfall's threat detection thresholds, view live security status, and toggle protection on or off.
+
+All `/security` commands require the **Administrator** permission and are guild‑only.
+
+---
+
+## Commands
+
+### `/security config`
+
+Configure per‑guild security thresholds and the alert channel.
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `alert_channel` | Channel | Where security alerts are posted |
+| `max_joins` | 1–1000 | Max member joins per minute before a raid alert fires |
+| `max_channel_deletes` | 1–100 | Max channel deletions per minute before a nuke alert fires |
+| `max_role_deletes` | 1–100 | Max role deletions per minute before a nuke alert fires |
+| `max_bans` | 1–100 | Max bans per minute before a mass‑ban alert fires |
+| `max_mentions` | 1–100 | Max mentions in a single message before an alert fires |
+| `min_account_age_days` | 0–365 | Minimum account age in days (0 = disabled) |
+| `account_age_action` | `kick` \| `ban` \| `alert_only` | Action for accounts below the minimum age |
+| `raid_action` | `alert_only` \| `kick` \| `ban` | Automated response when a raid is detected |
+| `nuke_action` | `alert_only` \| `kick` \| `ban` | Automated response when a nuke is detected |
+| `mass_mention_action` | `alert_only` \| `warn` \| `kick` \| `ban` | Automated response to mass mentions |
+
+All options are optional — omitting one leaves the existing setting unchanged.
+
+**Example:**
+```
+/security config alert_channel:#alerts max_joins:8 raid_action:kick
+```
+
+---
+
+### `/security overview`
+
+Displays a live security dashboard for the current server, including:
+
+- Current detection thresholds for all event types
+- Recent threat events (last 10 alerts)
+- Current live event rates (joins/min, channel deletes/min, etc.)
+- Whether Anti‑Nuke is enabled
+- Premium status
+
+---
+
+### `/security toggle`
+
+Enable or disable Nightfall's Anti‑Nuke protection for this server.
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `enabled` | Boolean | `True` to enable, `False` to disable |
+
+When disabled, the bot remains in the server and continues logging, but will not alert or take automated action on nuke or raid events.
+
+---
+
+## Threshold presets
+
+The `/setup` wizard offers three presets as a starting point:
+
+| Preset | Joins/min | Channel deletes/min | Role deletes/min | Bans/min | Mentions |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Strict** | 5 | 2 | 2 | 3 | 5 |
+| **Balanced** | 10 | 3 | 3 | 5 | 8 |
+| **Relaxed** | 20 | 6 | 6 | 10 | 15 |
+
+---
+
+## Alert cards
+
+When a threshold is exceeded, Nightfall posts a formatted alert to your configured alert channel:
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────
+Join surge detected: 14 joins in 60 seconds (threshold: 10)
+
+👥  Actor: @username (123456789)
+⏰  Detected: 2 minutes ago
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+### Severity levels
+
+| Level | Meaning |
+|-------|---------|
+| **Low** | Minor anomaly — informational |
+| **Medium** | Suspicious activity |
+| **High** | Active threat detected |
+| **Critical** | Severe coordinated attack |
+
+---
+
+*Related: [Anti‑Nuke](/anti-nuke) · [Anti‑Raid](/anti-raid) · [Whitelist](/commands/whitelist)*

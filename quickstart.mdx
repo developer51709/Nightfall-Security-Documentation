@@ -9,9 +9,9 @@ Nightfall Security is designed to be easy to set up while providing professional
 
 Before you begin, ensure you have:
 
-- **Administrator permissions** in the server you want to protect  
-- A Discord server where Nightfall will be installed  
-- Basic familiarity with Discord’s role and channel system (recommended)
+- **Administrator permissions** in the server you want to protect
+- A Discord server where Nightfall will be installed
+- Basic familiarity with Discord's role and channel system (recommended)
 
 ## Get started
 
@@ -19,45 +19,103 @@ Before you begin, ensure you have:
   <Step title="Invite Nightfall Security">
     Add Nightfall to your server using the official invite link:
 
-    **https://discord.com/oauth2/authorize?client_id=1528576288938266694**
+    **[Invite Nightfall Security](https://discord.com/oauth2/authorize?client_id=1528576288938266694)**
 
-    Nightfall requires essential permissions such as managing roles, channels, bans, and message history to provide full protection.
+    Nightfall requires essential permissions such as managing roles, channels, bans, and message history to provide full protection. Grant all requested permissions for complete coverage.
+
+    <Tip>
+      Nightfall's role should be positioned **above** any roles it needs to manage (e.g. your verified member role). You can adjust role order in **Server Settings → Roles**.
+    </Tip>
   </Step>
 
-  <Step title="Run the Setup Wizard">
+  <Step title="Run the setup wizard">
     Once Nightfall is in your server, start the guided setup process:
 
-    ```bash
+    ```
     /setup
     ```
 
-    The wizard will help you configure:
-    - Anti‑Raid thresholds  
-    - Anti‑Nuke protection  
-    - AutoMod filters  
-    - Verification  
-    - Logging channels  
+    The wizard will walk you through:
 
-    Each step includes recommended defaults to ensure strong protection from the start.
+    - **Alert Channel** — where security alerts are posted
+    - **Protection Level** — choose Strict, Balanced, or Relaxed thresholds
+    - **Anti‑Nuke** — toggle protection against destructive admin actions
+    - **Verification** — toggle member entry gate
+
+    Each step includes recommended defaults to ensure strong protection from the start. You can revisit and adjust any setting later.
   </Step>
 
-  <Step title="Verify Installation">
+  <Step title="Verify installation">
     After setup, confirm that Nightfall is active and protecting your server:
 
-    ```bash
+    ```
     /security overview
     ```
 
     This command displays:
-    - Active protection systems  
-    - Recent alerts  
-    - Recommended configuration improvements  
+    - Active protection systems and their thresholds
+    - Recent security alerts
+    - Recommended configuration improvements
+  </Step>
+
+  <Step title="Configure logging (optional)">
+    Set up audit log channels so you have a full record of server activity:
+
+    ```
+    /logging set category:members channel:#member-logs
+    /logging set category:moderation channel:#mod-audit
+    /logging set category:security channel:#security-log
+    ```
+
+    See the [Logging command reference](/commands/logging) for all available categories.
+  </Step>
+
+  <Step title="Enable verification (optional)">
+    Add a member entry gate to block bot raids before they start:
+
+    1. Create a `#verify-here` channel that `@everyone` can see but cannot send messages in, and that hides all other channels
+    2. Create a `@Verified` role that grants full server access
+    3. Run `/verification panel` to configure the role and enable captcha
+    4. Run `/verification post channel:#verify-here` to post the persistent Verify button
+
+    See [Verification](/verification) for full details.
   </Step>
 </Steps>
 
-<Tip>
-  Need help or want personalized setup assistance?  
-  Join the official Nightfall Security support server:  
-  **https://discord.gg/CXzX38Z7J9**
-</Tip>
+---
 
+## What's protected after setup?
+
+Once the wizard completes, Nightfall is actively monitoring your server for:
+
+| Threat | Protection |
+|--------|-----------|
+| Mass channel / role deletions | Anti‑Nuke |
+| Mass bans by compromised admins | Anti‑Nuke |
+| Join surges and bot floods | Anti‑Raid |
+| New / suspicious account clusters | Anti‑Raid |
+| Spam links and invite ads | AutoMod |
+| Mass mentions | AutoMod + Security |
+
+---
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Security Systems" icon="shield" href="/security-systems">
+    Deep dive into how each protection layer works.
+  </Card>
+  <Card title="Command Reference" icon="terminal" href="/commands/security">
+    Explore every configuration option available.
+  </Card>
+  <Card title="Premium" icon="star" href="/premium">
+    Unlock enhanced detection and customisation.
+  </Card>
+  <Card title="Troubleshooting" icon="circle-question" href="/troubleshooting">
+    Resolve common setup issues.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Need help or want personalized setup assistance? Join the official Nightfall Security support server: **https://discord.gg/CXzX38Z7J9**
+</Tip>

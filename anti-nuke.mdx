@@ -1,0 +1,119 @@
+---
+title: "Anti‑Nuke"
+description: "Detect and respond to coordinated server destruction attacks."
+---
+
+Nightfall's Anti‑Nuke system detects **coordinated server destruction attacks** — scenarios where a compromised or malicious administrator rapidly deletes channels, roles, or mass‑bans members.
+
+---
+
+## What is a nuke attack?
+
+A "nuke" in Discord terminology is when a bad actor with elevated permissions — often a compromised admin account or a rogue bot — attempts to destroy a server by:
+
+- Rapidly deleting all channels
+- Rapidly deleting all roles
+- Mass‑banning most or all members
+- A combination of the above
+
+These attacks can destroy months or years of community structure in seconds. Nightfall detects the pattern before the damage is complete.
+
+---
+
+## How detection works
+
+Nightfall tracks the rate of destructive events in real time. Separate counters monitor:
+
+- Channel deletions per minute
+- Role deletions per minute
+- Mass bans per minute
+
+If any counter exceeds the configured threshold for the guild, an alert is triggered immediately.
+
+### Default thresholds (configurable per guild)
+
+| Event | Default threshold |
+|-------|-----------------|
+| Channel deletions | 3 per minute |
+| Role deletions | 3 per minute |
+| Mass bans | 5 per minute |
+
+Adjust thresholds with `/security config`.
+
+---
+
+## Actor detection
+
+When a threshold is exceeded, Nightfall reads the Discord Audit Log to identify the responsible actor and includes them in the alert card. If the audit log is unavailable, the alert still fires without an actor attribution.
+
+**Required permission:** `View Audit Log`
+
+---
+
+## Alert cards
+
+```
+🛡️  Security Alert — ANTI_NUKE
+────────────────────────────────────────
+Channel deletion surge detected.
+4 channels deleted in the last 60 seconds.
+Threshold: 3 per minute.
+
+👥  Actor:    @suspiciousmod (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Automated actions
+
+Nightfall's security model is **strictly defensive** — it never takes action without explicit configuration.
+
+| `nuke_action` setting | What happens |
+|----------------------|-------------|
+| `alert_only` *(default)* | Alert posted to the alert channel |
+| `kick` | Alert posted + actor is kicked from the server |
+| `ban` | Alert posted + actor is permanently banned |
+
+Configure via:
+```
+/security config nuke_action:kick
+```
+
+---
+
+## Enabling and disabling
+
+Anti‑Nuke is enabled by default. Toggle it with:
+
+```
+/security toggle enabled:False
+```
+
+Or via the `/setup` wizard (Feature Toggles step).
+
+---
+
+## Whitelist
+
+Trusted administrators or bots can be whitelisted to bypass nuke detection. Their actions do not increment any rate counters.
+
+```
+/whitelist
+```
+
+Use the **Add User** or **Add Role** buttons in the interactive panel. See the [Whitelist reference](/commands/whitelist) for full permission details.
+
+---
+
+## Limitations
+
+- **False positives** — admins doing legitimate bulk channel reorganisation may trigger alerts. Whitelist trusted admins or temporarily raise thresholds during planned maintenance.
+- **Audit log lag** — Discord's audit log can lag by 1–3 seconds. Actor detection may fail for very fast events, though the alert will still fire.
+- **Recovery** — Nightfall alerts on destruction but cannot restore deleted channels or roles. Use Discord's native backup tools for recovery planning.
+
+---
+
+*Related: [Anti‑Raid](/anti-raid) · [Security commands](/commands/security) · [Whitelist](/commands/whitelist)*

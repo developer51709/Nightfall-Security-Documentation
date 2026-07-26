@@ -1,0 +1,134 @@
+---
+title: "/mod"
+description: "Complete moderation suite with audit‑trail warning records and automated logging."
+---
+
+The `/mod` command group provides a complete moderation suite with formatted action cards, an audit‑trail warning system, and automated moderation logging.
+
+All moderation commands require the appropriate Discord permissions. Responses are ephemeral by default.
+
+---
+
+## Commands
+
+### `/mod ban`
+
+Permanently ban a member from the server.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `user` | User | ✅ | The member to ban |
+| `reason` | String | — | Reason for the ban (recorded in audit log and warnings DB) |
+| `delete_days` | 0–7 | — | Days of message history to delete |
+
+**Required permission:** Ban Members
+
+---
+
+### `/mod kick`
+
+Remove a member from the server. They can rejoin if they have an invite.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | The member to kick |
+| `reason` | String | — | Reason for the kick |
+
+**Required permission:** Kick Members
+
+---
+
+### `/mod warn`
+
+Issue a formal warning to a member. Warnings are stored permanently for the moderation audit trail.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | The member to warn |
+| `reason` | String | ✅ | Reason for the warning |
+
+Warnings include the moderator ID, timestamp, and reason. They are never automatically deleted.
+
+---
+
+### `/mod timeout`
+
+Temporarily restrict a member from sending messages or joining voice channels.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | The member to time out |
+| `duration` | String | ✅ | Duration (e.g. `10m`, `1h`, `1d`) |
+| `reason` | String | — | Reason for the timeout |
+
+**Required permission:** Moderate Members
+**Maximum timeout:** 28 days (Discord limit)
+
+---
+
+### `/mod history`
+
+View the moderation history (warnings) for a member.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | The member to look up |
+
+Returns a formatted card listing all warnings for the member in the current server, sorted by most recent first.
+
+---
+
+### `/mod unban`
+
+Revoke a ban and allow the user to rejoin.
+
+| Option | Type | Required | Description |
+|--------|------|:--------:|-------------|
+| `user_id` | String | ✅ | The banned user's Discord ID |
+| `reason` | String | — | Reason for the unban |
+
+**Required permission:** Ban Members
+
+---
+
+## Right‑click context menu actions
+
+Right‑clicking any member in Discord surfaces quick moderation actions:
+
+| Action | Description |
+|--------|-------------|
+| **User Info** | Account age, roles, join date, and warning count |
+| **Quick Kick** | Opens a modal to confirm kick with reason |
+| **Quick Ban** | Opens a modal to confirm ban with reason |
+| **Quick Timeout** | Opens a modal to set timeout duration and reason |
+| **Delete & Warn** | Deletes the targeted message and warns the author |
+
+These are available from the right‑click menu on any server member, subject to the moderator holding the required permissions.
+
+---
+
+## Action cards
+
+Every moderation action produces a standardised response card:
+
+```
+✅  Member Banned
+────────────────────────────────
+👥  Target:     @username (123456789)
+⚖️  Moderator:  @mod (987654321)
+✏️  Reason:     Repeated rule violations
+
+─  Nightfall Security  •  Moderation Log
+```
+
+---
+
+## Logging integration
+
+When the `/logging` module is configured, all moderation actions are also posted to the designated moderation log channel automatically — no extra setup required.
+
+See [Logging commands](/commands/logging) for setup instructions.
+
+---
+
+*Related: [Logging commands](/commands/logging) · [AutoMod commands](/commands/automod)*

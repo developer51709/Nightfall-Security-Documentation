@@ -1,35 +1,64 @@
 ---
 title: "Architecture"
-description: "How Nightfall’s multi-process system ensures reliability and stability."
+description: "How Nightfall's resilient multi‑process design ensures uptime and consistent protection."
 ---
 
-# Architecture
+Nightfall is built on a **resilient multi‑process architecture** designed to maintain uptime and consistent protection even under heavy load or unexpected failures. Each major responsibility runs in its own isolated process.
 
-Nightfall uses a professional multi‑process architecture to ensure stability, uptime, and consistent protection.
+---
 
-## Process Overview
+## Process overview
 
 ### Gateway
-Handles Discord connection, events, and command processing.
 
-### Workers
-Perform database writes, event processing, and background tasks.
+The gateway handles the live Discord connection. It receives events from Discord, routes them to the appropriate workers, and processes slash and prefix commands. The gateway is the only process that communicates directly with Discord's API.
+
+### Event workers
+
+Event workers perform the heavy processing work — evaluating AutoMod rules, running anti‑nuke and anti‑raid detection, and dispatching moderation actions. Multiple workers run in parallel, with incoming events distributed across them using a least‑loaded routing strategy. This ensures that a surge of events in one area does not delay processing in another.
+
+### Database worker
+
+All database writes are routed through a single dedicated worker via a queue. This serialises writes safely without locking, ensuring data integrity even when many events arrive simultaneously.
+
+### Scheduler
+
+The scheduler runs periodic background tasks on a configurable interval:
+
+- Expiry checks for premium subscriptions (with DM reminders)
+- Post‑trial discount DM delivery for affiliate trials
+- Cleanup of aged records
+- Routine health checks
 
 ### Supervisor
-Monitors all processes and restarts them if they crash.
 
-### Status Server
-Provides a local dashboard with JSON status output.
+The supervisor monitors all other processes. If any process exits unexpectedly, the supervisor restarts it automatically using exponential back‑off — progressively increasing the delay between restart attempts to avoid flooding. This self‑healing behaviour means temporary failures (network hiccups, API errors) recover without manual intervention.
 
-## Scheduler
+---
 
-The scheduler runs periodic tasks:
+## Why multi‑process?
 
-- Health checks  
-- Cleanup tasks  
-- Security scans  
-- Affiliate checks  
+A single‑process bot is vulnerable: one blocking operation, a memory leak, or a crash brings everything down. Nightfall's architecture isolates each concern:
 
-This ensures Nightfall remains responsive and stable.
+| Isolation benefit | Example |
+|------------------|---------|
+| Gateway stays responsive | A slow AutoMod evaluation doesn't delay command responses |
+| Database safety | No write conflicts, even with many concurrent events |
+| Crash containment | An event worker crash is restarted without affecting the gateway |
+| Independent scaling | More event workers can handle higher event volumes |
 
-[View troubleshooting guide](/troubleshooting)
+---
+
+## Reliability features
+
+| Feature | Description |
+|---------|-------------|
+| **Self‑healing supervisor** | Crashed processes restart automatically with exponential back‑off |
+| **Least‑loaded routing** | Events distributed to the least busy worker |
+| **WAL‑mode database** | Safe concurrent reads during writes |
+| **Persistent verification sessions** | Bot restarts do not invalidate in‑progress member verifications |
+| **Persistent button components** | Verification and premium panels survive restarts |
+
+---
+
+*Related: [Security Systems](/security-systems) · [Troubleshooting](/troubleshooting)*

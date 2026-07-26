@@ -1,0 +1,66 @@
+---
+title: "/whitelist"
+description: "Manage per‑guild exemptions — users and roles that bypass all Nightfall detection."
+---
+
+The `/whitelist` command opens an interactive panel for managing the per‑guild **whitelist**. Users and roles on the whitelist bypass **all** Nightfall detection — Anti‑Nuke, Anti‑Raid, mass‑mention, and every AutoMod filter.
+
+<Warning>
+  Whitelisting is powerful — a whitelisted role exempts every member who holds it. Avoid whitelisting broad roles (e.g. `@everyone` or a role most of the server has), or you will effectively disable protection for those members.
+</Warning>
+
+---
+
+## Commands
+
+### `/whitelist`
+
+Post the interactive whitelist management panel to the current channel.
+
+The panel lists every current whitelist entry and provides three action buttons:
+
+| Button | Action |
+|--------|--------|
+| **Add User** | Opens a private user picker; the selected user is added |
+| **Add Role** | Opens a private role picker; the selected role is added |
+| **Remove** | Opens a private picker of existing entries to remove (disabled when the list is empty) |
+
+The pickers are ephemeral — only the staff member who clicked sees them. After a successful add or remove, the shared panel is updated so the whole team sees the current state.
+
+<Note>
+  The Remove picker shows up to 25 entries at a time (a Discord limit). If your whitelist has more than 25 entries, remove some and reopen the picker to see the rest.
+</Note>
+
+---
+
+## Permission model
+
+The whitelist uses a deliberately strict two‑tier model:
+
+| Capability | Who is allowed |
+|------------|----------------|
+| **View** the panel | Members with **Manage Server** |
+| **Edit** (add / remove) | The **server owner**, OR any member holding a role that is *both* positioned **above the bot's highest role** *and* has the **Administrator** permission |
+
+The edit tier prevents privilege escalation — a compromised admin below the bot's role cannot whitelist attackers to bypass protection. Edit permission is re‑checked on every add or remove action, not just when the panel is opened.
+
+<Tip>
+  If the bot's role is at or near the top of the role list, only the server owner may edit the whitelist. Position the bot's role appropriately if you want trusted admins to manage exemptions.
+</Tip>
+
+---
+
+## When to whitelist
+
+| Use case | What to whitelist |
+|---------|-------------------|
+| Trusted admin doing bulk channel reorganisation | The specific admin user |
+| Partnership bot that joins many members at once | The bot's user account |
+| Mass‑migrate event | Temporary: the migration bot's user account |
+| Staff posting links / invites in chat | The staff role |
+
+Always prefer whitelisting specific users over broad roles. Remove whitelist entries when they're no longer needed.
+
+---
+
+*Related: [Security commands](/commands/security) · [AutoMod commands](/commands/automod) · [Anti‑Nuke](/anti-nuke)*
