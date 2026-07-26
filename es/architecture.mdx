@@ -1,0 +1,64 @@
+---
+title: "Arquitectura"
+description: "Cómo el diseño resiliente multiproceso de Nightfall garantiza tiempo de actividad y protección consistente."
+---
+
+Nightfall está construido sobre una **arquitectura multiproceso resiliente** diseñada para mantener el tiempo de actividad y una protección consistente incluso bajo carga elevada o fallos inesperados. Cada responsabilidad principal se ejecuta en su propio proceso aislado.
+
+---
+
+## Visión general de procesos
+
+### Gateway
+
+El gateway gestiona la conexión en vivo con Discord. Recibe eventos de Discord, los enruta a los workers apropiados y procesa comandos slash y con prefijo. El gateway es el único proceso que se comunica directamente con la API de Discord.
+
+### Workers de eventos
+
+Los workers de eventos realizan el trabajo pesado de procesamiento — evaluar las reglas de AutoMod, ejecutar la detección anti‑nuke y anti‑raid, y despachar las acciones de moderación. Varios workers se ejecutan en paralelo, con los eventos entrantes distribuidos entre ellos usando una estrategia de enrutamiento de menos carga. Esto garantiza que un pico de eventos en un área no retrase el procesamiento en otra.
+
+### Worker de base de datos
+
+Todas las escrituras a la base de datos se enrutan a través de un único worker dedicado mediante una cola. Esto serializa las escrituras con seguridad sin bloqueos, garantizando la integridad de los datos incluso cuando muchos eventos llegan simultáneamente.
+
+### Scheduler
+
+El scheduler ejecuta tareas periódicas en segundo plano en un intervalo configurable:
+
+- Verificaciones de expiración para suscripciones premium (con recordatorios por DM)
+- Entrega de DM de descuento post‑prueba para pruebas de afiliados
+- Limpieza de registros antiguos
+- Comprobaciones de salud rutinarias
+
+### Supervisor
+
+El supervisor supervisa todos los demás procesos. Si algún proceso finaliza inesperadamente, el supervisor lo reinicia automáticamente utilizando back‑off exponencial — aumentando progresivamente el retraso entre intentos de reinicio para evitar inundaciones. Este comportamiento de autoreparación significa que los fallos temporales (interrupciones de red, errores de API) se recuperan sin intervención manual.
+
+---
+
+## ¿Por qué multiproceso?
+
+Un bot de un único proceso es vulnerable: una operación bloqueante, una fuga de memoria o un fallo lo derriban todo. La arquitectura de Nightfall aísla cada responsabilidad:
+
+| Beneficio del aislamiento | Ejemplo |
+|------------------|---------|
+| El gateway sigue receptivo | Una evaluación lenta de AutoMod no retrasa las respuestas a comandos |
+| Seguridad de la base de datos | Sin conflictos de escritura, incluso con muchos eventos concurrentes |
+| Contención de fallos | Un fallo de un worker de eventos se reinicia sin afectar al gateway |
+| Escalado independiente | Más workers de eventos pueden manejar mayores volúmenes de eventos |
+
+---
+
+## Características de fiabilidad
+
+| Característica | Descripción |
+|---------|-------------|
+| **Supervisor de autoreparación** | Los procesos que fallan se reinician automáticamente con back‑off exponencial |
+| **Enrutamiento de menos carga** | Los eventos se distribuyen al worker menos ocupado |
+| **Base de datos en modo WAL** | Lecturas concurrentes seguras durante las escrituras |
+| **Sesiones de verificación persistentes** | Los reinicios del bot no invalidan las verificaciones de miembros en curso |
+| **Componentes de botones persistentes** | Los paneles de verificación y premium sobreviven a los reinicios |
+
+---
+
+*Relacionado: [Sistemas de seguridad](/security-systems) · [Solución de problemas](/troubleshooting)*

@@ -1,0 +1,100 @@
+---
+title: "Sicherheitssysteme"
+description: "Erfahren Sie, wie Nightfalls Schutzebenen Ihren Server vor Raids, Nukes, Spam und unbefugtem Zugriff schützen."
+---
+
+Nightfall bietet mehrere unabhängige Schutzebenen, die jeweils eine bestimmte Klasse von Bedrohungen adressieren. Sie arbeiten nahtlos zusammen — ein einzelnes Ereignis kann mehrere Ebenen gleichzeitig auslösen.
+
+<CardGroup cols={2}>
+  <Card title="Anti‑Nuke" icon="shield-halved" href="/anti-nuke">
+    Erkennen und reagieren Sie auf koordinierte Serverzerstörung — Massen-Kanal-/Rollenlöschungen, Massen-Banns und Berechtigungseskalationen.
+  </Card>
+
+  <Card title="Anti‑Raid" icon="users-slash" href="/anti-raid">
+    Erkennen Sie koordinierte Massen-Beitrittsangriffe, Bot-Fluten und verdächtige Konto-Cluster, bevor sie Schaden anrichten.
+  </Card>
+
+  <Card title="AutoMod" icon="filter" href="/automod">
+    Filtern Sie unsichere oder störende Inhalte automatisch — Links, Einladungen, Großbuchstaben, benutzerdefinierte Wörter, Emoji-Spam und Massenerwähnungen.
+  </Card>
+
+  <Card title="Verifizierung" icon="circle-check" href="/verification">
+    Sichern Sie den Serverzugang mit einem Verifizierungsschritt, um Bots und Alt-Konten zu blockieren, bevor sie interagieren können.
+  </Card>
+</CardGroup>
+
+---
+
+## Wie Bedrohungen erkannt werden
+
+Nightfall verwendet **Sliding-Window-Ratenzähler**, um die Ereignisfrequenz in Echtzeit zu verfolgen. Ein Zähler pro Server verfolgt, wie viele Ereignisse jedes Typs (Kanallöschungen, Rollenlöschungen, Beitritte, Banns, Erwähnungen) in den letzten 60 Sekunden aufgetreten sind. Wenn ein Zähler den konfigurierten Schwellenwert überschreitet, wird sofort ein Alarm ausgelöst.
+
+Dieser Ansatz ist:
+- **Schnell** — kein Datenbank-Overhead pro Ereignis; Zähler leben im Speicher
+- **Genau** — ein echtes rollierendes 60-Sekunden-Fenster statt eines festen Zeitfensters
+- **Pro Server** — jeder Server hat seine eigenen unabhängigen Zähler und Schwellenwerte
+
+---
+
+## Alarmkarten
+
+Wenn ein Schwellenwert überschritten wird, veröffentlicht Nightfall einen formatierten Alarm in Ihrem konfigurierten Alarmkanal:
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
+
+👥  Actor:    @username (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+Schweregrade:
+
+| Stufe | Bedeutung |
+|-------|---------|
+| **Niedrig** | Geringfügige Anomalie — informativ |
+| **Mittel** | Verdächtige Aktivität |
+| **Hoch** | Aktive Bedrohung erkannt |
+| **Kritisch** | Schwerer koordinierter Angriff |
+
+---
+
+## Rein defensives Modell
+
+Nightfall ist ausschließlich dazu konzipiert, zu **schützen**, niemals zu schaden:
+
+- ✅ Benachrichtigt Moderatoren über den konfigurierten Alarmkanal
+- ✅ Führt konfigurierbare automatisierte Aktionen (Kick, Bann) bei erkannten Bedrohungen aus
+- ✅ Aktiviert Soft-Locks, um die Verfolgung zerstörerischer Aktionen anzuhalten
+- ❌ Initiiert niemals offensive Aktionen gegen andere Server oder Nutzer
+- ❌ Führt niemals Aktionen aus, die über das hinausgehen, was der Serveradministrator explizit konfiguriert hat
+
+---
+
+## Schwellenwert-Voreinstellungen
+
+Der `/setup`-Assistent bietet drei Schwellenwert-Voreinstellungen als Ausgangspunkt:
+
+| Voreinstellung | Beitritte/min | Kanallöschungen/min | Rollenlöschungen/min | Banns/min | Erwähnungen |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Streng** | 5 | 2 | 2 | 3 | 5 |
+| **Ausgewogen** | 10 | 3 | 3 | 5 | 8 |
+| **Locker** | 20 | 6 | 6 | 10 | 15 |
+
+Alle Schwellenwerte können jederzeit mit `/security config` feinjustiert werden. Siehe [Sicherheitsbefehlsreferenz](/commands/security) für alle verfügbaren Optionen.
+
+---
+
+## Whitelist
+
+Vertrauenswürdige Administratoren, Bots oder Rollen können von jeder Erkennung ausgenommen werden. Aktionen von Whitelist-Entitäten erhöhen keine Ratenzähler.
+
+Verwalten Sie Ausnahmen mit dem Befehl `/whitelist`. Siehe [Whitelist-Referenz](/commands/whitelist) für Berechtigungsanforderungen und Nutzung.
+
+<Warning>
+  Das Whitelisting ist mächtig — eine gewhitelistete Rolle nimmt jedes Mitglied aus, das sie besitzt. Vermeiden Sie es, breite Rollen auf die Whitelist zu setzen, sonst deaktivieren Sie den Schutz für diese Mitglieder effektiv.
+</Warning>

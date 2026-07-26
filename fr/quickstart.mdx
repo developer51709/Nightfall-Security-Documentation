@@ -1,0 +1,121 @@
+---
+title: "Démarrage rapide"
+description: "Ajoutez Nightfall Security à votre serveur et activez les fonctionnalités de protection essentielles."
+---
+
+Nightfall Security est conçu pour être facile à installer tout en fournissant une protection multicouche professionnelle pour les communautés Discord de toutes tailles. Ce guide de démarrage rapide vous fera passer de zéro à une installation Nightfall entièrement configurée en quelques minutes.
+
+## Prérequis
+
+Avant de commencer, assurez‑vous d'avoir :
+
+- Les **permissions Administrator** dans le serveur que vous souhaitez protéger
+- Un serveur Discord où Nightfall sera installé
+- Une familiarité de base avec le système de rôles et de salons de Discord (recommandé)
+
+## Pour commencer
+
+<Steps>
+  <Step title="Inviter Nightfall Security">
+    Ajoutez Nightfall à votre serveur en utilisant le lien d'invitation officiel :
+
+    **[Inviter Nightfall Security](https://discord.com/oauth2/authorize?client_id=1528576288938266694)**
+
+    Nightfall requiert des permissions essentielles telles que la gestion des rôles, des salons, des bannissements et de l'historique des messages pour fournir une protection complète. Accordez toutes les permissions demandées pour une couverture complète.
+
+    <Tip>
+      Le rôle de Nightfall doit être positionné **au‑dessus** de tous les rôles qu'il doit gérer (par exemple votre rôle de membre vérifié). Vous pouvez ajuster l'ordre des rôles dans **Paramètres du Serveur → Rôles**.
+    </Tip>
+  </Step>
+
+  <Step title="Exécuter l'assistant de configuration">
+    Une fois Nightfall dans votre serveur, démarrez le processus de configuration guidée :
+
+    ```
+    /setup
+    ```
+
+    L'assistant vous guidera à travers :
+
+    - **Alert Channel** — où les alertes de sécurité sont publiées
+    - **Protection Level** — choisissez des seuils Strict, Balanced ou Relaxed
+    - **Anti‑Nuke** — basculez la protection contre les actions destructrices des administrateurs
+    - **Vérification** — basculez la porte d'entrée des membres
+
+    Chaque étape inclut des valeurs par défaut recommandées pour garantir une protection solide dès le départ. Vous pouvez revisiter et ajuster tout paramètre par la suite.
+  </Step>
+
+  <Step title="Vérifier l'installation">
+    Après la configuration, confirmez que Nightfall est actif et protège votre serveur :
+
+    ```
+    /security overview
+    ```
+
+    Cette commande affiche :
+    - Les systèmes de protection actifs et leurs seuils
+    - Les alertes de sécurité récentes
+    - Les améliorations de configuration recommandées
+  </Step>
+
+  <Step title="Configurer la journalisation (facultatif)">
+    Configurez des salons de journal d'audit afin d'avoir un enregistrement complet de l'activité du serveur :
+
+    ```
+    /logging set category:members channel:#member-logs
+    /logging set category:moderation channel:#mod-audit
+    /logging set category:security channel:#security-log
+    ```
+
+    Consultez la [référence des commandes de journalisation](/commands/logging) pour toutes les catégories disponibles.
+  </Step>
+
+  <Step title="Activer la vérification (facultatif)">
+    Ajoutez une porte d'entrée des membres pour bloquer les raids de bots avant qu'ils ne commencent :
+
+    1. Créez un salon `#verify-here` que `@everyone` peut voir mais dans lequel il ne peut pas envoyer de messages, et qui cache tous les autres salons
+    2. Créez un rôle `@Verified` qui accorde l'accès complet au serveur
+    3. Exécutez `/verification panel` pour configurer le rôle et activer le captcha
+    4. Exécutez `/verification post channel:#verify-here` pour publier le bouton Verify persistant
+
+    Consultez [Vérification](/verification) pour tous les détails.
+  </Step>
+</Steps>
+
+---
+
+## Qu'est‑ce qui est protégé après la configuration ?
+
+Une fois l'assistant terminé, Nightfall surveille activement votre serveur pour :
+
+| Menace | Protection |
+|--------|-----------|
+| Suppressions massives de salons / rôles | Anti‑Nuke |
+| Bannissements en masse par des administrateurs compromis | Anti‑Nuke |
+| Pics d'arrivées et flots de bots | Anti‑Raid |
+| Groupes de nouveaux comptes / suspects | Anti‑Raid |
+| Liens de spam et publicités d'invitations | AutoMod |
+| Mentions de masse | AutoMod + Sécurité |
+
+---
+
+## Étapes suivantes
+
+<CardGroup cols={2}>
+  <Card title="Systèmes de sécurité" icon="shield" href="/security-systems">
+    Plongée en profondeur dans le fonctionnement de chaque couche de protection.
+  </Card>
+  <Card title="Référence des commandes" icon="terminal" href="/commands/security">
+    Explorez chaque option de configuration disponible.
+  </Card>
+  <Card title="Premium" icon="star" href="/premium">
+    Débloquez la détection améliorée et la personnalisation.
+  </Card>
+  <Card title="Dépannage" icon="circle-question" href="/troubleshooting">
+    Résolvez les problèmes de configuration courants.
+  </Card>
+</CardGroup>
+
+<Tip>
+  Besoin d'aide ou d'une assistance personnalisée à la configuration ? Rejoignez le serveur de support officiel de Nightfall Security : **https://discord.gg/CXzX38Z7J9**
+</Tip>

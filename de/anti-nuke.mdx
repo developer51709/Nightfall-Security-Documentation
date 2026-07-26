@@ -1,0 +1,119 @@
+---
+title: "Anti‑Nuke"
+description: "Koordinierte Server-Zerstörungsangriffe erkennen und darauf reagieren."
+---
+
+Das Anti‑Nuke-System von Nightfall erkennt **koordinierte Server-Zerstörungsangriffe** — Szenarien, in denen ein kompromittierter oder bösartiger Administrator schnell Kanäle oder Rollen löscht oder Massen-Banns durchführt.
+
+---
+
+## Was ist ein Nuke-Angriff?
+
+Ein „Nuke" in der Discord-Terminologie ist, wenn ein böser Akteur mit erhöhten Berechtigungen — oft ein kompromittiertes Admin-Konto oder ein bösartiger Bot — versucht, einen Server zu zerstören, indem er:
+
+- Alle Kanäle schnell löscht
+- Alle Rollen schnell löscht
+- Die meisten oder alle Mitglieder massenhaft bannt
+- Eine Kombination der oben genannten Aktionen ausführt
+
+Diese Angriffe können Monate oder Jahre an Community-Struktur in Sekunden zerstören. Nightfall erkennt das Muster, bevor der Schaden vollständig ist.
+
+---
+
+## So funktioniert die Erkennung
+
+Nightfall verfolgt die Rate zerstörerischer Ereignisse in Echtzeit. Separate Zähler überwachen:
+
+- Kanallöschungen pro Minute
+- Rollenlöschungen pro Minute
+- Massen-Banns pro Minute
+
+Wenn ein Zähler den für den Server konfigurierten Schwellenwert überschreitet, wird sofort ein Alarm ausgelöst.
+
+### Standard-Schwellenwerte (pro Server konfigurierbar)
+
+| Ereignis | Standard-Schwellenwert |
+|-------|-----------------|
+| Kanallöschungen | 3 pro Minute |
+| Rollenlöschungen | 3 pro Minute |
+| Massen-Banns | 5 pro Minute |
+
+Passen Sie die Schwellenwerte mit `/security config` an.
+
+---
+
+## Akteur-Erkennung
+
+Wenn ein Schwellenwert überschritten wird, liest Nightfall das Discord-Audit-Log, um den verantwortlichen Akteur zu identifizieren, und nimmt ihn in die Alarmkarte auf. Wenn das Audit-Log nicht verfügbar ist, wird der Alarm dennoch ausgelöst, jedoch ohne Zuordnung eines Akteurs.
+
+**Erforderliche Berechtigung:** `View Audit Log`
+
+---
+
+## Alarmkarten
+
+```
+🛡️  Security Alert — ANTI_NUKE
+────────────────────────────────────────
+Channel deletion surge detected.
+4 channels deleted in the last 60 seconds.
+Threshold: 3 per minute.
+
+👥  Actor:    @suspiciousmod (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Automatisierte Aktionen
+
+Das Sicherheitsmodell von Nightfall ist **strikt defensiv** — es unternimmt niemals eine Aktion ohne explizite Konfiguration.
+
+| Einstellung `nuke_action` | Was passiert |
+|----------------------|-------------|
+| `alert_only` *(Standard)* | Alarm im Alarmkanal veröffentlicht |
+| `kick` | Alarm veröffentlicht + Akteur wird vom Server gekickt |
+| `ban` | Alarm veröffentlicht + Akteur wird dauerhaft gebannt |
+
+Konfigurieren Sie über:
+```
+/security config nuke_action:kick
+```
+
+---
+
+## Aktivieren und Deaktivieren
+
+Anti‑Nuke ist standardmäßig aktiviert. Umschalten mit:
+
+```
+/security toggle enabled:False
+```
+
+Oder über den `/setup`-Assistenten (Schritt „Feature Toggles").
+
+---
+
+## Whitelist
+
+Vertrauenswürdige Administratoren oder Bots können auf die Whitelist gesetzt werden, um die Nuke-Erkennung zu umgehen. Ihre Aktionen erhöhen keine Ratenzähler.
+
+```
+/whitelist
+```
+
+Verwenden Sie die Buttons **Add User** oder **Add Role** im interaktiven Panel. Vollständige Berechtigungsdetails finden Sie in der [Whitelist-Referenz](/commands/whitelist).
+
+---
+
+## Einschränkungen
+
+- **Falsch positive Ergebnisse** — Admins, die legitime Massenumstrukturierungen von Kanälen durchführen, können Alarme auslösen. Setzen Sie vertrauenswürdige Admins auf die Whitelist oder erhöhen Sie vorübergehend die Schwellenwerte während geplanter Wartungsarbeiten.
+- **Audit-Log-Verzögerung** — Das Audit-Log von Discord kann um 1–3 Sekunden verzögert sein. Die Akteurerkennung kann bei sehr schnellen Ereignissen fehlschlagen, obwohl der Alarm dennoch ausgelöst wird.
+- **Wiederherstellung** — Nightfall alarmiert bei Zerstörung, kann aber gelöschte Kanäle oder Rollen nicht wiederherstellen. Verwenden Sie die nativen Backup-Tools von Discord für die Wiederherstellungsplanung.
+
+---
+
+*Verwandt: [Anti‑Raid](/anti-raid) · [Sicherheitsbefehle](/commands/security) · [Whitelist](/commands/whitelist)*

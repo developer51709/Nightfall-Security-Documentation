@@ -1,0 +1,145 @@
+---
+title: "Premium"
+description: "Schalten Sie mit Nightfall Premium erweiterten Schutz, Automatisierung und priorisierte Verarbeitung frei."
+---
+
+Nightfall Premium erweitert Ihren Server mit erweiterter Erkennung, verbesserter Automatisierung, priorisierter Verarbeitung und vollständiger Anpassung des Bot-Profils. Der Grundschutz bleibt für alle kostenlos — Premium ist für Server, die mehr wollen.
+
+---
+
+## Kostenlos vs. Premium
+
+| Funktion | Kostenlos | Premium |
+|---------|:----:|:-------:|
+| Anti‑Nuke-Erkennung | ✅ | ✅ |
+| Anti‑Raid-Erkennung | ✅ | ✅ |
+| Schutz vor Massenerwähnungen | ✅ | ✅ |
+| AutoMod-Filter | ✅ | ✅ |
+| Grundlegende Moderationsbefehle | ✅ | ✅ |
+| Mitgliederverifizierung | ✅ | ✅ |
+| Audit-Protokollierung | ✅ | ✅ |
+| Alarmkanal für Sicherheit | ✅ | ✅ |
+| Log-Aufbewahrung | 30 Tage | 90 Tage |
+| Bot-Antwortpriorität | Standard-Warteschlange | Priority-Warteschlange |
+| Benutzerdefinierte Sicherheitsalarm-Nachrichten | ❌ | ✅ |
+| Erweiterte AutoMod-Statistiken | ❌ | ✅ |
+| Globale Bedrohungsdaten | ❌ | ✅ |
+| Premium-Abzeichen im Status | ❌ | ✅ |
+| Früher Zugriff auf neue Funktionen | ❌ | ✅ |
+| Vollständige Anpassung des Bot-Profils | ❌ | ✅ |
+
+---
+
+## Preise
+
+| Tarif | Preis | Dauer |
+|------|-------|----------|
+| Monatlich | **$9,99** | 30 Tage |
+| Über Affiliate-Testphase | Kostenlos | 7 Tage |
+| Angebot nach Affiliate-Testphase | ~$7,99 (20 % Rabatt) | 30 Tage |
+
+Abonnements werden **nicht** automatisch verlängert. Sie erhalten DM-Erinnerungen 7 Tage, 3 Tage und 1 Tag vor Ablauf.
+
+---
+
+## Premium kaufen
+
+Nightfall verwendet **OxaPay** — ein krypto-natives Zahlungsgateway — für Premium-Käufe.
+
+<Steps>
+  <Step title="Checkout starten">
+    Führen Sie `/premium buy` in Ihrem Discord-Server aus. Nightfall erstellt eine Zahlungsrechnung und sendet Ihnen eine Checkout-Karte per DM.
+  </Step>
+
+  <Step title="Zahlung abschließen">
+    Klicken Sie in der DM-Karte auf **Pay Now**, um die OxaPay-Zahlungsseite zu öffnen. Schließen Sie dort Ihre Krypto-Zahlung ab.
+  </Step>
+
+  <Step title="Bestätigen">
+    Kehren Sie zu Discord zurück und klicken Sie in der Checkout-Karte auf **I've Paid — Confirm**. Nightfall fragt das Zahlungsgateway ab und aktiviert Ihr Abonnement sofort, wenn die Zahlung bestätigt ist.
+
+    Wenn die Zahlung in der Blockchain noch verarbeitet wird, fordert der Bot Sie auf, es in wenigen Minuten erneut zu versuchen.
+  </Step>
+</Steps>
+
+<Note>
+  Krypto-Zahlungen sind unwiderruflich. Rückerstattungen sind nur nach alleinigem Ermessen der Bot-Betreiber möglich. Vollständige Details finden Sie in den [Nutzungsbedingungen](/legal/terms-of-service).
+</Note>
+
+### Rechnungsstatus
+
+| Status | Bedeutung |
+|--------|---------|
+| **Waiting** | Rechnung erstellt; noch keine Zahlung empfangen |
+| **Confirming** | Zahlung empfangen; wartet auf Blockchain-Bestätigungen |
+| **Paid** | Bestätigt — Premium aktiviert |
+| **Expired** | 24 Stunden verstrichen; keine Zahlung empfangen |
+| **Failed** | Zahlung fehlgeschlagen oder unzureichend |
+
+---
+
+## Code einlösen
+
+Wenn Sie einen Premium-Einlösecode haben (ausgestellt von einem Bot-Administrator), lösen Sie ihn ein mit:
+
+```
+/premium redeem code:YOUR-CODE-HERE
+```
+
+Wenn Ihr Server bereits ein aktives Abonnement hat, wird die Dauer **verlängert** — nicht ersetzt.
+
+---
+
+## Premium-Befehle
+
+| Befehl | Beschreibung |
+|---------|-------------|
+| `/premium buy` | Checkout-Ablauf starten und eine DM mit der Zahlungskarte erhalten |
+| `/premium status` | Aktuellen Abonnement-Status und Ablaufdatum Ihres Servers anzeigen |
+| `/premium redeem` | Einen Premium-Code einlösen |
+| `/premium cancel` | Ihr aktives Abonnement kündigen und entfernen |
+| `/premium customize` | Das Bot-Profil-Anpassungspanel öffnen (siehe unten) |
+
+---
+
+## Bot-Profil-Anpassung
+
+Premium-Server können anpassen, wie Nightfall in ihrem Server erscheint:
+
+| Funktion | Beschreibung |
+|---------|-------------|
+| Server-Avatar | Benutzerdefinierter Bot-Avatar, nur in diesem Server angezeigt |
+| Server-Banner | Benutzerdefiniertes Banner im Serverprofil des Bots |
+| Server-Bio | Benutzerdefinierter „Über mich"-Text |
+| Namensplaketten-Stil | Schriftauswahl für den Anzeigenamen des Bots |
+| Namensplaketten-Effekt | Animierter Effekt auf dem Anzeigenamen des Bots |
+| Alarmfarbe | Benutzerdefinierte Akzentfarbe auf Sicherheitsalarm-Karten |
+| Alarmnachricht | Benutzerdefinierter Text, der allen Sicherheitsalarm-Karten angehängt wird |
+
+Diese Anpassungen gelten nur innerhalb Ihres Servers — sie beeinflussen nicht, wie Nightfall in anderen Servern erscheint.
+
+---
+
+## Ablauferinnerungen
+
+Nightfall sendet dem Serverbesitzer DM-Erinnerungen, bevor ein Abonnement abläuft:
+
+- 7 Tage vor Ablauf
+- 3 Tage vor Ablauf
+- 1 Tag vor Ablauf
+
+Jede Erinnerung wird genau einmal gesendet. Verwenden Sie `/premium status` jederzeit, um Ihr aktuelles Ablaufdatum zu überprüfen.
+
+---
+
+## Affiliate-Testphase
+
+Zugelassene Affiliates können einen Code teilen, der Ihrem Server eine **7-tägige kostenlose Testphase** von Premium gewährt. Jeder Server kann nur eine Affiliate-Testphase einlösen — diese Grenze wird dauerhaft durchgesetzt und kann nicht durch Entfernen und erneutes Hinzufügen des Bots umgangen werden.
+
+Nachdem die Testphase abgelaufen ist, kann der Serverbesitzer per DM ein einmaliges **20 %-Rabattangebot** erhalten.
+
+Weitere Informationen finden Sie im [Affiliate-Programm](/affiliate).
+
+---
+
+*Verwandt: [Affiliate-Programm](/affiliate) · [Premium-Befehle](/commands/utility)*

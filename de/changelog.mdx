@@ -1,0 +1,95 @@
+---
+title: "Änderungsprotokoll"
+description: "Wichtige Änderungen und neue Funktionen in Nightfall Security."
+---
+
+Alle wesentlichen Änderungen an Nightfall Security werden hier dokumentiert. Nightfall verwendet [Semantic Versioning](https://semver.org/).
+
+---
+
+## v2.1.0 — Aktuell
+
+### Neue Funktionen
+
+**Support Bot** (sekundärer Bot)
+
+- Ticket-System mit einem 3‑Schritte-Erstellungsablauf, 9 Kategorien und privaten Kanälen pro Nutzer
+- Personal-Verwaltungspanel: übernehmen, freigeben, übertragen, Status und schließen
+- Persistente FAQ- und Regelpanels
+
+**Neu gestaltetes `/whitelist`**
+
+- Ersetzt die vorherigen `/whitelist add`-Unterbefehle durch ein einziges interaktives Panel
+- Buttons Add User / Add Role / Remove öffnen private ephemere Auswahlmenüs
+- Striktes Bearbeitungsberechtigungsmodell: Serverbesitzer oder eine Administrator-Rolle, die über der Rolle des Bots positioniert ist — bei jeder Änderung erneut überprüft
+
+**Affiliate-Auszahlungen**
+
+- Affiliates können jetzt Auszahlungen direkt aus Discord heraus über den Bot-Befehl `/affiliate payout` anfordern
+- Auszahlungen können in verschiedenen Kryptowährungen angefordert werden und werden direkt über die OxaPay-Integration abgewickelt
+
+### Fehlerbehebungen
+
+- **Team-eigene Anwendungen** — Owner-Autorisierung ermittelt jetzt korrekt den maßgeblichen Owner bei team-eigenen Discord-Anwendungen und verhindert Aussperrungen
+- **Globale Unterdrückung von Erwähnungen** — alle Antwort- und Komponenten-Helper unterdrücken jetzt konsistent `@everyone`-, Rollen- und Nutzer-Pings
+- **Support-Tickets** — Fehler im Bestätigungsschritt beim Schließen behoben; Problembeschreibungen von Mitgliedern werden jetzt im Ticket-Kanal veröffentlicht; Ticket-Zähler ist reconnect-sicher; doppelte Tickets werden vor der Kanalerstellung erneut geprüft
+
+### Verbesserungen
+
+- Preis für Premium-Abonnement gesenkt von `$9.99 USD` → `$6.00 USD`
+- Mindestbetrag für Affiliate-Auszahlung gesenkt von `$10.00 USD` → `$1.00 USD`
+- Anforderung für Affiliate-Auszahlung gesenkt von Diamant-Stufe → Gold-Stufe
+
+---
+
+## v2.0.0
+
+### Neue Funktionen
+
+**Interaktiver Einrichtungsassistent** (`/setup`)
+- Mehrschrittiges geführtes Onboarding für neue Server
+- Umfasst Auswahl des Alarmkanals, Voreinstellungen für Schutzstufen und Feature-Toggles
+- Endet mit einer Premium-Upgrade-Aufforderung
+
+**Affiliate-Testphasensystem**
+- Affiliate-Codes gewähren jetzt eine **7‑tägige kostenlose Testphase** statt sofortigem vollen Premium
+- Eine Testphase pro Server, dauerhaft — auf Datenbankebene permanent durchgesetzt
+- DM zum Rabatt nach der Testphase wird automatisch vom Scheduler gesendet (20 % Rabatt auf den ersten Monat)
+
+**`/affiliate`-Befehlsgruppe**
+- `/affiliate code` — Ihren Code, Anweisungen zum Teilen und Ihre aktuelle Stufe anzeigen
+- `/affiliate stats` — vollständiges Analyse-Dashboard (Testphasen, Konversionen, Rate, Stufenfortschritt)
+- `/affiliate perks` — Stufenleiter mit Anzeige gesperrter/freigeschalteter Vorteile
+- `/affiliate leaderboard` — Top-Affiliates nach Konversionen sortiert (nur für Bot-Besitzer)
+- Fünf Affiliate-Stufen: Partner → Bronze → Silber → Gold → Diamant
+
+**Konversionsverfolgung**
+- Server, die nach einer Affiliate-Testphase bezahltes Premium kaufen, werden automatisch als konvertiert markiert
+
+**Multi-Owner-Unterstützung**
+- `/owner add` / `/owner remove` — Bot-Owner-Status für zusätzliche Nutzer gewähren oder widerrufen
+
+**Premium-Code-Typen**
+- `onetime` — ein einzelner Server, danach deaktiviert
+- `multiuse` — von bis zu N Servern einlösbar
+- `affiliate` — unbegrenzte Nutzung, verfolgt den Empfehlenden, gewährt 7‑tägige Testphase
+
+### Sicherheitsfunktionen
+
+- **Anti‑Nuke** — Sliding-Window-Ratenerkennung für Kanal-/Rollenlöschungen und Massen-Banns
+- **Anti‑Raid** — Erkennung von Beitrittsspitzen und Fluten neuer Konten
+- **Mass Mention** — Erkennung von Erwähnungsfluten pro Nachricht
+- **Whitelist** — Ausnahmen für Nutzer/Rollen pro Server
+- **AutoMod** — Filter für Links, Einladungen, Großbuchstaben, Wörter, Emojis, Duplikate und Erwähnungen
+- **Moderation** — Bann, Kick, Verwarnung, Timeout mit formatierten Aktionskarten
+- **Verifizierung** — Bildcaptcha mit persistentem Panel-Button
+- **Logging** — vollständiges Audit-Log über Mitglieder, Nachrichten, Kanäle, Rollen, Sprache und Serverereignisse
+
+---
+
+## v1.0.0
+
+- Erstveröffentlichung
+- Grundlegende Anti‑Nuke- und Anti‑Raid-Erkennung
+- Unterstützung für Präfix-Befehle (`!ping`, `!status`, `!info`, `!help`)
+- Einzelprozess-Architektur

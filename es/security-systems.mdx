@@ -1,0 +1,100 @@
+---
+title: "Sistemas de seguridad"
+description: "Aprende cómo las capas de protección de Nightfall mantienen tu servidor a salvo de raids, nukes, spam y accesos no autorizados."
+---
+
+Nightfall proporciona múltiples capas de protección independientes, cada una dirigida a una clase distinta de amenaza. Trabajan juntas sin problemas — un solo evento puede disparar más de una capa simultáneamente.
+
+<CardGroup cols={2}>
+  <Card title="Anti‑Nuke" icon="shield-halved" href="/anti-nuke">
+    Detecta y responde a la destrucción coordinada del servidor — eliminaciones masivas de canales/roles, baneos masivos y escaladas de permisos.
+  </Card>
+
+  <Card title="Anti‑Raid" icon="users-slash" href="/anti-raid">
+    Detecta ataques coordinados de entrada masiva, avalanchas de bots y grupos sospechosos de cuentas antes de que causen daño.
+  </Card>
+
+  <Card title="AutoMod" icon="filter" href="/automod">
+    Filtra automáticamente contenido inseguro o perturbador — enlaces, invitaciones, mayúsculas, palabras personalizadas, spam de emojis y menciones masivas.
+  </Card>
+
+  <Card title="Verificación" icon="circle-check" href="/verification">
+    Bloquea la entrada al servidor detrás de un paso de verificación para bloquear bots y cuentas alternativas antes de que puedan interactuar.
+  </Card>
+</CardGroup>
+
+---
+
+## Cómo se detectan las amenazas
+
+Nightfall utiliza **contadores de tasa con ventana deslizante** para rastrear la frecuencia de eventos en tiempo real. Un contador por gremio rastrea cuántos eventos de cada tipo (eliminaciones de canales, eliminaciones de roles, entradas, baneos, menciones) ocurrieron en los últimos 60 segundos. Cuando un contador supera el umbral configurado, se dispara inmediatamente una alerta.
+
+Este enfoque es:
+- **Rápido** — sin sobrecarga de base de datos por evento; los contadores viven en memoria
+- **Preciso** — una verdadera ventana rodante de 60 segundos en lugar de un cubo de tiempo fijo
+- **Por gremio** — cada servidor tiene sus propios contadores y umbrales independientes
+
+---
+
+## Tarjetas de alerta
+
+Cuando se supera un umbral, Nightfall publica una alerta formateada en tu canal de alertas configurado:
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
+
+👥  Actor:    @username (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+Niveles de severidad:
+
+| Nivel | Significado |
+|-------|---------|
+| **Low** | Anomalía menor — informativo |
+| **Medium** | Actividad sospechosa |
+| **High** | Amenaza activa detectada |
+| **Critical** | Ataque coordinado severo |
+
+---
+
+## Modelo solo defensivo
+
+Nightfall está diseñado exclusivamente para **proteger**, nunca para dañar:
+
+- ✅ Alerta a los moderadores mediante el canal de alertas configurado
+- ✅ Toma acciones automatizadas configurables (kick, ban) sobre amenazas detectadas
+- ✅ Activa bloqueos suaves para pausar el seguimiento de acciones destructivas
+- ❌ Nunca inicia acciones ofensivas contra otros servidores o usuarios
+- ❌ Nunca toma acciones más allá de lo que el administrador del servidor haya configurado explícitamente
+
+---
+
+## Preajustes de umbrales
+
+El asistente `/setup` ofrece tres preajustes de umbral como punto de partida:
+
+| Preajuste | Entradas/min | Eliminaciones de canales/min | Eliminaciones de roles/min | Baneos/min | Menciones |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Strict** | 5 | 2 | 2 | 3 | 5 |
+| **Balanced** | 10 | 3 | 3 | 5 | 8 |
+| **Relaxed** | 20 | 6 | 6 | 10 | 15 |
+
+Todos los umbrales pueden afinarse en cualquier momento con `/security config`. Consulta la [Referencia de comandos de seguridad](/commands/security) para ver todas las opciones disponibles.
+
+---
+
+## Lista blanca
+
+Los administradores, bots o roles de confianza pueden ser eximidos de toda la detección. Las acciones de las entidades en la lista blanca no incrementan ningún contador de tasa.
+
+Gestiona las exenciones con el comando `/whitelist`. Consulta la [referencia de Whitelist](/commands/whitelist) para los requisitos de permisos y uso.
+
+<Warning>
+  La lista blanca es poderosa — un rol en la lista blanca exime a todos los miembros que lo poseen. Evita añadir roles amplios o desactivarás efectivamente la protección para esos miembros.
+</Warning>

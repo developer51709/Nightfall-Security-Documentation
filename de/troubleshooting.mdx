@@ -1,0 +1,174 @@
+---
+title: "Fehlerbehebung"
+description: "Häufige Probleme und wie Sie sie beheben."
+---
+
+Wenn etwas nicht wie erwartet funktioniert, deckt dieser Leitfaden die häufigsten Probleme und deren Lösungen ab. Für alles, was hier nicht aufgeführt ist, treten Sie dem [offiziellen Support-Server](https://discord.gg/CXzX38Z7J9) bei.
+
+---
+
+## Bot reagiert nicht auf Befehle
+
+<AccordionGroup>
+  <Accordion title="Slash-Befehle werden nicht angezeigt">
+    Discord kann bis zu **1 Stunde** benötigen, um neu registrierte Slash-Befehle an alle Mitglieder zu verteilen. Versuchen Sie:
+
+    1. Ihren Discord-Client vollständig schließen und wieder öffnen
+    2. Mit `/ping` testen — wenn dies funktioniert, sollten andere Befehle bald erscheinen
+    3. Prüfen, ob Nightfall den `applications.commands`-Scope hat (falls unsicher, mit dem offiziellen Link erneut einladen)
+  </Accordion>
+
+  <Accordion title="Befehle erscheinen, tun aber nichts">
+    Überprüfen Sie die Berechtigungen von Nightfall in Ihrem Server:
+
+    - Die Berechtigung **Administrator** wird für volle Funktionalität empfohlen
+    - Wenn spezifische Berechtigungen verwendet werden, stellen Sie sicher, dass `Send Messages`, `Embed Links` und `Read Message History` in den Kanälen gewährt sind, in denen die Befehle verwendet werden
+    - Überprüfen Sie, dass die Rolle von Nightfall nicht unter einer Rolle steht, die Bot-Aktionen einschränkt
+  </Accordion>
+
+  <Accordion title="Fehler „Missing Permissions“">
+    Nightfall benötigt spezifische Berechtigungen für spezifische Funktionen:
+
+    | Funktion | Erforderliche Berechtigung |
+    |---------|-------------------|
+    | Sicherheitsalarme | `Send Messages` + `Embed Links` im Alarmkanal |
+    | Anti‑Nuke-Akteurerkennung | `View Audit Log` |
+    | Kick/Bann-Aktionen | `Kick Members` / `Ban Members` |
+    | Verifizierungsrollenzuweisung | `Manage Roles` + Bot-Rolle über der Verifizierungsrolle |
+    | Timeout | `Moderate Members` |
+    | Moderations-Log | `Send Messages` + `Embed Links` im Log-Kanal |
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Sicherheitsalarme werden nicht ausgelöst
+
+<AccordionGroup>
+  <Accordion title="Anti‑Raid alarmiert nicht bei Beitritten">
+    1. Führen Sie `/security overview` aus und überprüfen Sie, dass Anti‑Nuke aktiviert ist
+    2. Prüfen Sie, dass ein Alarmkanal gesetzt ist (`/security config alert_channel:#your-channel`)
+    3. Prüfen Sie den `max_joins`-Schwellenwert — wenn er hoch ist, löst eine kleine Beitrittsrate ihn nicht aus
+    4. Stellen Sie sicher, dass Nightfall die Berechtigung hat, im Alarmkanal zu posten
+  </Accordion>
+
+  <Accordion title="Anti‑Nuke alarmiert nicht bei Löschungen">
+    1. Bestätigen Sie über `/security overview`, dass Anti‑Nuke aktiviert ist
+    2. Prüfen Sie die Schwellenwerte `max_channel_deletes` und `max_role_deletes`
+    3. Überprüfen Sie, dass die Berechtigung `View Audit Log` gewährt ist (für die Akteurerkennung erforderlich, aber nicht für den Alarm selbst)
+    4. Vertrauenswürdige Admins, die Massenoperationen durchführen, können auf der Whitelist stehen — prüfen Sie `/whitelist`
+  </Accordion>
+
+  <Accordion title="Alarm wird ausgelöst, aber keine Aktion durchgeführt">
+    Standardmäßig sind alle Aktionen auf `alert_only` gesetzt. Um automatisierte Kick- oder Bann-Reaktionen zu aktivieren, konfigurieren Sie:
+
+    ```
+    /security config raid_action:kick
+    /security config nuke_action:kick
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## AutoMod-Probleme
+
+<AccordionGroup>
+  <Accordion title="AutoMod filtert keine Nachrichten">
+    1. Führen Sie `/automod status` aus, um zu bestätigen, dass die relevante Regel aktiviert ist
+    2. Prüfen Sie die Aktion der Regel — `delete` entfernt die Nachricht stillschweigend; `warn` protokolliert zusätzlich eine Verwarnung
+    3. Bestätigen Sie, dass der Nutzer nicht auf der Whitelist steht (`/whitelist`)
+    4. Stellen Sie sicher, dass Nightfall die Berechtigung `Manage Messages` im Kanal hat
+  </Accordion>
+
+  <Accordion title="Personal-Nachrichten werden gefiltert">
+    Fügen Sie Ihre Personal-Rollen oder bestimmte Nutzer zur Whitelist hinzu — gewhitelistete Nutzer umgehen alle AutoMod-Regeln:
+
+    ```
+    /whitelist
+    ```
+
+    Verwenden Sie dann **Add Role**, um Ihre Personal-Rolle auszunehmen.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Verifizierungsprobleme
+
+<AccordionGroup>
+  <Accordion title="Mitglieder erhalten keine Captcha-DM">
+    Das Mitglied hat wahrscheinlich DMs deaktiviert. Bitten Sie es:
+
+    1. **Benutzereinstellungen → Datenschutz und Sicherheit** öffnen
+    2. **Direktnachrichten von Servermitgliedern erlauben** aktivieren
+    3. Erneut auf **Verify** klicken
+
+    Nightfall kann keine DMs an Nutzer senden, die diese deaktiviert haben — dies ist eine Discord-Datenschutzeinstellung außerhalb der Kontrolle des Bots.
+  </Accordion>
+
+  <Accordion title="Verify-Button tut nichts">
+    Stellen Sie sicher, dass Nightfall die Berechtigung `Manage Roles` in Ihrem Server hat.
+  </Accordion>
+
+  <Accordion title="Mitglieder können nach der Verifizierung immer noch alle Kanäle sehen">
+    Überprüfen Sie Ihre Kanalberechtigungen:
+
+    - `@everyone` muss **View Channel** für Kanäle außerhalb des Verifizierungsbereichs verweigert (oder nicht gewährt) haben
+    - Die `@Verified`-Rolle muss **View Channel** für diese Kanäle erlaubt haben
+  </Accordion>
+
+  <Accordion title="Bot kann die Verifizierungsrolle nicht zuweisen">
+    Verschieben Sie die Bot-Rolle von Nightfall **über** die Verifizierungsrolle in **Servereinstellungen → Rollen**. Discord erlaubt Bots nur, Rollen zuzuweisen, die niedriger sind als ihre eigene höchste Rolle.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Premium-Probleme
+
+<AccordionGroup>
+  <Accordion title="Zahlung bestätigt, aber Premium nicht aktiviert">
+    1. Stellen Sie sicher, dass Sie in der Checkout-DM-Karte auf **I've Paid — Confirm** geklickt haben
+    2. Wenn die Zahlung in der Blockchain noch bestätigt wird, warten Sie einige Minuten und klicken Sie erneut auf den Button
+    3. Führen Sie `/premium status` aus, um Ihren aktuellen Abonnement-Status zu prüfen
+    4. Wenn die Rechnung als **Expired** angezeigt wird, erstellen Sie mit `/premium buy` eine neue
+  </Accordion>
+
+  <Accordion title="Premium-Funktionen funktionieren nach der Aktivierung nicht">
+    Führen Sie `/security overview` aus, um zu bestätigen, dass Premium für Ihren Server aktiv ist. Wenn es als aktiv angezeigt wird, aber Funktionen nicht funktionieren, laden Sie den Bot neu ein (entfernen und erneut einladen) oder kontaktieren Sie den Support.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Logging-Probleme
+
+<AccordionGroup>
+  <Accordion title="Logs werden nicht im zugewiesenen Kanal veröffentlicht">
+    Nightfall benötigt `View Channel`, `Send Messages` und `Embed Links` im Log-Kanal. Prüfen Sie:
+
+    1. Die Rolle von Nightfall hat diese Berechtigungen im Kanal (kanalspezifische Überschreibungen prüfen)
+    2. Der Kanal existiert und wurde nicht gelöscht
+    3. Führen Sie `/logging status` aus, um zu bestätigen, dass die Zuweisung noch gesetzt ist
+  </Accordion>
+
+  <Accordion title="Log-Zuweisungen prüfen">
+    Führen Sie `/logging status` aus, um alle aktuellen Log-Kanalzuweisungen für Ihren Server zu sehen.
+
+    Verwenden Sie `/logging test category:members` (oder eine andere Kategorie), um eine Beispielkarte zu veröffentlichen und zu überprüfen, dass der Bot dort posten kann.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Immer noch festgefahren?
+
+Treten Sie dem [offiziellen Support-Server](https://discord.gg/CXzX38Z7J9) bei und öffnen Sie ein Support-Ticket. Fügen Sie hinzu:
+
+- Eine Beschreibung des Problems
+- Die Ausgabe von `/security overview` und `/status`
+- Alle Fehlermeldungen, die Sie gesehen haben
+- Was Sie bereits versucht haben
+
+Unser Team hilft Ihnen, alles korrekt zum Laufen zu bringen.

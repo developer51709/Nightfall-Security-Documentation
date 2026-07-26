@@ -1,0 +1,140 @@
+---
+title: "Anti‑Raid"
+description: "Détectez et répondez aux attaques coordonnées d'arrivées massives et aux flots de bots."
+---
+
+Le système Anti‑Raid de Nightfall détecte les **attaques coordonnées d'arrivées massives** — lorsque de nombreux comptes rejoignent un serveur dans une courte fenêtre avec l'intention de spammer, d'abuser ou de submerger la communauté.
+
+---
+
+## Qu'est‑ce qu'un raid ?
+
+Un raid Discord est une attaque coordonnée où de nombreux comptes (souvent des bots ou des comptes secondaires) rejoignent un serveur simultanément. Les objectifs incluent généralement :
+
+- Spammer du contenu offensant dans tous les salons
+- Ping tout le monde / mentions de masse
+- Submerger la modération par le nombre
+- Déstabiliser une communauté par le harcèlement
+
+---
+
+## Couches de détection
+
+Nightfall utilise deux signaux de détection complémentaires :
+
+### 1. Taux d'arrivées (signal principal)
+
+Un compteur en temps réel suit combien de membres ont rejoint dans les 60 dernières secondes. Si ce nombre dépasse `max_joins_per_minute`, une alerte de raid se déclenche immédiatement.
+
+**Seuil par défaut :** 10 arrivées par minute
+**Configurer :** `/security config max_joins:8`
+
+### 2. Flot de nouveaux comptes (signal secondaire)
+
+Lors des pics d'arrivées, Nightfall vérifie également l'**âge des comptes**. Si une proportion importante des comptes qui arrivent est plus jeune que `min_account_age_days`, le niveau de confiance du raid s'intensifie.
+
+**Par défaut :** 7 jours (les comptes plus jeunes que 7 jours sont signalés)
+**Configurer :** `/security config min_account_age_days:14`
+
+---
+
+## Cartes d'alerte
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
+New accounts in wave: 8 / 14 (57%)
+
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Actions automatisées
+
+| Réglage `raid_action` | Effet |
+|----------------------|-------|
+| `alert_only` *(par défaut)* | Alerte publiée ; aucune autre action |
+| `kick` | Tous les membres ayant rejoint pendant la fenêtre de pic sont expulsés |
+| `ban` | Tous les membres ayant rejoint pendant la fenêtre de pic sont bannis |
+
+Configurez via :
+```
+/security config raid_action:kick
+```
+
+<Note>
+  Le kick/ban automatisé affecte les membres qui ont rejoint pendant la fenêtre de détection. Consultez le journal d'audit après toute action automatisée pour confirmer la portée.
+</Note>
+
+---
+
+## Filtrage par âge de compte
+
+Nightfall peut rejeter ou signaler les nouveaux membres en fonction de l'âge du compte, indépendamment d'un pic de raid complet :
+
+| Réglage | Valeurs | Description |
+|---------|---------|-------------|
+| `min_account_age_days` | 0–365 | Âge minimum pour les membres qui rejoignent (0 = désactivé) |
+| `account_age_action` | `kick`, `ban`, `alert_only` | Action à prendre lorsqu'un compte trop jeune rejoint |
+
+**Exemple :** Exiger que les comptes aient au moins 30 jours :
+```
+/security config min_account_age_days:30 account_age_action:kick
+```
+
+Lorsqu'activé, chaque membre qui rejoint est vérifié individuellement — pas seulement lors des pics.
+
+---
+
+## Configuration recommandée
+
+| Type de serveur | `max_joins` | `min_account_age_days` | `raid_action` |
+|-----------------|-------------|------------------------|---------------|
+| Serveur public / grand | 8–12 | 7–30 | `kick` |
+| Communauté moyenne | 10–15 | 7 | `alert_only` |
+| Serveur privé / petit | 5–8 | 14–30 | `kick` |
+| Risque élevé (raids passés) | 5 | 30 | `ban` |
+
+---
+
+## Intégration avec la vérification
+
+La défense anti‑raid la plus efficace combine la détection de taux de Nightfall avec la **vérification des membres** :
+
+1. Les nouveaux membres arrivent dans un salon de vérification verrouillé
+2. Ils doivent passer un défi captcha avant d'obtenir l'accès au serveur
+3. Les comptes bots et de nombreux raiders humains sont dissuadés à ce stade
+4. S'ils passent la vérification et qu'un pic est encore détecté, l'alerte de taux se déclenche comme couche secondaire
+
+Consultez [Vérification](/verification) pour les instructions de configuration.
+
+---
+
+## Liste blanche
+
+Les membres et rôles de la liste blanche contournent le suivi de pic d'arrivées. Utile pour :
+
+- Les bots de partenariat dédiés qui ajoutent de nombreux membres à la fois
+- Les événements de migration où un grand nombre de membres est attendu à rejoindre rapidement
+
+Gérez les exemptions avec `/whitelist`.
+
+---
+
+## Récupération post‑raid
+
+Nightfall détecte et alerte — il ne restaure pas les membres retirés ni n'annule le spam de messages. Après un raid :
+
+1. Utilisez les outils **Server Ban** intégrés de Discord pour supprimer les raiders restants
+2. Mettez temporairement en **pause les invitations** via les Paramètres du Serveur
+3. Activez une vérification plus stricte ou augmentez le seuil `min_account_age_days`
+4. Passez en revue les événements récents via `/security overview` pour la chronologie complète
+
+---
+
+*Voir aussi : [Anti‑Nuke](/anti-nuke) · [Vérification](/verification) · [Commandes de sécurité](/commands/security)*

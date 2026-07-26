@@ -1,0 +1,134 @@
+---
+title: "/mod"
+description: "Suite completa de moderación con registros de advertencias con traza de auditoría y logging automatizado."
+---
+
+El grupo de comandos `/mod` proporciona una suite completa de moderación con tarjetas de acción formateadas, un sistema de advertencias con traza de auditoría y logging automatizado de moderación.
+
+Todos los comandos de moderación requieren los permisos correspondientes de Discord. Las respuestas son efímeras por defecto.
+
+---
+
+## Comandos
+
+### `/mod ban`
+
+Banea permanentemente a un miembro del servidor.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `user` | User | ✅ | El miembro a banear |
+| `reason` | String | — | Razón del baneo (registrada en el registro de auditoría y en la BD de advertencias) |
+| `delete_days` | 0–7 | — | Días de historial de mensajes a eliminar |
+
+**Permiso requerido:** Ban Members
+
+---
+
+### `/mod kick`
+
+Elimina a un miembro del servidor. Puede volver si tiene una invitación.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | El miembro a expulsar |
+| `reason` | String | — | Razón de la expulsión |
+
+**Permiso requerido:** Kick Members
+
+---
+
+### `/mod warn`
+
+Emite una advertencia formal a un miembro. Las advertencias se almacenan permanentemente para la traza de auditoría de moderación.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | El miembro a advertir |
+| `reason` | String | ✅ | Razón de la advertencia |
+
+Las advertencias incluyen el ID del moderador, marca de tiempo y razón. Nunca se eliminan automáticamente.
+
+---
+
+### `/mod timeout`
+
+Restringe temporalmente a un miembro de enviar mensajes o unirse a canales de voz.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | El miembro a suspender temporalmente |
+| `duration` | String | ✅ | Duración (por ejemplo, `10m`, `1h`, `1d`) |
+| `reason` | String | — | Razón del timeout |
+
+**Permiso requerido:** Moderate Members
+**Timeout máximo:** 28 días (límite de Discord)
+
+---
+
+### `/mod history`
+
+Consulta el historial de moderación (advertencias) de un miembro.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | El miembro a consultar |
+
+Devuelve una tarjeta formateada con todas las advertencias del miembro en el servidor actual, ordenadas por más reciente primero.
+
+---
+
+### `/mod unban`
+
+Revoca un baneo y permite al usuario volver a unirse.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `user_id` | String | ✅ | ID de Discord del usuario baneado |
+| `reason` | String | — | Razón del desbaneo |
+
+**Permiso requerido:** Ban Members
+
+---
+
+## Acciones del menú contextual (clic derecho)
+
+Al hacer clic derecho sobre cualquier miembro en Discord aparecen acciones rápidas de moderación:
+
+| Acción | Descripción |
+|--------|-------------|
+| **User Info** | Antigüedad de la cuenta, roles, fecha de entrada y recuento de advertencias |
+| **Quick Kick** | Abre un modal para confirmar la expulsión con razón |
+| **Quick Ban** | Abre un modal para confirmar el baneo con razón |
+| **Quick Timeout** | Abre un modal para establecer duración y razón del timeout |
+| **Delete & Warn** | Elimina el mensaje objetivo y advierte al autor |
+
+Estas están disponibles en el menú de clic derecho sobre cualquier miembro del servidor, sujeto a que el moderador tenga los permisos necesarios.
+
+---
+
+## Tarjetas de acción
+
+Cada acción de moderación produce una tarjeta de respuesta estandarizada:
+
+```
+✅  Member Banned
+────────────────────────────────
+👥  Target:     @username (123456789)
+⚖️  Moderator:  @mod (987654321)
+✏️  Reason:     Repeated rule violations
+
+─  Nightfall Security  •  Moderation Log
+```
+
+---
+
+## Integración con logging
+
+Cuando el módulo `/logging` está configurado, todas las acciones de moderación también se publican automáticamente en el canal de registro de moderación designado — sin configuración adicional.
+
+Consulta [Comandos de logging](/commands/logging) para las instrucciones de configuración.
+
+---
+
+*Relacionado: [Comandos de logging](/commands/logging) · [Comandos de AutoMod](/commands/automod)*

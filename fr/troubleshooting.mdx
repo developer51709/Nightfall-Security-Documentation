@@ -1,0 +1,174 @@
+---
+title: "Dépannage"
+description: "Problèmes courants et comment les résoudre."
+---
+
+Si quelque chose ne fonctionne pas comme prévu, ce guide couvre les problèmes les plus courants et leurs solutions. Pour tout ce qui n'est pas listé ici, rejoignez le [serveur de support officiel](https://discord.gg/CXzX38Z7J9).
+
+---
+
+## Le bot ne répond pas aux commandes
+
+<AccordionGroup>
+  <Accordion title="Les commandes slash n'apparaissent pas">
+    Discord peut prendre jusqu'à **1 heure** pour propager les commandes slash nouvellement enregistrées à tous les membres. Essayez :
+
+    1. Fermez complètement et rouvrez votre client Discord
+    2. Testez avec `/ping` — si cela fonctionne, les autres commandes devraient apparaître bientôt
+    3. Vérifiez que Nightfall a la portée `applications.commands` (réinvitez avec le lien officiel si vous n'êtes pas sûr)
+  </Accordion>
+
+  <Accordion title="Les commandes apparaissent mais ne font rien">
+    Vérifiez les permissions de Nightfall dans votre serveur :
+
+    - La permission **Administrator** est recommandée pour une fonctionnalité complète
+    - Si vous utilisez des permissions spécifiques, assurez‑vous que `Send Messages`, `Embed Links` et `Read Message History` sont accordées dans les salons où les commandes sont utilisées
+    - Vérifiez que le rôle de Nightfall n'est pas en dessous d'un rôle qui restreint les actions du bot
+  </Accordion>
+
+  <Accordion title="Erreur « Missing Permissions »">
+    Nightfall a besoin de permissions spécifiques pour des fonctionnalités spécifiques :
+
+    | Fonctionnalité | Permission requise |
+    |----------------|-------------------|
+    | Alertes de sécurité | `Send Messages` + `Embed Links` dans le salon d'alerte |
+    | Détection d'acteur Anti‑Nuke | `View Audit Log` |
+    | Actions kick/ban | `Kick Members` / `Ban Members` |
+    | Attribution du rôle de vérification | `Manage Roles` + rôle du bot au‑dessus du rôle vérifié |
+    | Timeout | `Moderate Members` |
+    | Journal de modération | `Send Messages` + `Embed Links` dans le salon de journal |
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Les alertes de sécurité ne se déclenchent pas
+
+<AccordionGroup>
+  <Accordion title="Anti‑Raid ne s'alerte pas sur les arrivées">
+    1. Exécutez `/security overview` et vérifiez que l'anti‑nuke est activé
+    2. Vérifiez qu'un salon d'alerte est défini (`/security config alert_channel:#votre-salon`)
+    3. Vérifiez le seuil `max_joins` — s'il est élevé, un petit taux d'arrivées ne le déclenchera pas
+    4. Assurez‑vous que Nightfall a la permission de publier dans le salon d'alerte
+  </Accordion>
+
+  <Accordion title="Anti‑Nuke ne s'alerte pas sur les suppressions">
+    1. Confirmez que l'anti‑nuke est activé via `/security overview`
+    2. Vérifiez les seuils `max_channel_deletes` et `max_role_deletes`
+    3. Vérifiez que la permission `View Audit Log` est accordée (nécessaire pour la détection d'acteur, mais pas pour l'alerte elle‑même)
+    4. Les administrateurs de confiance effectuant des opérations en masse peuvent être sur la liste blanche — vérifiez `/whitelist`
+  </Accordion>
+
+  <Accordion title="L'alerte se déclenche mais aucune action n'est prise">
+    Par défaut, toutes les actions sont définies sur `alert_only`. Pour activer des réponses kick ou ban automatisées, configurez :
+
+    ```
+    /security config raid_action:kick
+    /security config nuke_action:kick
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Problèmes AutoMod
+
+<AccordionGroup>
+  <Accordion title="AutoMod ne filtre pas les messages">
+    1. Exécutez `/automod status` pour confirmer que la règle pertinente est activée
+    2. Vérifiez l'action de la règle — `delete` supprime le message silencieusement ; `warn` enregistre également un avertissement
+    3. Confirmez que l'utilisateur n'est pas sur la liste blanche (`/whitelist`)
+    4. Assurez‑vous que Nightfall a la permission `Manage Messages` dans le salon
+  </Accordion>
+
+  <Accordion title="Les messages du personnel sont filtrés">
+    Ajoutez vos rôles de personnel ou des utilisateurs spécifiques à la liste blanche — les utilisateurs en liste blanche contournent toutes les règles AutoMod :
+
+    ```
+    /whitelist
+    ```
+
+    Puis utilisez **Add Role** pour exempter votre rôle de personnel.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Problèmes de vérification
+
+<AccordionGroup>
+  <Accordion title="Les membres ne reçoivent aucun DM captcha">
+    Le membre a probablement les DM désactivés. Demandez‑lui de :
+
+    1. Ouvrir **Paramètres utilisateur → Confidentialité et sécurité**
+    2. Activer **Autoriser les messages directs des membres du serveur**
+    3. Cliquer à nouveau sur **Verify**
+
+    Nightfall ne peut pas envoyer de DM aux utilisateurs qui les ont désactivés — c'est un paramètre de confidentialité Discord hors du contrôle du bot.
+  </Accordion>
+
+  <Accordion title="Le bouton Verify ne fait rien">
+    Assurez‑vous que Nightfall a la permission `Manage Roles` dans votre serveur.
+  </Accordion>
+
+  <Accordion title="Les membres peuvent toujours voir tous les salons après vérification">
+    Passez en revue vos permissions de salon :
+
+    - `@everyone` doit avoir **View Channel** refusé (ou non accordé) pour les salons hors de la zone de vérification
+    - Le rôle `@Verified` doit avoir **View Channel** autorisé pour ces salons
+  </Accordion>
+
+  <Accordion title="Le bot ne peut pas attribuer le rôle vérifié">
+    Déplacez le rôle du bot Nightfall **au‑dessus** du rôle vérifié dans **Paramètres du Serveur → Rôles**. Discord ne permet aux bots d'attribuer que des rôles inférieurs à leur propre rôle le plus élevé.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Problèmes Premium
+
+<AccordionGroup>
+  <Accordion title="Paiement confirmé mais Premium non activé">
+    1. Assurez‑vous d'avoir cliqué sur **I've Paid — Confirm** dans la carte DM de checkout
+    2. Si le paiement est encore en cours de confirmation sur la blockchain, attendez quelques minutes et cliquez à nouveau sur le bouton
+    3. Exécutez `/premium status` pour vérifier l'état actuel de votre abonnement
+    4. Si la facture affiche **Expired**, créez‑en une nouvelle avec `/premium buy`
+  </Accordion>
+
+  <Accordion title="Les fonctionnalités Premium ne fonctionnent pas après l'activation">
+    Exécutez `/security overview` pour confirmer que Premium est actif pour votre serveur. Si cela s'affiche comme actif mais que les fonctionnalités ne fonctionnent pas, rejoignez le bot (retirez et réinvitez) ou contactez le support.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Problèmes de journalisation
+
+<AccordionGroup>
+  <Accordion title="Les journaux ne sont pas publiés dans le salon assigné">
+    Nightfall a besoin de `View Channel`, `Send Messages` et `Embed Links` dans le salon de journal. Vérifiez :
+
+    1. Le rôle de Nightfall a ces permissions dans le salon (vérifiez les substitutions spécifiques au salon)
+    2. Le salon existe et n'a pas été supprimé
+    3. Exécutez `/logging status` pour confirmer que l'assignation est toujours définie
+  </Accordion>
+
+  <Accordion title="Vérifier les assignations de journal">
+    Exécutez `/logging status` pour voir toutes les assignations de salon de journal actuelles pour votre serveur.
+
+    Utilisez `/logging test category:members` (ou n'importe quelle catégorie) pour publier une carte d'exemple et vérifier que le bot peut y publier.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Toujours bloqué ?
+
+Rejoignez le [serveur de support officiel](https://discord.gg/CXzX38Z7J9) et ouvrez un ticket de support. Incluez :
+
+- Une description du problème
+- La sortie de `/security overview` et `/status`
+- Tous les messages d'erreur que vous avez vus
+- Ce que vous avez déjà essayé
+
+Notre équipe vous aidera à faire fonctionner les choses correctement.

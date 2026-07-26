@@ -1,0 +1,135 @@
+---
+title: "/logging"
+description: "Assignez des salons dédiés pour recevoir des journaux d'audit détaillés pour chaque catégorie d'activité du serveur."
+---
+
+Le groupe de commandes `/logging` permet aux administrateurs d'assigner des salons textuels spécifiques pour recevoir des journaux d'audit détaillés pour différentes catégories d'activité du serveur.
+
+Toutes les commandes `/logging` nécessitent la permission **Administrator**.
+
+---
+
+## Catégories de journaux
+
+| Catégorie | Événements journalisés |
+|-----------|------------------------|
+| `members` | Arrivées, départs, bannissements, expulsions, changements de pseudo, changements de rôle des membres |
+| `messages` | Modifications de messages, suppressions de messages, suppressions en masse |
+| `channels` | Création, suppression, changements de nom / sujet / permissions de salons |
+| `roles` | Création, suppression, changements de permissions, changements de couleur des rôles |
+| `voice` | Arrivées, départs, déplacements, mutes, deafens dans les salons vocaux |
+| `server` | Changements de nom, icône, région et paramètres du serveur |
+| `moderation` | Toutes les actions effectuées par les commandes `/mod` |
+| `security` | Événements de sécurité (utile comme journal d'audit dédié en parallèle du salon d'alerte en temps réel) |
+
+---
+
+## Commandes
+
+### `/logging set`
+
+Assignez un salon pour recevoir les journaux d'une catégorie spécifique.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `category` | Choice | ✅ | La catégorie de journal |
+| `channel` | TextChannel | ✅ | Salon dans lequel publier les journaux |
+
+Chaque catégorie correspond à un salon. Exécuter à nouveau `/logging set` pour la même catégorie remplace l'assignation précédente.
+
+**Exemples :**
+```
+/logging set category:messages channel:#message-logs
+/logging set category:moderation channel:#mod-audit
+/logging set category:security channel:#security-log
+```
+
+---
+
+### `/logging remove`
+
+Arrêtez d'envoyer les journaux pour une catégorie spécifique.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `category` | Choice | ✅ | La catégorie de journal à retirer |
+
+---
+
+### `/logging status`
+
+Affichez toutes les assignations actuelles de salon de journalisation pour ce serveur.
+
+---
+
+### `/logging test`
+
+Publiez une carte de journal d'exemple dans le salon assigné pour une catégorie, afin que vous puissiez vérifier le formatage et les permissions avant d'y compter.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `category` | Choice | ✅ | La catégorie à tester |
+
+---
+
+## Exemples de cartes de journal
+
+### Arrivée d'un membre
+```
+👥  Member Joined
+────────────────────────────────
+User:         @newmember (123456789)
+Account age:  3 days ⚠️
+Joined at:    <timestamp>
+Member count: 247
+
+─  Nightfall Security  •  Member Logging
+```
+
+### Suppression de message
+```
+💬  Message Deleted
+────────────────────────────────
+Author:   @user (987654321)
+Channel:  #general
+Content:  "deleted message content here"
+Deleted:  <timestamp>
+
+─  Nightfall Security  •  Message Logging
+```
+
+### Action de modération
+```
+⚖️  Member Banned
+────────────────────────────────
+Target:     @user (111222333)
+Moderator:  @mod (444555666)
+Reason:     Repeated spam violations
+
+─  Nightfall Security  •  Moderation Logging
+```
+
+---
+
+## Exigences de permission
+
+Pour que Nightfall puisse publier les journaux, il a besoin de ces permissions dans le salon de journal :
+
+- `View Channel`
+- `Send Messages`
+- `Embed Links`
+
+Si l'une de ces permissions est manquante, l'entrée de journal est silencieusement ignorée.
+
+---
+
+## Conseils
+
+- Créez une **catégorie de journaux privée** visible uniquement par les administrateurs, avec un salon par type de journal
+- Utilisez la journalisation `security` comme piste d'audit permanente distincte du salon d'alerte en temps réel
+- Le journal `moderation` est automatiquement rempli par toutes les commandes `/mod` — aucune configuration supplémentaire nécessaire
+- Utilisez `/logging test` pour vérifier chaque salon avant d'y compter
+
+---
+
+*Voir aussi : [Commandes de modération](/commands/moderation) · [Commandes de sécurité](/commands/security)*

@@ -1,0 +1,64 @@
+---
+title: "Architektur"
+description: "Wie Nightfalls widerstandsfähiges Multi‑Prozess‑Design Verfügbarkeit und konsistenten Schutz gewährleistet."
+---
+
+Nightfall basiert auf einer **widerstandsfähigen Multi‑Prozess‑Architektur**, die entwickelt wurde, um Verfügbarkeit und konsistenten Schutz auch bei hoher Last oder unerwarteten Ausfällen aufrechtzuerhalten. Jede Hauptverantwortung läuft in einem eigenen isolierten Prozess.
+
+---
+
+## Prozessübersicht
+
+### Gateway
+
+Das Gateway verwaltet die Live-Verbindung zu Discord. Es empfängt Ereignisse von Discord, leitet sie an die entsprechenden Worker weiter und verarbeitet Slash- und Präfix-Befehle. Das Gateway ist der einzige Prozess, der direkt mit der API von Discord kommuniziert.
+
+### Event-Worker
+
+Event-Worker führen die schwere Verarbeitungsarbeit aus — sie bewerten AutoMod-Regeln, führen Anti‑Nuke- und Anti‑Raid-Erkennung aus und versenden Moderationsaktionen. Mehrere Worker laufen parallel, wobei eingehende Ereignisse mit einer Least-Loaded-Routing-Strategie auf sie verteilt werden. Dies stellt sicher, dass eine Spitze in einem Bereich die Verarbeitung in einem anderen nicht verzögert.
+
+### Datenbank-Worker
+
+Alle Datenbank-Schreibvorgänge werden über eine Warteschlange an einen einzigen dedizierten Worker geleitet. Dies serialisiert Schreibvorgänge sicher, ohne zu sperren, und gewährleistet die Datenintegrität auch dann, wenn viele Ereignisse gleichzeitig eintreffen.
+
+### Scheduler
+
+Der Scheduler führt periodische Hintergrundaufgaben in einem konfigurierbaren Intervall aus:
+
+- Ablaufprüfungen für Premium-Abonnements (mit DM-Erinnerungen)
+- Zustellung von DM-Rabatten nach Ablauf von Affiliate-Testphasen
+- Bereinigung veralteter Datensätze
+- Routinemäßige Gesundheitsprüfungen
+
+### Supervisor
+
+Der Supervisor überwacht alle anderen Prozesse. Wenn ein Prozess unerwartet beendet wird, startet der Supervisor ihn automatisch mit exponentiellem Backoff neu — die Verzögerung zwischen Neustartversuchen wird schrittweise erhöht, um Überlastung zu vermeiden. Dieses selbstheilende Verhalten bedeutet, dass sich vorübergehende Ausfälle (Netzwerkschluckauf, API-Fehler) ohne manuelle Eingriffe beheben lassen.
+
+---
+
+## Warum Multi‑Prozess?
+
+Ein Ein-Prozess-Bot ist anfällig: Eine blockierende Operation, ein Speicherleck oder ein Absturz reißt alles mit. Die Architektur von Nightfall isoliert jede Verantwortung:
+
+| Isolationsvorteil | Beispiel |
+|------------------|---------|
+| Gateway bleibt reaktionsfähig | Eine langsame AutoMod-Bewertung verzögert Befehlsantworten nicht |
+| Datenbanksicherheit | Keine Schreibkonflikte, auch bei vielen gleichzeitigen Ereignissen |
+| Absturzbegrenzung | Der Absturz eines Event-Workers wird neu gestartet, ohne das Gateway zu beeinträchtigen |
+| Unabhängige Skalierung | Mehr Event-Worker können höhere Ereignisvolumen bewältigen |
+
+---
+
+## Zuverlässigkeitsfunktionen
+
+| Funktion | Beschreibung |
+|---------|-------------|
+| **Selbstheilender Supervisor** | Abgestürzte Prozesse starten automatisch mit exponentiellem Backoff neu |
+| **Least-Loaded-Routing** | Ereignisse werden dem am wenigsten beschäftigten Worker zugewiesen |
+| **Datenbank im WAL-Modus** | Sichere gleichzeitige Lesevorgänge während Schreibvorgängen |
+| **Persistente Verifizierungssitzungen** | Bot-Neustarts machen laufende Mitgliederverifizierungen nicht ungültig |
+| **Persistente Button-Komponenten** | Verifizierungs- und Premium-Panels überstehen Neustarts |
+
+---
+
+*Verwandt: [Sicherheitssysteme](/security-systems) · [Fehlerbehebung](/troubleshooting)*

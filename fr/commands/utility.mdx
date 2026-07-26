@@ -1,0 +1,133 @@
+---
+title: "Commandes utilitaires"
+description: "Commandes à usage général pour le statut du bot, les informations du serveur et la configuration."
+---
+
+Les commandes utilitaires fournissent des informations générales sur le bot et la configuration. La plupart sont disponibles pour tous les membres du serveur.
+
+---
+
+## Commandes slash
+
+### `/ping`
+
+Vérifiez la latence du gateway du bot.
+
+**Réponse :** Latence en millisecondes avec un indicateur de statut à code couleur :
+- 🟢 **Vert** — moins de 150 ms (excellent)
+- 🟡 **Ambre** — 150–300 ms (acceptable)
+- 🔴 **Rouge** — plus de 300 ms (dégradé)
+
+**Équivalent à préfixe :** `!ping`
+
+---
+
+### `/status`
+
+Affichez des informations complètes sur la santé du bot.
+
+**Affiche :**
+- Uptime du bot
+- Latence du gateway
+- Nombre de guildes et nombre total de membres
+- Nombre d'event workers actifs
+- Nombre d'abonnements premium
+
+**Équivalent à préfixe :** `!status`
+
+---
+
+### `/info`
+
+Affichez des informations sur le serveur actuel.
+
+**Affiche :**
+- Nom, ID et icône du serveur
+- Mention du propriétaire
+- Nombre de membres (total, humains, bots)
+- Nombre de salons et de rôles
+- Date de création et âge du serveur
+- Niveau de vérification et niveau de boost
+- Fonctionnalités de sécurité actives (Anti‑Nuke, Vérification)
+- Statut Premium
+
+**Équivalent à préfixe :** `!info`
+
+---
+
+### `/help`
+
+Affichez la référence complète des commandes organisée par catégorie.
+
+Liste toutes les commandes regroupées par : Security, Moderation, AutoMod, Logging, Verification, Premium, Affiliate, Utility et Owner (propriétaires uniquement).
+
+**Équivalent à préfixe :** `!help`
+
+---
+
+### `/setprefix`
+
+Changez le préfixe de commande du bot pour ce serveur.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `prefix` | String | ✅ | Nouveau préfixe (1–5 caractères) |
+
+**Permission requise :** Administrator
+
+Le nouveau préfixe est stocké et appliqué immédiatement. La mention du bot (`@Nightfall`) fonctionne toujours comme préfixe quel que soit le paramètre personnalisé.
+
+**Équivalent à préfixe :** `!setprefix <new>`
+
+---
+
+### `/setup`
+
+Exécutez l'assistant de configuration interactif pour l'onboarding d'un nouveau serveur.
+
+L'assistant vous guide à travers :
+1. **Alert Channel** — où les alertes de sécurité sont publiées
+2. **Protection Level** — préréglages de seuils Strict, Balanced ou Relaxed
+3. **Feature Toggles** — Anti‑Nuke, Vérification
+4. **Completion** — résumé et invitation optionnelle à passer à Premium
+
+---
+
+## Commandes à préfixe
+
+Toutes les commandes à préfixe utilisent le préfixe configuré du serveur (par défaut : `!`). La mention du bot fonctionne à la place du préfixe à tout moment.
+
+| Commande | Description |
+|----------|-------------|
+| `!ping` | Latence du gateway |
+| `!status` | Santé du bot |
+| `!info` | Infos du serveur |
+| `!help` | Liste des commandes |
+| `!setprefix <prefix>` | Changer le préfixe (admin uniquement) |
+
+---
+
+## Réponse aux mentions
+
+Pinger le bot sans rien d'autre (`@Nightfall`) déclenche une carte d'informations rapides affichant :
+
+- Préfixe actuel
+- Latence du gateway
+- Nombre de guildes
+- Résumé des protections actives
+- Raccourcis de commandes clés
+
+---
+
+## Trouver votre préfixe
+
+Si vous avez oublié le préfixe personnalisé, utilisez toujours la mention du bot :
+
+```
+@Nightfall help
+@Nightfall ping
+```
+
+---
+
+*Voir aussi : [Commandes de sécurité](/commands/security) · [Démarrage rapide](/quickstart)*

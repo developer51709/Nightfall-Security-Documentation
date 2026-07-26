@@ -1,0 +1,111 @@
+---
+title: "/verification"
+description: "Konfigurieren Sie ein Zugangstor für Mitglieder mit einer optionalen Bildcaptcha-Herausforderung."
+---
+
+Die Befehlsgruppe `/verification` konfiguriert ein Verifizierungstor für Mitglieder. Neue Mitglieder müssen einen Verifizierungsschritt abschließen, bevor sie auf den Rest des Servers zugreifen können.
+
+Wenn Captcha aktiviert ist, sendet Nightfall den Mitgliedern eine DM mit einem gerenderten Bildcaptcha — eine Herausforderung mit verzerrtem Text. Mitglieder tippen die Zeichen, die sie sehen, in die DM zurück, um sich zu verifizieren.
+
+Alle `/verification`-Befehle erfordern die Berechtigung **Administrator**.
+
+---
+
+## So funktioniert es
+
+1. Neue Mitglieder treten bei und können nicht auf den vollständigen Server zugreifen
+2. Sie sehen einen Verifizierungskanal mit einem persistenten **Verify**-Button (via `/verification post` veröffentlicht)
+3. Klick auf Verify:
+   - **Captcha AUS:** Rolle wird sofort zugewiesen
+   - **Captcha AN:** Nightfall sendet eine DM-Karte mit Anweisungen und einem Captcha-Bild
+4. Das Mitglied tippt die 5 Zeichen, die es sieht (Groß-/Kleinschreibung wird ignoriert), direkt in die DM
+5. **Richtige Antwort:** Die DM wird an Ort und Stelle bearbeitet, um den abgeschlossenen Zustand mit einer grünen Häkchen-Überlagerung anzuzeigen; die Verifizierungsrolle wird gewährt
+6. **Falsche Antwort:** Eine Fehlerkarte wird gesendet; das Mitglied muss erneut auf Verify klicken, um ein neues Bild zu erhalten
+7. Sitzungen laufen nach **10 Minuten** Inaktivität ab
+
+---
+
+## Befehle
+
+### `/verification panel`
+
+Öffnet das Administrations-Konfigurationspanel.
+
+Zeigt aktuelle Einstellungen und bietet:
+- Eine Rollenauswahl zum Festlegen der **Verified Role**
+- **Enable / Disable**-Umschalter für das Verifizierungstor
+- **Image Captcha: ON / OFF**-Umschalter
+
+---
+
+### `/verification post`
+
+Veröffentlicht das persistente Verifizierungspanel in einem Kanal.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `channel` | TextChannel | ✅ | Kanal, in dem der Verify-Button veröffentlicht wird |
+
+**Anforderungen:**
+- Eine Verifizierungsrolle muss zuerst über `/verification panel` konfiguriert werden
+- Nightfall muss die Berechtigung `Send Messages` im Zielkanal haben
+
+Der Verify-Button bleibt über Bot-Neustarts hinweg bestehen — Mitglieder können jederzeit darauf klicken, auch nach einem Ausfall.
+
+<Warning>
+  Veröffentlichen Sie das Panel einmal pro Kanal. Löschen Sie die alte Nachricht, bevor Sie eine neue veröffentlichen.
+</Warning>
+
+---
+
+### `/verification reset`
+
+Entfernt die Verifizierungsrolle eines Mitglieds und löscht eine ausstehende Captcha-Sitzung, sodass es sich erneut verifizieren muss.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | Zurückzusetzendes Mitglied |
+
+**Erforderliche Berechtigung:** Manage Roles
+
+---
+
+## Captcha-Format
+
+| Eigenschaft | Wert |
+|----------|-------|
+| Größe | 340 × 110 px |
+| Antwortlänge | 5 Zeichen |
+| Zeichensatz | `A–Z`, `2–9` — keine mehrdeutigen Zeichen (`O`, `0`, `I`, `1`, `l`) |
+| Groß-/Kleinschreibung | Keine — `a7k2m` und `A7K2M` werden beide akzeptiert |
+| Interferenzen | Zufällige Rauschpunkte, 6 kreuzende Linien, Gauß-Weichzeichnung |
+| Ablauf | 10 Minuten |
+
+---
+
+## Empfohlene Einrichtung
+
+1. Erstellen Sie einen `#verify-here`-Kanal
+2. Legen Sie Kanalberechtigungen fest:
+   - `@everyone` → View Channel ✅ · Send Messages ❌ · alle anderen Kanäle ❌
+   - `@Verified` → alle Kanäle ✅
+3. Erstellen Sie eine `@Verified`-Rolle
+4. Führen Sie `/verification panel` aus → setzen Sie die Rolle → aktivieren → schalten Sie Image Captcha ein
+5. Führen Sie `/verification post channel:#verify-here` aus
+6. Verschieben Sie die Bot-Rolle von Nightfall **über** die `@Verified`-Rolle in **Servereinstellungen → Rollen**
+
+---
+
+## Fehlerbehebung
+
+| Problem | Lösung |
+|---------|-----|
+| Mitglied erhält keine DM | Es muss **Direktnachrichten von Servermitgliedern erlauben** in den Datenschutzeinstellungen aktivieren |
+| Verify-Button reagiert nicht | Stellen Sie sicher, dass Nightfall `Manage Roles` hat |
+| Andere Kanäle nach der Verifizierung nicht sichtbar | Überprüfen Sie die `@everyone`-Kanalberechtigungs-Überschreibungen |
+| Fehler „Role no longer exists" | Legen Sie eine neue Rolle über `/verification panel` fest |
+| Captcha abgelaufen | Das Mitglied muss erneut auf Verify klicken, um eine neue Herausforderung zu erhalten |
+
+---
+
+*Verwandt: [Verifizierung-Feature-Leitfaden](/verification) · [Anti‑Raid](/anti-raid) · [Sicherheitsbefehle](/commands/security)*

@@ -1,0 +1,122 @@
+---
+title: "/automod"
+description: "Configura reglas de filtrado automático de mensajes — habilita, deshabilita y ajusta cada filtro de forma independiente."
+---
+
+El grupo de comandos `/automod` permite a los administradores configurar el filtrado automatizado de mensajes de Nightfall. Cada regla puede activarse o desactivarse de forma independiente y configurarse con su propia acción y umbral.
+
+Todos los comandos `/automod` requieren el permiso de **Administrador** y son exclusivos del gremio.
+
+---
+
+## Filtros disponibles
+
+| Filtro | Qué detecta |
+|--------|----------------|
+| `links` | Cualquier URL en un mensaje |
+| `invites` | Enlaces de invitación a servidores de Discord (`discord.gg/...`) |
+| `caps` | Mensajes con una proporción excesiva de caracteres en mayúsculas |
+| `words` | Mensajes que contienen palabras de una lista de bloqueo personalizada |
+| `duplicate` | Mensajes idénticos o casi idénticos enviados repetidamente por el mismo usuario |
+| `emojis` | Mensajes con un número excesivo de emojis |
+| `mentions` | Mensajes que hacen ping a un número excesivo de usuarios o roles |
+
+---
+
+## Comandos
+
+### `/automod enable`
+
+Activa una regla de filtro con una acción específica.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | El filtro a activar |
+| `action` | Choice | ✅ | Qué hacer cuando la regla se dispara |
+
+**Acciones disponibles:**
+
+| Acción | Descripción |
+|--------|-------------|
+| `delete` | Elimina el mensaje infractor silenciosamente |
+| `warn` | Elimina + emite una advertencia formal al autor |
+| `timeout` | Elimina + advierte + silencia temporalmente al autor |
+| `kick` | Elimina + expulsa al autor |
+| `ban` | Elimina + banea al autor |
+
+---
+
+### `/automod disable`
+
+Desactiva una regla de filtro activa.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | El filtro a desactivar |
+
+---
+
+### `/automod config`
+
+Configura opciones específicas de la regla (por ejemplo, lista personalizada de palabras, umbral de mayúsculas).
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | El filtro a configurar |
+| `value` | String | ✅ | Valor de configuración (el formato depende de la regla) |
+
+**Formatos específicos por regla:**
+
+| Regla | Formato `value` | Ejemplo |
+|------|---------------|---------|
+| `caps` | Entero (umbral porcentual) | `70` — marcar si el 70%+ de las letras están en mayúscula |
+| `words` | Lista de palabras separadas por comas | `badword1,badword2,badword3` |
+| `duplicate` | Entero (umbral de recuento de repeticiones) | `3` — marcar tras 3 mensajes idénticos en 30 segundos |
+| `emojis` | Entero (umbral de recuento de emojis) | `15` — marcar si hay 15 o más emojis |
+| `mentions` | Entero (umbral de recuento de menciones) | `5` — marcar si hay 5 o más pings |
+
+---
+
+### `/automod status`
+
+Muestra la configuración actual de AutoMod para este servidor — una tabla con todas las reglas, su estado de activación, acción y cualquier configuración adicional.
+
+---
+
+### `/automod stats`
+
+*(Función Premium)* Consulta las estadísticas de disparos de AutoMod para el servidor.
+
+Muestra los recuentos de disparos por regla en los últimos 7 y 30 días, los principales canales infractores y los principales usuarios infractores.
+
+---
+
+## Orden de evaluación de las reglas
+
+Cuando un mensaje coincide con varias reglas, solo se aplica la regla coincidente de mayor prioridad:
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Integración con la lista blanca
+
+Los usuarios y roles en la lista blanca del servidor omiten todos los filtros de AutoMod. Gestiona las exenciones desde el panel interactivo:
+
+```
+/whitelist
+```
+
+Esto es útil para el personal que puede publicar enlaces o invitaciones legítimamente. Consulta la [referencia de Whitelist](/commands/whitelist).
+
+---
+
+*Relacionado: [Guía de AutoMod](/automod) · [Comandos de moderación](/commands/moderation) · [Whitelist](/commands/whitelist)*

@@ -1,0 +1,66 @@
+---
+title: "/whitelist"
+description: "Verwalten Sie Ausnahmen pro Server — Nutzer und Rollen, die die gesamte Nightfall-Erkennung umgehen."
+---
+
+Der Befehl `/whitelist` öffnet ein interaktives Panel zur Verwaltung der **Whitelist** pro Server. Nutzer und Rollen auf der Whitelist umgehen **alle** Nightfall-Erkennungen — Anti‑Nuke, Anti‑Raid, Massenerwähnungen und jeden AutoMod-Filter.
+
+<Warning>
+  Das Whitelisting ist mächtig — eine gewhitelistete Rolle nimmt jedes Mitglied aus, das sie besitzt. Vermeiden Sie es, breite Rollen auf die Whitelist zu setzen (z. B. `@everyone` oder eine Rolle, die die meisten Servermitglieder haben), sonst deaktivieren Sie den Schutz für diese Mitglieder effektiv.
+</Warning>
+
+---
+
+## Befehle
+
+### `/whitelist`
+
+Veröffentlicht das interaktive Whitelist-Verwaltungspanel im aktuellen Kanal.
+
+Das Panel listet jeden aktuellen Whitelist-Eintrag auf und bietet drei Aktions-Buttons:
+
+| Button | Aktion |
+|--------|--------|
+| **Add User** | Öffnet eine private Nutzerauswahl; der ausgewählte Nutzer wird hinzugefügt |
+| **Add Role** | Öffnet eine private Rollenauswahl; die ausgewählte Rolle wird hinzugefügt |
+| **Remove** | Öffnet eine private Auswahl vorhandener Einträge zum Entfernen (deaktiviert, wenn die Liste leer ist) |
+
+Die Auswahlmenüs sind ephemer — nur das Personalmitglied, das geklickt hat, sieht sie. Nach einem erfolgreichen Hinzufügen oder Entfernen wird das gemeinsame Panel aktualisiert, damit das gesamte Team den aktuellen Stand sieht.
+
+<Note>
+  Die Remove-Auswahl zeigt bis zu 25 Einträge auf einmal (eine Discord-Beschränkung). Wenn Ihre Whitelist mehr als 25 Einträge hat, entfernen Sie einige und öffnen Sie die Auswahl erneut, um den Rest zu sehen.
+</Note>
+
+---
+
+## Berechtigungsmodell
+
+Die Whitelist verwendet ein bewusst striktes zweistufiges Modell:
+
+| Fähigkeit | Wer ist berechtigt |
+|------------|----------------|
+| Panel **anzeigen** | Mitglieder mit **Manage Server** |
+| **Bearbeiten** (hinzufügen / entfernen) | Der **Serverbesitzer** ODER jedes Mitglied mit einer Rolle, die *sowohl* **über der höchsten Rolle des Bots** positioniert ist *als auch* die Berechtigung **Administrator** hat |
+
+Die Bearbeitungsstufe verhindert Berechtigungseskalation — ein kompromittierter Admin unterhalb der Bot-Rolle kann keine Angreifer auf die Whitelist setzen, um den Schutz zu umgehen. Die Bearbeitungsberechtigung wird bei jeder Hinzufüge- oder Entferne-Aktion erneut geprüft, nicht nur beim Öffnen des Panels.
+
+<Tip>
+  Wenn die Rolle des Bots ganz oben oder nahe der Spitze der Rollenliste steht, darf nur der Serverbesitzer die Whitelist bearbeiten. Positionieren Sie die Bot-Rolle angemessen, wenn Sie möchten, dass vertrauenswürdige Admins Ausnahmen verwalten.
+</Tip>
+
+---
+
+## Wann Whitelisten
+
+| Anwendungsfall | Was auf die Whitelist setzen |
+|---------|-------------------|
+| Vertrauenswürdiger Admin führt Massenumstrukturierung von Kanälen durch | Der spezifische Admin-Nutzer |
+| Partnerschafts-Bot, der viele Mitglieder gleichzeitig hinzufügt | Das Nutzerkonto des Bots |
+| Massen-Migrations-Ereignis | Temporär: das Nutzerkonto des Migrations-Bots |
+| Personal, das Links / Einladungen im Chat postet | Die Personal-Rolle |
+
+Bevorzugen Sie immer das Whitelisting spezifischer Nutzer gegenüber breiten Rollen. Entfernen Sie Whitelist-Einträge, wenn sie nicht mehr benötigt werden.
+
+---
+
+*Verwandt: [Sicherheitsbefehle](/commands/security) · [AutoMod-Befehle](/commands/automod) · [Anti‑Nuke](/anti-nuke)*

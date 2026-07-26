@@ -1,0 +1,119 @@
+---
+title: "Anti‑Nuke"
+description: "Détectez et répondez aux attaques coordonnées de destruction de serveur."
+---
+
+Le système Anti‑Nuke de Nightfall détecte les **attaques coordonnées de destruction de serveur** — les scénarios où un administrateur compromis ou malveillant supprime rapidement des salons, des rôles, ou effectue des bannissements en masse.
+
+---
+
+## Qu'est‑ce qu'une attaque nuke ?
+
+Un « nuke » dans la terminologie Discord se produit lorsqu'un acteur malveillant disposant de permissions élevées — souvent un compte administrateur compromis ou un bot voyou — tente de détruire un serveur en :
+
+- Supprimant rapidement tous les salons
+- Supprimant rapidement tous les rôles
+- Bannissant en masse la plupart ou la totalité des membres
+- Combinant ces actions
+
+Ces attaques peuvent détruire des mois ou des années de structure communautaire en quelques secondes. Nightfall détecte le motif avant que les dégâts ne soient complets.
+
+---
+
+## Fonctionnement de la détection
+
+Nightfall suit le taux d'événements destructeurs en temps réel. Des compteurs distincts surveillent :
+
+- Les suppressions de salons par minute
+- Les suppressions de rôles par minute
+- Les bannissements en masse par minute
+
+Si un compteur dépasse le seuil configuré pour la guilde, une alerte est déclenchée immédiatement.
+
+### Seuils par défaut (configurables par guilde)
+
+| Événement | Seuil par défaut |
+|-----------|-----------------|
+| Suppressions de salons | 3 par minute |
+| Suppressions de rôles | 3 par minute |
+| Bannissements en masse | 5 par minute |
+
+Ajustez les seuils avec `/security config`.
+
+---
+
+## Détection de l'acteur
+
+Lorsqu'un seuil est dépassé, Nightfall lit le journal d'audit Discord pour identifier l'acteur responsable et l'inclut dans la carte d'alerte. Si le journal d'audit n'est pas disponible, l'alerte se déclenche tout de même sans attribution d'acteur.
+
+**Permission requise :** `View Audit Log`
+
+---
+
+## Cartes d'alerte
+
+```
+🛡️  Security Alert — ANTI_NUKE
+────────────────────────────────────────
+Channel deletion surge detected.
+4 channels deleted in the last 60 seconds.
+Threshold: 3 per minute.
+
+👥  Actor:    @suspiciousmod (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Actions automatisées
+
+Le modèle de sécurité de Nightfall est **strictement défensif** — il n'agit jamais sans configuration explicite.
+
+| Réglage `nuke_action` | Effet |
+|----------------------|-------|
+| `alert_only` *(par défaut)* | Alerte publiée dans le salon d'alerte |
+| `kick` | Alerte publiée + l'acteur est expulsé du serveur |
+| `ban` | Alerte publiée + l'acteur est banni de manière permanente |
+
+Configurez via :
+```
+/security config nuke_action:kick
+```
+
+---
+
+## Activation et désactivation
+
+L'Anti‑Nuke est activé par défaut. Basculez‑le avec :
+
+```
+/security toggle enabled:False
+```
+
+Ou via l'assistant `/setup` (étape Feature Toggles).
+
+---
+
+## Liste blanche
+
+Les administrateurs ou bots de confiance peuvent être ajoutés à la liste blanche pour contourner la détection nuke. Leurs actions n'incrémentent aucun compteur de taux.
+
+```
+/whitelist
+```
+
+Utilisez les boutons **Add User** ou **Add Role** dans le panneau interactif. Consultez la [référence de la liste blanche](/commands/whitelist) pour tous les détails de permission.
+
+---
+
+## Limitations
+
+- **Faux positifs** — les administrateurs effectuant une réorganisation légitime de salons en masse peuvent déclencher des alertes. Ajoutez les administrateurs de confiance à la liste blanche ou augmentez temporairement les seuils lors de maintenances planifiées.
+- **Latence du journal d'audit** — le journal d'audit de Discord peut avoir un retard de 1 à 3 secondes. La détection d'acteur peut échouer pour des événements très rapides, bien que l'alerte se déclenche tout de même.
+- **Restauration** — Nightfall alerte sur la destruction mais ne peut pas restaurer les salons ou rôles supprimés. Utilisez les outils de sauvegarde natifs de Discord pour la planification de restauration.
+
+---
+
+*Voir aussi : [Anti‑Raid](/anti-raid) · [Commandes de sécurité](/commands/security) · [Liste blanche](/commands/whitelist)*

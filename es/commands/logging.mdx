@@ -1,0 +1,135 @@
+---
+title: "/logging"
+description: "Asigna canales dedicados para recibir registros de auditoría detallados para cada categoría de actividad del servidor."
+---
+
+El grupo de comandos `/logging` permite a los administradores asignar canales de texto específicos para recibir registros de auditoría detallados de diferentes categorías de actividad del servidor.
+
+Todos los comandos `/logging` requieren el permiso de **Administrador**.
+
+---
+
+## Categorías de registro
+
+| Categoría | Eventos registrados |
+|----------|--------------|
+| `members` | Entradas, salidas, baneos, expulsiones, cambios de apodo y cambios de rol de miembros |
+| `messages` | Ediciones, eliminaciones y eliminaciones masivas de mensajes |
+| `channels` | Creación, eliminación, cambios de nombre / tema / permisos de canales |
+| `roles` | Creación, eliminación, cambios de permisos y cambios de color de roles |
+| `voice` | Entradas, salidas, movimientos, silencios y ensordecimientos de canales de voz |
+| `server` | Cambios de nombre, icono, región y ajustes del servidor |
+| `moderation` | Todas las acciones realizadas por comandos `/mod` |
+| `security` | Eventos de seguridad (útil como registro de auditoría dedicado junto al canal de alertas en tiempo real) |
+
+---
+
+## Comandos
+
+### `/logging set`
+
+Asigna un canal para recibir registros de una categoría específica.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | La categoría de registro |
+| `channel` | TextChannel | ✅ | Canal donde publicar los registros |
+
+Cada categoría se asigna a un canal. Ejecutar `/logging set` nuevamente para la misma categoría reemplaza la asignación anterior.
+
+**Ejemplos:**
+```
+/logging set category:messages channel:#message-logs
+/logging set category:moderation channel:#mod-audit
+/logging set category:security channel:#security-log
+```
+
+---
+
+### `/logging remove`
+
+Deja de enviar registros para una categoría específica.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | La categoría de registro a eliminar |
+
+---
+
+### `/logging status`
+
+Muestra todas las asignaciones actuales de canales de registro para este servidor.
+
+---
+
+### `/logging test`
+
+Publica una tarjeta de registro de muestra en el canal asignado para una categoría, para que puedas verificar el formato y los permisos antes de confiar en ella.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | La categoría a probar |
+
+---
+
+## Ejemplos de tarjetas de registro
+
+### Entrada de miembro
+```
+👥  Member Joined
+────────────────────────────────
+User:         @newmember (123456789)
+Account age:  3 days ⚠️
+Joined at:    <timestamp>
+Member count: 247
+
+─  Nightfall Security  •  Member Logging
+```
+
+### Eliminación de mensaje
+```
+💬  Message Deleted
+────────────────────────────────
+Author:   @user (987654321)
+Channel:  #general
+Content:  "deleted message content here"
+Deleted:  <timestamp>
+
+─  Nightfall Security  •  Message Logging
+```
+
+### Acción de moderación
+```
+⚖️  Member Banned
+────────────────────────────────
+Target:     @user (111222333)
+Moderator:  @mod (444555666)
+Reason:     Repeated spam violations
+
+─  Nightfall Security  •  Moderation Logging
+```
+
+---
+
+## Requisitos de permisos
+
+Para que Nightfall publique registros, necesita estos permisos en el canal de registro:
+
+- `View Channel`
+- `Send Messages`
+- `Embed Links`
+
+Si alguno falta, la entrada de registro se descarta silenciosamente.
+
+---
+
+## Consejos
+
+- Crea una **categoría privada de registros** visible solo para los administradores, con un canal por tipo de registro
+- Usa el registro `security` como una traza de auditoría permanente separada del canal de alertas en tiempo real
+- El registro `moderation` es poblado automáticamente por todos los comandos `/mod` — no se necesita configuración adicional
+- Usa `/logging test` para verificar cada canal antes de confiar en él
+
+---
+
+*Relacionado: [Comandos de moderación](/commands/moderation) · [Comandos de seguridad](/commands/security)*

@@ -1,0 +1,64 @@
+---
+title: "Architecture"
+description: "Comment la conception multiprocessus résiliente de Nightfall garantit la disponibilité et une protection cohérente."
+---
+
+Nightfall est construit sur une **architecture multiprocessus résiliente** conçue pour maintenir la disponibilité et une protection cohérente même sous forte charge ou en cas de défaillances inattendues. Chaque responsabilité majeure s'exécute dans son propre processus isolé.
+
+---
+
+## Aperçu des processus
+
+### Gateway
+
+Le gateway gère la connexion Discord en direct. Il reçoit les événements de Discord, les achemine vers les workers appropriés et traite les commandes slash et à préfixe. Le gateway est le seul processus qui communique directement avec l'API de Discord.
+
+### Event workers
+
+Les event workers effectuent le gros du travail de traitement — évaluation des règles AutoMod, exécution de la détection anti‑nuke et anti‑raid, et déclenchement des actions de modération. Plusieurs workers s'exécutent en parallèle, les événements entrants étant répartis entre eux selon une stratégie de routage vers le moins chargé. Cela garantit qu'un pic d'événements dans un domaine ne retarde pas le traitement dans un autre.
+
+### Database worker
+
+Toutes les écritures en base de données sont acheminées vers un unique worker dédié via une file d'attente. Cela sérialise les écritures en toute sécurité sans verrouillage, garantissant l'intégrité des données même lorsque de nombreux événements arrivent simultanément.
+
+### Scheduler
+
+Le scheduler exécute des tâches d'arrière‑plan périodiques à un intervalle configurable :
+
+- Vérifications d'expiration pour les abonnements premium (avec rappels par DM)
+- Envoi de DM de remise post‑essai pour les essais d'affiliation
+- Nettoyage des enregistrements anciens
+- Vérifications de santé de routine
+
+### Supervisor
+
+Le supervisor surveille tous les autres processus. Si un processus se termine de manière inattendue, le supervisor le redémarre automatiquement avec un back‑off exponentiel — augmentant progressivement le délai entre les tentatives de redémarrage pour éviter les inondations. Ce comportement auto‑correctif signifie que les défaillances temporaires (accrocs réseau, erreurs d'API) sont récupérées sans intervention manuelle.
+
+---
+
+## Pourquoi multiprocessus ?
+
+Un bot monoprocessus est vulnérable : une opération bloquante, une fuite de mémoire ou un crash fait tout tomber. L'architecture de Nightfall isole chaque préoccupation :
+
+| Avantage de l'isolation | Exemple |
+|------------------------|---------|
+| Le gateway reste réactif | Une évaluation AutoMod lente ne retarde pas les réponses aux commandes |
+| Sécurité de la base de données | Aucun conflit d'écriture, même avec de nombreux événements concurrents |
+| Confinement des crashs | Le crash d'un event worker est redémarré sans affecter le gateway |
+| Mise à l'échelle indépendante | Plus d'event workers peuvent gérer des volumes d'événements plus élevés |
+
+---
+
+## Fonctionnalités de fiabilité
+
+| Fonctionnalité | Description |
+|----------------|-------------|
+| **Supervisor auto‑correctif** | Les processus crashés redémarrent automatiquement avec back‑off exponentiel |
+| **Routage vers le moins chargé** | Événements distribués au worker le moins occupé |
+| **Base de données en mode WAL** | Lectures concurrentes sûres pendant les écritures |
+| **Sessions de vérification persistantes** | Les redémarrages du bot n'invalident pas les vérifications de membres en cours |
+| **Composants de boutons persistants** | Les panneaux de vérification et de premium survivent aux redémarrages |
+
+---
+
+*Voir aussi : [Systèmes de sécurité](/security-systems) · [Dépannage](/troubleshooting)*

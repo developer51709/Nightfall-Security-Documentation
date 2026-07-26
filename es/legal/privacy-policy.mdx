@@ -1,0 +1,218 @@
+---
+title: "Política de privacidad"
+description: "Política de privacidad de Nightfall Security — vigente desde el 20 de julio de 2026."
+---
+
+**Nightfall Security**
+Fecha de vigencia: 20 de julio de 2026
+Última actualización: 25 de julio de 2026
+
+---
+
+## 1. Introducción
+
+Esta Política de privacidad explica qué datos recopila Nightfall Security ("el Bot", "nosotros", "nos"), por qué los recopilamos, cómo se almacenan y tus derechos respecto a esos datos.
+
+Al añadir el Bot a tu servidor de Discord o interactuar con él, aceptas las prácticas de datos descritas en esta Política. Si operas una instancia autoalojada de Nightfall Security, tú eres el responsable del tratamiento de datos de tus usuarios y debes publicar tu propia política de privacidad.
+
+---
+
+## 2. Qué datos recopilamos
+
+### 2.1 Datos del servidor (gremio)
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| ID de gremio | Identificar tu servidor para ajustes por gremio | Sí, permanentemente |
+| Nombre del gremio | Referenciado en registros y notificaciones DM | No — obtenido en tiempo de ejecución únicamente |
+| ID del propietario | DMs de suscripción y recordatorios | Sí, en los registros de suscripciones premium |
+| ID del canal de alertas | Publicar alertas de seguridad | Sí, en los ajustes del gremio |
+| Umbrales de seguridad | Configuración de detección personalizada | Sí, en los ajustes del gremio |
+| Entradas del registro de auditoría | Detección de actor para eventos de seguridad | No — obtenido en tiempo de ejecución, no almacenado |
+
+### 2.2 Datos de miembro / usuario
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| ID de usuario | Historial de moderación, advertencias, propiedad, registros de afiliado | Sí |
+| Nombre de usuario / apodo | Referenciado en mensajes de registro | No — obtenido en tiempo de ejecución únicamente |
+| Contenido del mensaje | Evaluación de reglas de AutoMod | No — evaluado en memoria, nunca persistido |
+| Longitud del mensaje | Detección estadística de spam | Sí (solo longitud, no contenido) |
+| Fecha de creación de la cuenta | Detección de raid de cuentas nuevas | No — obtenida en tiempo de ejecución únicamente |
+| Respuestas de verificación | Desafío de captcha de imagen | Temporalmente — eliminadas tras la verificación (máximo 10 minutos) |
+
+### 2.3 Datos de moderación
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| Registros de advertencias (gremio, usuario, moderador, razón, marca de tiempo) | Historial de moderación y traza de auditoría | Sí, permanentemente |
+| Registros de eventos de seguridad (tipo de amenaza, severidad, ID de actor, detalle) | Registro de auditoría de seguridad | Sí, durante 90 días |
+
+### 2.4 Datos de pago
+
+Nightfall Security **no** procesa pagos directamente. Los pagos son gestionados por OxaPay, un proveedor externo. Almacenamos:
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| ID de seguimiento de factura de OxaPay | Vincular pago con suscripción | Sí, en los registros de suscripción premium |
+| Expiración de suscripción | Control de acceso a funciones | Sí, en los registros de suscripción premium |
+
+No almacenamos números de tarjeta de crédito, direcciones de carteras cripto ni ninguna credencial de pago. Consulta la [Política de privacidad de OxaPay](https://oxapay.com/privacy) para conocer detalles sobre sus prácticas de datos.
+
+### 2.5 Datos de afiliado
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| ID de usuario del afiliado | Acreditar referidos y seguimiento de nivel | Sí, en los registros de afiliado |
+| Inicio / expiración de la prueba | Gestión del ciclo de vida de la prueba | Sí, en los registros de afiliado |
+| Estado de conversión | Analíticas de afiliado | Sí, en los registros de afiliado |
+| Estado de DM de descuento enviado | Evitar DMs duplicados | Sí, en los registros de afiliado |
+
+### 2.6 Datos de tickets de soporte (bot de soporte)
+
+El **Bot de soporte** opcional impulsa el servidor de soporte comunitario del proyecto. Solo es relevante si te unes a ese servidor y abres un ticket de soporte. Cuando lo haces:
+
+| Dato | Propósito | Almacenado |
+|------|---------|--------|
+| Tu ID de usuario de Discord | Vincular el ticket contigo y restringir el acceso al canal | Sí — en los metadatos del tema del canal del ticket |
+| Categoría y estado del ticket | Enrutar y rastrear tu solicitud | Sí — en los metadatos del tema del canal del ticket |
+| Descripción de tu problema y mensajes | Proveer soporte | Sí — como mensajes en el canal privado del ticket, retenidos hasta que se elimine el canal |
+| ID del miembro del personal asignado | Rastrear la propiedad del ticket | Sí — en los metadatos del tema del canal del ticket |
+
+El contenido del ticket vive dentro del canal de Discord (no en la base de datos del bot) y es visible solo para ti y el personal de soporte. No compartas credenciales sensibles (contraseñas, detalles de pago, tokens) en un ticket. El personal de soporte puede eliminar o archivar los canales de ticket a su discreción.
+
+---
+
+## 3. Qué NO recopilamos
+
+- **Contenido de mensajes** — los mensajes se evalúan en memoria para reglas de AutoMod y se descartan inmediatamente. No se almacena texto de mensaje. *(Excepción: si abres un ticket de soporte, los mensajes que envíes en ese canal de ticket se retienen como mensajes de Discord hasta que se elimine el canal — véase §2.6.)*
+- **Datos de voz** — registramos eventos de cambio de estado de voz (entrada/salida/silencio) para fines de auditoría, pero no grabamos audio.
+- **Mensajes directos** — el Bot puede enviar DMs (recordatorios, tarjetas de checkout, ofertas de descuento) pero no lee ni almacena los DMs entrantes.
+- **Direcciones de correo electrónico** — no tenemos un sistema de cuentas; la identidad se basa completamente en los IDs de usuario de Discord.
+- **Nombres reales o direcciones** — no recopilamos ninguna información personal identificable más allá de los IDs de usuario y de gremio de Discord.
+- **Información financiera** — los datos de pago son gestionados exclusivamente por OxaPay.
+
+---
+
+## 4. Cómo usamos los datos
+
+| Propósito | Datos usados | Base legal |
+|---------|-----------|-------------|
+| Detección y alerta sobre amenazas de seguridad | Ajustes del gremio, contadores de eventos (en memoria) | Interés legítimo (seguridad del servidor) |
+| Historial de moderación y advertencias | ID de usuario, ID de moderador, razón, marca de tiempo | Interés legítimo (seguridad del servidor) |
+| Entrega de funciones premium | ID del gremio, expiración de la suscripción | Ejecución de contrato |
+| Envío de DMs de recordatorio de expiración | ID del propietario, expiración de la suscripción | Ejecución de contrato |
+| Seguimiento del programa de afiliados | Código de afiliado, ID del gremio, estado de conversión | Interés legítimo (operación del programa) |
+| Envío de DMs de descuento post‑prueba | ID del propietario del gremio | Interés legítimo (comunicación comercial) |
+| Detección de spam / tasa de mensajes | Longitud del mensaje, ID del autor, marca de tiempo | Interés legítimo (seguridad del servidor) |
+| Gestión de solicitudes de soporte | ID de usuario del ticket, categoría, estado y mensajes | Interés legítimo (proveer soporte) |
+
+---
+
+## 5. Retención de datos
+
+| Dato | Periodo de retención |
+|------|----------------|
+| Ajustes del gremio | Hasta que el servidor elimine el Bot o solicite la eliminación |
+| Advertencias | Permanente (por integridad de auditoría) |
+| Eventos de seguridad | 90 días (auto‑purgado) |
+| Estadísticas de mensajes | 30 días (auto‑purgado) |
+| Suscripciones premium | Hasta 7 días después de la expiración (auto‑purgado) |
+| Códigos premium | Hasta que sean eliminados por un propietario del bot |
+| Pruebas de afiliado | Permanente (aplica la regla de una prueba por gremio) |
+| Sesiones de verificación | 10 minutos (auto‑expirado) |
+| Eventos de AutoMod | 30 días (auto‑purgado) |
+| Canales y contenidos de tickets de soporte | Hasta que el canal sea cerrado y eliminado por el personal de soporte |
+
+---
+
+## 6. Compartición de datos
+
+No vendemos, alquilamos ni compartimos tus datos con terceros, excepto:
+
+**6.1 Discord Inc.** — El Bot se comunica con la API de Discord para funcionar. La [Política de privacidad](https://discord.com/privacy) de Discord se aplica a todos los datos transmitidos a través de su plataforma.
+
+**6.2 OxaPay** — Cuando inicias una compra premium, tu información de pago se envía a OxaPay. Compartimos solo el importe de la factura, la descripción y un ID de pedido interno.
+
+**6.3 Requisitos legales** — Podemos divulgar datos si así lo exige la ley, orden judicial, o para proteger los derechos y la seguridad de los operadores del Bot o de otros.
+
+---
+
+## 7. Seguridad de los datos
+
+Todos los datos se almacenan de forma segura con:
+
+- Control de acceso a nivel de aplicación garantizando que todas las escrituras se serialicen de forma segura
+- Seguridad de lecturas concurrentes durante las operaciones de escritura
+- Sin API de datos de cara al público
+
+Implementamos medidas técnicas razonables para proteger tus datos. Sin embargo, ningún sistema es perfectamente seguro. Debes asegurarte de que tu entorno de hosting tenga controles de acceso apropiados y cifrado de disco si manejas datos sensibles del servidor.
+
+---
+
+## 8. Tus derechos
+
+### Para administradores del servidor
+
+Como administrador que invitó al Bot, puedes:
+
+- **Acceder** a los ajustes almacenados de tu gremio mediante `/security overview`, `/automod status` y `/logging status`
+- **Modificar** los ajustes en cualquier momento mediante los comandos correspondientes
+- **Eliminar** los datos de tu gremio eliminando el Bot de tu servidor y contactándonos para una solicitud manual de eliminación de datos
+
+### Para miembros del servidor
+
+Como miembro del servidor cuyos datos puedan estar almacenados (por ejemplo, un registro de advertencia):
+
+- Puedes solicitar acceso, corrección o eliminación de tus datos personales contactando al administrador del servidor, quien puede enviar una solicitud de eliminación en tu nombre
+- Los IDs de usuario de Discord se consideran identificadores pseudónimos, no datos personales directamente identificables bajo la mayoría de los marcos, pero respetamos las solicitudes razonables de eliminación
+
+### Ejercicio de derechos
+
+Para ejercer cualquier derecho sobre los datos, contáctanos a través del servidor oficial de soporte. Responderemos en un plazo de 30 días.
+
+---
+
+## 9. Privacidad de los menores
+
+El Bot no está pensado para su uso por personas menores de 13 años, en consonancia con el requisito de edad mínima de Discord. Si crees que un menor de 13 años ha interactuado con el Bot de un modo que resultó en la recopilación de datos, contáctanos para su eliminación inmediata.
+
+---
+
+## 10. Instancias autoalojadas
+
+Si operas una instancia autoalojada de Nightfall Security:
+
+- Tú eres el responsable del tratamiento de los datos recopilados por tu instancia
+- Eres responsable de cumplir con las leyes de protección de datos aplicables (GDPR, CCPA, etc.)
+- Debes publicar tu propia política de privacidad y obtener los consentimientos necesarios de tus usuarios
+- Los contribuidores originales del proyecto no son responsables de las prácticas de datos de los operadores autoalojados
+
+---
+
+## 11. Cambios en esta política
+
+Podemos actualizar esta Política de privacidad de vez en cuando. Los cambios materiales se comunicarán a través de los canales oficiales del proyecto. La fecha de "Última actualización" en la parte superior refleja la revisión más reciente. El uso continuado del Bot después de que los cambios entren en vigor constituye la aceptación de la Política revisada.
+
+---
+
+## 12. Cookies y seguimiento
+
+Nightfall Security no utiliza cookies, píxeles de seguimiento ni servicios de analítica de ningún tipo.
+
+---
+
+## 13. Contacto
+
+Para preguntas relacionadas con la privacidad, solicitudes de acceso a datos o para reportar una preocupación sobre datos:
+
+- Abre un ticket **Appeals & Administrative Requests** en el [servidor oficial de soporte](https://discord.gg/CXzX38Z7J9)
+- Correo: `developer51709@proton.me`
+- Teléfono: `+1 (762) 435-4135`
+
+Nos tomamos las cuestiones de privacidad en serio y responderemos en un plazo de 30 días.
+
+---
+
+*Nightfall Security · Licencia MIT*
+*Esta política se aplica al servicio oficial alojado. Los servicios de terceros son independientemente responsables de sus prácticas de datos.*

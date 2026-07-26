@@ -1,0 +1,103 @@
+---
+title: "/security"
+description: "Erkennungs-Schwellenwerte konfigurieren, Live-Sicherheitsstatus anzeigen und Schutz umschalten."
+---
+
+Mit der Befehlsgruppe `/security` können Serveradministratoren die Bedrohungserkennungs-Schwellenwerte von Nightfall konfigurieren, den Live-Sicherheitsstatus anzeigen und den Schutz ein- oder ausschalten.
+
+Alle `/security`-Befehle erfordern die Berechtigung **Administrator** und sind nur auf Servern verfügbar.
+
+---
+
+## Befehle
+
+### `/security config`
+
+Konfigurieren Sie Sicherheits-Schwellenwerte und den Alarmkanal pro Server.
+
+| Option | Typ | Beschreibung |
+|--------|------|-------------|
+| `alert_channel` | Channel | Wo Sicherheitsalarme veröffentlicht werden |
+| `max_joins` | 1–1000 | Maximale Mitgliederbeitritte pro Minute, bevor ein Raid-Alarm ausgelöst wird |
+| `max_channel_deletes` | 1–100 | Maximale Kanallöschungen pro Minute, bevor ein Nuke-Alarm ausgelöst wird |
+| `max_role_deletes` | 1–100 | Maximale Rollenlöschungen pro Minute, bevor ein Nuke-Alarm ausgelöst wird |
+| `max_bans` | 1–100 | Maximale Banns pro Minute, bevor ein Massen-Bann-Alarm ausgelöst wird |
+| `max_mentions` | 1–100 | Maximale Erwähnungen in einer einzelnen Nachricht, bevor ein Alarm ausgelöst wird |
+| `min_account_age_days` | 0–365 | Mindestkontoalter in Tagen (0 = deaktiviert) |
+| `account_age_action` | `kick` \| `ban` \| `alert_only` | Aktion für Konten unterhalb des Mindestalters |
+| `raid_action` | `alert_only` \| `kick` \| `ban` | Automatische Reaktion bei erkanntem Raid |
+| `nuke_action` | `alert_only` \| `kick` \| `ban` | Automatische Reaktion bei erkanntem Nuke |
+| `mass_mention_action` | `alert_only` \| `warn` \| `kick` \| `ban` | Automatische Reaktion auf Massenerwähnungen |
+
+Alle Optionen sind optional — das Weglassen einer Option lässt die bestehende Einstellung unverändert.
+
+**Beispiel:**
+```
+/security config alert_channel:#alerts max_joins:8 raid_action:kick
+```
+
+---
+
+### `/security overview`
+
+Zeigt ein Live-Sicherheits-Dashboard für den aktuellen Server an, einschließlich:
+
+- Aktuelle Erkennungs-Schwellenwerte für alle Ereignistypen
+- Aktuelle Bedrohungsereignisse (letzte 10 Alarme)
+- Aktuelle Live-Ereignisraten (Beitritte/min, Kanallöschungen/min usw.)
+- Ob Anti‑Nuke aktiviert ist
+- Premium-Status
+
+---
+
+### `/security toggle`
+
+Aktiviert oder deaktiviert Nightfalls Anti‑Nuke-Schutz für diesen Server.
+
+| Option | Typ | Beschreibung |
+|--------|------|-------------|
+| `enabled` | Boolean | `True` zum Aktivieren, `False` zum Deaktivieren |
+
+Wenn deaktiviert, bleibt der Bot im Server und protokolliert weiter, wird aber bei Nuke- oder Raid-Ereignissen keinen Alarm auslösen und keine automatisierten Aktionen ausführen.
+
+---
+
+## Schwellenwert-Voreinstellungen
+
+Der `/setup`-Assistent bietet drei Voreinstellungen als Ausgangspunkt:
+
+| Voreinstellung | Beitritte/min | Kanallöschungen/min | Rollenlöschungen/min | Banns/min | Erwähnungen |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Streng** | 5 | 2 | 2 | 3 | 5 |
+| **Ausgewogen** | 10 | 3 | 3 | 5 | 8 |
+| **Locker** | 20 | 6 | 6 | 10 | 15 |
+
+---
+
+## Alarmkarten
+
+Wenn ein Schwellenwert überschritten wird, veröffentlicht Nightfall einen formatierten Alarm in Ihrem konfigurierten Alarmkanal:
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────
+Join surge detected: 14 joins in 60 seconds (threshold: 10)
+
+👥  Actor: @username (123456789)
+⏰  Detected: 2 minutes ago
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+### Schweregrade
+
+| Stufe | Bedeutung |
+|-------|---------|
+| **Niedrig** | Geringfügige Anomalie — informativ |
+| **Mittel** | Verdächtige Aktivität |
+| **Hoch** | Aktive Bedrohung erkannt |
+| **Kritisch** | Schwerer koordinierter Angriff |
+
+---
+
+*Verwandt: [Anti‑Nuke](/anti-nuke) · [Anti‑Raid](/anti-raid) · [Whitelist](/commands/whitelist)*

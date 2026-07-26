@@ -1,0 +1,122 @@
+---
+title: "/automod"
+description: "Configurez les règles de filtrage automatique des messages — activez, désactivez et ajustez chaque filtre indépendamment."
+---
+
+Le groupe de commandes `/automod` permet aux administrateurs de configurer le filtrage automatique des messages de Nightfall. Chaque règle peut être activée ou désactivée indépendamment et configurée avec sa propre action et son propre seuil.
+
+Toutes les commandes `/automod` nécessitent la permission **Administrator** et sont réservées aux guildes.
+
+---
+
+## Filtres disponibles
+
+| Filtre | Ce qu'il détecte |
+|--------|------------------|
+| `links` | Toute URL dans un message |
+| `invites` | Liens d'invitation de serveur Discord (`discord.gg/...`) |
+| `caps` | Messages avec une proportion excessive de caractères en majuscules |
+| `words` | Messages contenant des mots d'une liste noire personnalisée |
+| `duplicate` | Messages identiques ou quasi identiques envoyés à répétition par le même utilisateur |
+| `emojis` | Messages avec un nombre excessif de caractères emoji |
+| `mentions` | Messages qui pinguent un nombre excessif d'utilisateurs ou de rôles |
+
+---
+
+## Commandes
+
+### `/automod enable`
+
+Activez une règle de filtre avec une action spécifiée.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `rule` | Choice | ✅ | Le filtre à activer |
+| `action` | Choice | ✅ | Ce qu'il faut faire lorsque la règle se déclenche |
+
+**Actions disponibles :**
+
+| Action | Description |
+|--------|-------------|
+| `delete` | Supprimer le message fautif silencieusement |
+| `warn` | Supprimer + émettre un avertissement formel à l'auteur |
+| `timeout` | Supprimer + avertir + rendre temporairement muet l'auteur |
+| `kick` | Supprimer + expulser l'auteur |
+| `ban` | Supprimer + bannir l'auteur |
+
+---
+
+### `/automod disable`
+
+Désactivez une règle de filtre active.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `rule` | Choice | ✅ | Le filtre à désactiver |
+
+---
+
+### `/automod config`
+
+Configurez les options spécifiques à une règle (par exemple, liste de mots personnalisée, seuil de majuscules).
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `rule` | Choice | ✅ | Le filtre à configurer |
+| `value` | String | ✅ | Valeur de configuration (le format dépend de la règle) |
+
+**Formats spécifiques à chaque règle :**
+
+| Règle | Format `value` | Exemple |
+|-------|---------------|---------|
+| `caps` | Entier (seuil en pourcentage) | `70` — signaler si 70 % ou plus des lettres sont en majuscules |
+| `words` | Liste de mots séparés par des virgules | `badword1,badword2,badword3` |
+| `duplicate` | Entier (seuil de nombre de répétitions) | `3` — signaler après 3 messages identiques dans les 30 secondes |
+| `emojis` | Entier (seuil de nombre d'emojis) | `15` — signaler si 15 emojis ou plus |
+| `mentions` | Entier (seuil de nombre de mentions) | `5` — signaler si 5 pings ou plus |
+
+---
+
+### `/automod status`
+
+Affichez la configuration AutoMod actuelle pour ce serveur — un tableau de toutes les règles avec leur état d'activation, action et toute configuration supplémentaire.
+
+---
+
+### `/automod stats`
+
+*(Fonctionnalité Premium)* Consultez les statistiques de déclenchement AutoMod pour le serveur.
+
+Affiche le nombre de déclenchements par règle sur les 7 et 30 derniers jours, les salons les plus fautifs et les utilisateurs les plus fautifs.
+
+---
+
+## Ordre d'évaluation des règles
+
+Lorsqu'un message correspond à plusieurs règles, seule la règle correspondante de priorité la plus élevée est appliquée :
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Intégration de la liste blanche
+
+Les utilisateurs et rôles de la liste blanche du serveur contournent tous les filtres AutoMod. Gérez les exemptions depuis le panneau interactif :
+
+```
+/whitelist
+```
+
+C'est utile pour le personnel qui peut légitimement publier des liens ou des invitations. Consultez la [référence de la liste blanche](/commands/whitelist).
+
+---
+
+*Voir aussi : [Guide de la fonctionnalité AutoMod](/automod) · [Commandes de modération](/commands/moderation) · [Liste blanche](/commands/whitelist)*

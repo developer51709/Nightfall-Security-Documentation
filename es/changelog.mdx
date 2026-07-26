@@ -1,0 +1,95 @@
+---
+title: "Registro de cambios"
+description: "Cambios notables y nuevas funciones en Nightfall Security."
+---
+
+Todos los cambios notables de Nightfall Security se documentan aquí. Nightfall utiliza [Versionado semántico](https://semver.org/).
+
+---
+
+## v2.1.0 — Actual
+
+### Nuevas funciones
+
+**Bot de soporte** (bot secundario)
+
+- Sistema de tickets con un flujo de creación de 3 pasos, 9 categorías y canales privados por usuario
+- Panel de gestión del personal: reclamar, liberar, transferir, estado y cerrar
+- Paneles persistentes de FAQ y reglas
+
+**`/whitelist` rediseñado**
+
+- Se reemplazaron los antiguos subcomandos `/whitelist add` por un único panel interactivo
+- Los botones Add User / Add Role / Remove abren selectores efímeros privados
+- Modelo estricto de permisos de edición: propietario del servidor, o un rol de Administrador posicionado por encima del rol del bot — se revisa en cada cambio
+
+**Pagos de afiliados**
+
+- Los afiliados ahora pueden solicitar pagos directamente desde Discord usando el comando `/affiliate payout`
+- Los pagos pueden solicitarse en varias criptomonedas y se gestionan directamente a través de la integración con OxaPay
+
+### Correcciones
+
+- **Aplicaciones propiedad de equipo** — la autorización del propietario ahora resuelve correctamente al propietario autorizado en aplicaciones de Discord propiedad de equipos, evitando bloqueos
+- **Supresión global de menciones** — todos los helpers de respuesta y componentes suprimen consistentemente los pings de `@everyone`, rol y usuario
+- **Tickets de soporte** — se resolvió un error en el paso de confirmación al cerrar; las descripciones del problema del miembro ahora se publican en el canal del ticket; el contador de tickets es seguro ante reconexiones; los tickets duplicados se revisan de nuevo antes de la creación del canal
+
+### Mejoras
+
+- Se redujo el precio de la suscripción premium de `$9.99 USD` → `$6.00 USD`
+- Se redujo el monto mínimo de pago de afiliado de `$10.00 USD` → `$1.00 USD`
+- Se redujo el requisito de pago de afiliado del nivel Diamond → nivel Gold
+
+---
+
+## v2.0.0
+
+### Nuevas funciones
+
+**Asistente de configuración interactivo** (`/setup`)
+- Onboarding guiado en múltiples pasos para nuevos servidores
+- Cubre la selección del canal de alertas, preajuste de nivel de protección y toggles de funciones
+- Termina con un aviso de actualización a Premium
+
+**Sistema de pruebas de afiliado**
+- Los códigos de afiliado ahora otorgan una **prueba gratuita de 7 días** en lugar de Premium completo inmediato
+- Una prueba por gremio, para siempre — se aplica permanentemente a nivel de base de datos
+- DM de descuento post‑prueba enviado automáticamente por el scheduler (20% de descuento en el primer mes)
+
+**Grupo de comandos `/affiliate`**
+- `/affiliate code` — consulta tu código, instrucciones para compartir y tu nivel actual
+- `/affiliate stats` — panel completo de analíticas (pruebas, conversiones, tasa, progreso de nivel)
+- `/affiliate perks` — escalera de niveles con visualización de beneficios bloqueados / desbloqueados
+- `/affiliate leaderboard` — los mejores afiliados clasificados por conversiones (solo propietarios del bot)
+- Cinco niveles de afiliado: Partner → Bronze → Silver → Gold → Diamond
+
+**Seguimiento de conversiones**
+- Los gremios que compran Premium de pago tras una prueba de afiliado son marcados automáticamente como convertidos
+
+**Soporte multi‑propietario**
+- `/owner add` / `/owner remove` — otorga o revoca el estado de propietario del bot para usuarios adicionales
+
+**Tipos de código Premium**
+- `onetime` — un solo gremio, luego se deshabilita
+- `multiuse` — canjeable por hasta N gremios
+- `affiliate` — uso ilimitado, rastrea al referente, otorga prueba de 7 días
+
+### Funciones de seguridad
+
+- **Anti‑Nuke** — detección de tasa con ventana deslizante para eliminaciones de canales / roles y baneos masivos
+- **Anti‑Raid** — detección de picos de entrada y avalancha de cuentas nuevas
+- **Mass Mention** — detección de avalancha de menciones por mensaje
+- **Whitelist** — exenciones por gremio de usuarios / roles
+- **AutoMod** — filtros de enlaces, invitaciones, mayúsculas, palabras, emojis, duplicados y menciones
+- **Moderación** — ban, kick, warn, timeout con tarjetas de acción formateadas
+- **Verificación** — captcha de imagen con un botón de panel persistente
+- **Logging** — registro de auditoría completo de miembros, mensajes, canales, roles, voz y eventos del servidor
+
+---
+
+## v1.0.0
+
+- Lanzamiento inicial
+- Detección básica Anti‑Nuke y Anti‑Raid
+- Soporte para comandos con prefijo (`!ping`, `!status`, `!info`, `!help`)
+- Arquitectura de un solo proceso
