@@ -9,38 +9,24 @@ Nightfall's verification system adds a **controlled entry gate** to your server.
 
 ## How it works
 
-```
-New member joins
-       │
-       ▼
- Sees only #verify-here channel
-       │
-       ▼
- Clicks "Verify" button
-       │
-   ┌───┴──────────────────────────┐
-   │ Captcha disabled             │ Captcha enabled
-   │                              │
-   ▼                              ▼
-Role assigned                Bot sends a DM
-immediately                  with a challenge card:
-                             ┌──────────────────┐
-                             │ Instructions      │
-                             │ ──────────────── │
-                             │ [ captcha image ] │
-                             └──────────────────┘
-                                      │
-                             Member types the 5
-                             characters into DM
-                                      │
-                             ┌────────┴─────────┐
-                             │ Correct           │ Wrong
-                             │                   │
-                             ▼                   ▼
-                        DM is edited:        Error card sent —
-                        image goes grey     click Verify again
-                        + ✓ checkmark       for a fresh challenge
-                        Role assigned
+```mermaid
+---
+title: Verification Flow
+---
+flowchart TD
+    A([New member joins]) --> B(Sees only #verify-here channel)
+    B --> C(Clicks Verify button)
+
+    C -->|Captcha disabled| D(Role assigned immediately)
+    C -->|Captcha enabled| E(Bot sends DM with a challenge card)
+
+    E --> F(Member types 5 characters into DM)
+
+    F -->|Correct| G(Success message is sent)
+    G --> H(Role assigned)
+
+    F -->|Wrong| I(Error card sent)
+    I -->|Try again| F
 ```
 
 ---
