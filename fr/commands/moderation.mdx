@@ -1,0 +1,134 @@
+---
+title: "/mod"
+description: "Suite de modération complète avec enregistrements d'avertissements formant une piste d'audit et journalisation automatisée."
+---
+
+Le groupe de commandes `/mod` fournit une suite de modération complète avec cartes d'action formatées, un système d'avertissements formant une piste d'audit et une journalisation de modération automatisée.
+
+Toutes les commandes de modération nécessitent les permissions Discord appropriées. Les réponses sont éphémères par défaut.
+
+---
+
+## Commandes
+
+### `/mod ban`
+
+Bannissez de manière permanente un membre du serveur.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `user` | User | ✅ | Le membre à bannir |
+| `reason` | String | — | Raison du bannissement (enregistrée dans le journal d'audit et la base d'avertissements) |
+| `delete_days` | 0–7 | — | Jours d'historique de messages à supprimer |
+
+**Permission requise :** Ban Members
+
+---
+
+### `/mod kick`
+
+Retirez un membre du serveur. Il peut rejoindre s'il possède une invitation.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `member` | Member | ✅ | Le membre à expulser |
+| `reason` | String | — | Raison de l'expulsion |
+
+**Permission requise :** Kick Members
+
+---
+
+### `/mod warn`
+
+Émettez un avertissement formel à un membre. Les avertissements sont stockés de manière permanente pour la piste d'audit de modération.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `member` | Member | ✅ | Le membre à avertir |
+| `reason` | String | ✅ | Raison de l'avertissement |
+
+Les avertissements incluent l'ID du modérateur, l'horodatage et la raison. Ils ne sont jamais automatiquement supprimés.
+
+---
+
+### `/mod timeout`
+
+Restreignez temporairement un membre de l'envoi de messages ou de la connexion aux salons vocaux.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `member` | Member | ✅ | Le membre à mettre en timeout |
+| `duration` | String | ✅ | Durée (par exemple `10m`, `1h`, `1d`) |
+| `reason` | String | — | Raison du timeout |
+
+**Permission requise :** Moderate Members
+**Timeout maximum :** 28 jours (limite Discord)
+
+---
+
+### `/mod history`
+
+Consultez l'historique de modération (avertissements) d'un membre.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `member` | Member | ✅ | Le membre à rechercher |
+
+Renvoie une carte formatée listant tous les avertissements du membre dans le serveur actuel, triés du plus récent au plus ancien.
+
+---
+
+### `/mod unban`
+
+Révoquez un bannissement et permettez à l'utilisateur de rejoindre.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `user_id` | String | ✅ | L'ID Discord de l'utilisateur banni |
+| `reason` | String | — | Raison du débannissement |
+
+**Permission requise :** Ban Members
+
+---
+
+## Actions du menu contextuel (clic droit)
+
+Un clic droit sur n'importe quel membre dans Discord fait apparaître des actions de modération rapides :
+
+| Action | Description |
+|--------|-------------|
+| **User Info** | Âge du compte, rôles, date d'arrivée et nombre d'avertissements |
+| **Quick Kick** | Ouvre un modal pour confirmer l'expulsion avec raison |
+| **Quick Ban** | Ouvre un modal pour confirmer le bannissement avec raison |
+| **Quick Timeout** | Ouvre un modal pour définir la durée du timeout et la raison |
+| **Delete & Warn** | Supprime le message ciblé et avertit l'auteur |
+
+Elles sont disponibles depuis le menu clic droit sur n'importe quel membre du serveur, sous réserve que le modérateur détienne les permissions requises.
+
+---
+
+## Cartes d'action
+
+Chaque action de modération produit une carte de réponse standardisée :
+
+```
+✅  Member Banned
+────────────────────────────────
+👥  Target:     @username (123456789)
+⚖️  Moderator:  @mod (987654321)
+✏️  Reason:     Repeated rule violations
+
+─  Nightfall Security  •  Moderation Log
+```
+
+---
+
+## Intégration de la journalisation
+
+Lorsque le module `/logging` est configuré, toutes les actions de modération sont également publiées automatiquement dans le salon de journal de modération désigné — aucune configuration supplémentaire requise.
+
+Consultez [Commandes de journalisation](/commands/logging) pour les instructions de configuration.
+
+---
+
+*Voir aussi : [Commandes de journalisation](/commands/logging) · [Commandes AutoMod](/commands/automod)*

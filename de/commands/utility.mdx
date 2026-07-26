@@ -1,0 +1,133 @@
+---
+title: "Utility-Befehle"
+description: "Allgemeine Befehle für Bot-Status, Serverinformationen und Konfiguration."
+---
+
+Utility-Befehle bieten allgemeine Bot-Informationen und Konfiguration. Die meisten sind für alle Servermitglieder verfügbar.
+
+---
+
+## Slash-Befehle
+
+### `/ping`
+
+Überprüft die Gateway-Latenz des Bots.
+
+**Antwort:** Latenz in Millisekunden mit einer farbcodierten Statusanzeige:
+- 🟢 **Grün** — unter 150 ms (ausgezeichnet)
+- 🟡 **Bernstein** — 150–300 ms (akzeptabel)
+- 🔴 **Rot** — über 300 ms (verschlechtert)
+
+**Präfix-Entsprechung:** `!ping`
+
+---
+
+### `/status`
+
+Zeigt umfassende Informationen zum Zustand des Bots an.
+
+**Zeigt:**
+- Bot-Betriebszeit
+- Gateway-Latenz
+- Anzahl der Server und Gesamtanzahl der Mitglieder
+- Anzahl aktiver Event-Worker
+- Anzahl der Premium-Abonnements
+
+**Präfix-Entsprechung:** `!status`
+
+---
+
+### `/info`
+
+Zeigt Informationen über den aktuellen Server an.
+
+**Zeigt:**
+- Servername, ID und Icon
+- Erwähnung des Besitzers
+- Mitgliederanzahl (gesamt, Menschen, Bots)
+- Anzahl von Kanälen und Rollen
+- Erstellungsdatum und Alter des Servers
+- Verifizierungsstufe und Boost-Stufe
+- Aktive Sicherheitsfunktionen (Anti‑Nuke, Verifizierung)
+- Premium-Status
+
+**Präfix-Entsprechung:** `!info`
+
+---
+
+### `/help`
+
+Zeigt die vollständige Befehlsreferenz nach Kategorie geordnet an.
+
+Listet alle Befehle gruppiert auf nach: Security, Moderation, AutoMod, Logging, Verifizierung, Premium, Affiliate, Utility und Owner (nur für Owner).
+
+**Präfix-Entsprechung:** `!help`
+
+---
+
+### `/setprefix`
+
+Ändert das Befehlspräfix des Bots für diesen Server.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `prefix` | String | ✅ | Neues Präfix (1–5 Zeichen) |
+
+**Erforderliche Berechtigung:** Administrator
+
+Das neue Präfix wird gespeichert und sofort angewendet. Die Bot-Erwähnung (`@Nightfall`) funktioniert unabhängig von der benutzerdefinierten Einstellung immer als Präfix.
+
+**Präfix-Entsprechung:** `!setprefix <neu>`
+
+---
+
+### `/setup`
+
+Führt den interaktiven Einrichtungsassistenten für das Onboarding neuer Server aus.
+
+Der Assistent führt Sie durch:
+1. **Alarmkanal** — wo Sicherheitsalarme veröffentlicht werden
+2. **Schutzstufe** — Voreinstellungen Streng, Ausgewogen oder Locker
+3. **Feature-Toggles** — Anti‑Nuke, Verifizierung
+4. **Abschluss** — Zusammenfassung und optionale Premium-Upgrade-Aufforderung
+
+---
+
+## Präfix-Befehle
+
+Alle Präfix-Befehle verwenden das konfigurierte Präfix des Servers (Standard: `!`). Die Bot-Erwähnung funktioniert jederzeit anstelle des Präfixes.
+
+| Befehl | Beschreibung |
+|---------|-------------|
+| `!ping` | Gateway-Latenz |
+| `!status` | Bot-Zustand |
+| `!info` | Serverinformationen |
+| `!help` | Befehlsliste |
+| `!setprefix <präfix>` | Präfix ändern (nur Admin) |
+
+---
+
+## Antwort auf Erwähnung
+
+Wenn Sie den Bot mit nichts weiterem pingen (`@Nightfall`), löst dies eine Schnellinfo-Karte aus, die Folgendes zeigt:
+
+- Aktuelles Präfix
+- Gateway-Latenz
+- Serveranzahl
+- Zusammenfassung der aktiven Schutzfunktionen
+- Wichtige Befehls-Shortcuts
+
+---
+
+## Präfix finden
+
+Wenn Sie das benutzerdefinierte Präfix vergessen haben, verwenden Sie immer die Bot-Erwähnung:
+
+```
+@Nightfall help
+@Nightfall ping
+```
+
+---
+
+*Verwandt: [Sicherheitsbefehle](/commands/security) · [Schnellstart](/quickstart)*

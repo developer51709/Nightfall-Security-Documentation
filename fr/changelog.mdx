@@ -1,0 +1,95 @@
+---
+title: "Journal des modifications"
+description: "Changements notables et nouvelles fonctionnalités dans Nightfall Security."
+---
+
+Tous les changements notables apportés à Nightfall Security sont documentés ici. Nightfall utilise le [Versionnage sémantique](https://semver.org/).
+
+---
+
+## v2.1.0 — Actuelle
+
+### Nouvelles fonctionnalités
+
+**Support Bot** (bot secondaire)
+
+- Système de tickets avec un flux de création en 3 étapes, 9 catégories, et des salons privés par utilisateur
+- Panneau de gestion du personnel : réclamer, libérer, transférer, statut et fermer
+- Panneaux FAQ et règles persistants
+
+**Nouveau design de `/whitelist`**
+
+- Remplacement des anciennes sous‑commandes `/whitelist add` par un panneau interactif unique
+- Boutons Add User / Add Role / Remove ouvrant des sélecteurs éphémères privés
+- Modèle strict de permission d'édition : propriétaire du serveur, ou un rôle Administrator positionné au‑dessus du rôle du bot — revérifié à chaque changement
+
+**Paiements d'affiliation**
+
+- Les affiliés peuvent désormais demander des paiements directement depuis Discord en utilisant la commande `/affiliate payout` du bot
+- Les paiements peuvent être demandés dans diverses cryptomonnaies et sont traités directement via l'intégration OxaPay
+
+### Corrections
+
+- **Applications appartenant à une équipe** — l'autorisation du propriétaire résout désormais correctement le propriétaire faisant autorité pour les applications Discord appartenant à une équipe, empêchant les verrouillages
+- **Suppression globale des mentions** — tous les helpers de réponse et de composant suppriment désormais de manière cohérente les pings `@everyone`, de rôle et d'utilisateur
+- **Tickets de support** — résolution d'une erreur à l'étape de confirmation à la fermeture ; les descriptions de problème des membres sont désormais publiées dans le salon du ticket ; le compteur de tickets est sûr en cas de reconnexion ; les tickets en double sont revérifiés avant la création du salon
+
+### Améliorations
+
+- Baisse du prix de l'abonnement premium de `$9.99 USD` → `$6.00 USD`
+- Baisse du montant minimum de paiement d'affilié de `$10.00 USD` → `$1.00 USD`
+- Baisse de l'exigence de paiement d'affilié du palier Diamond → palier Gold
+
+---
+
+## v2.0.0
+
+### Nouvelles fonctionnalités
+
+**Assistant de configuration interactif** (`/setup`)
+- Onboarding guidé multi‑étapes pour les nouveaux serveurs
+- Couvre la sélection du salon d'alerte, le préréglage du niveau de protection et les bascules de fonctionnalités
+- Se termine par une invitation à passer à Premium
+
+**Système d'essai d'affiliation**
+- Les codes d'affiliation accordent désormais un **essai gratuit de 7 jours** au lieu du Premium complet immédiat
+- Un essai par guilde, à vie — appliqué de manière permanente au niveau de la base de données
+- DM de remise post‑essai envoyé automatiquement par le scheduler (20 % de remise sur le premier mois)
+
+**Groupe de commandes `/affiliate`**
+- `/affiliate code` — consultez votre code, instructions de partage, et voyez votre palier actuel
+- `/affiliate stats` — tableau de bord d'analyses complet (essais, conversions, taux, progression de palier)
+- `/affiliate perks` — échelle des paliers avec affichage des avantages verrouillés / débloqués
+- `/affiliate leaderboard` — meilleurs affiliés classés par conversions (propriétaires du bot uniquement)
+- Cinq paliers d'affiliation : Partner → Bronze → Silver → Gold → Diamond
+
+**Suivi des conversions**
+- Les guildes qui achètent Premium payant après un essai d'affiliation sont automatiquement marquées comme converties
+
+**Support multi‑propriétaires**
+- `/owner add` / `/owner remove` — accorder ou révoquer le statut de propriétaire du bot pour d'autres utilisateurs
+
+**Types de codes Premium**
+- `onetime` — guilde unique, puis désactivé
+- `multiuse` — utilisable par jusqu'à N guildes
+- `affiliate` — utilisation illimitée, suit le référent, accorde un essai de 7 jours
+
+### Fonctionnalités de sécurité
+
+- **Anti‑Nuke** — détection de taux par fenêtre glissante pour les suppressions de salons / rôles et les bannissements en masse
+- **Anti‑Raid** — détection de pics d'arrivées et de flots de nouveaux comptes
+- **Mass Mention** — détection des inondations de mentions par message
+- **Whitelist** — exemptions par guilde d'utilisateurs / rôles
+- **AutoMod** — filtres de liens, invitations, majuscules, mots, emojis, doublons et mentions
+- **Modération** — ban, kick, warn, timeout avec cartes d'action formatées
+- **Vérification** — captcha image avec bouton de panneau persistant
+- **Logging** — journal d'audit complet pour les membres, messages, salons, rôles, voix et événements du serveur
+
+---
+
+## v1.0.0
+
+- Version initiale
+- Détection Anti‑Nuke et Anti‑Raid de base
+- Prise en charge des commandes à préfixe (`!ping`, `!status`, `!info`, `!help`)
+- Architecture monoprocessus

@@ -1,0 +1,122 @@
+---
+title: "/automod"
+description: "Automatisierte Nachrichtenfilterregeln konfigurieren — aktivieren, deaktivieren und feinjustieren Sie jeden Filter unabhängig."
+---
+
+Mit der Befehlsgruppe `/automod` können Administratoren die automatisierte Nachrichtenfilterung von Nightfall konfigurieren. Jede Regel kann unabhängig aktiviert oder deaktiviert und mit einer eigenen Aktion und einem eigenen Schwellenwert konfiguriert werden.
+
+Alle `/automod`-Befehle erfordern die Berechtigung **Administrator** und sind nur auf Servern verfügbar.
+
+---
+
+## Verfügbare Filter
+
+| Filter | Was er erkennt |
+|--------|----------------|
+| `links` | Jede URL in einer Nachricht |
+| `invites` | Discord-Server-Einladungslinks (`discord.gg/...`) |
+| `caps` | Nachrichten mit einem übermäßigen Anteil an Großbuchstaben |
+| `words` | Nachrichten, die Wörter aus einer benutzerdefinierten Blockliste enthalten |
+| `duplicate` | Identische oder nahezu identische Nachrichten, die wiederholt vom selben Nutzer gesendet werden |
+| `emojis` | Nachrichten mit einer übermäßigen Anzahl an Emoji-Zeichen |
+| `mentions` | Nachrichten, die eine übermäßige Anzahl an Nutzern oder Rollen pingen |
+
+---
+
+## Befehle
+
+### `/automod enable`
+
+Aktiviert eine Filterregel mit einer angegebenen Aktion.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | Der zu aktivierende Filter |
+| `action` | Choice | ✅ | Was passieren soll, wenn die Regel auslöst |
+
+**Verfügbare Aktionen:**
+
+| Aktion | Beschreibung |
+|--------|-------------|
+| `delete` | Beanstandete Nachricht stillschweigend löschen |
+| `warn` | Löschen + formelle Verwarnung an den Autor ausstellen |
+| `timeout` | Löschen + verwarnen + Autor vorübergehend stummschalten |
+| `kick` | Löschen + Autor kicken |
+| `ban` | Löschen + Autor bannen |
+
+---
+
+### `/automod disable`
+
+Deaktiviert eine aktive Filterregel.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | Der zu deaktivierende Filter |
+
+---
+
+### `/automod config`
+
+Konfiguriert regelspezifische Optionen (z. B. benutzerdefinierte Wortliste, Caps-Schwellenwert).
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `rule` | Choice | ✅ | Der zu konfigurierende Filter |
+| `value` | String | ✅ | Konfigurationswert (Format hängt von der Regel ab) |
+
+**Regelspezifische Formate:**
+
+| Regel | Format von `value` | Beispiel |
+|------|---------------|---------|
+| `caps` | Ganzzahl (Prozentsatz-Schwelle) | `70` — markiert, wenn 70 %+ der Buchstaben Großbuchstaben sind |
+| `words` | Komma-getrennte Wortliste | `badword1,badword2,badword3` |
+| `duplicate` | Ganzzahl (Wiederholungszähler-Schwelle) | `3` — markiert nach 3 identischen Nachrichten innerhalb von 30 Sekunden |
+| `emojis` | Ganzzahl (Emoji-Anzahl-Schwelle) | `15` — markiert bei 15 oder mehr Emojis |
+| `mentions` | Ganzzahl (Erwähnungsanzahl-Schwelle) | `5` — markiert bei 5 oder mehr Pings |
+
+---
+
+### `/automod status`
+
+Zeigt die aktuelle AutoMod-Konfiguration für diesen Server an — eine Tabelle aller Regeln mit ihrem Aktivierungsstatus, ihrer Aktion und zusätzlichen Konfigurationen.
+
+---
+
+### `/automod stats`
+
+*(Premium-Funktion)* Zeigt die AutoMod-Auslösestatistiken für den Server an.
+
+Zeigt Auslösezähler pro Regel für die letzten 7 und 30 Tage, die häufigsten auslösenden Kanäle und die häufigsten auslösenden Nutzer.
+
+---
+
+## Reihenfolge der Regelauswertung
+
+Wenn eine Nachricht mehreren Regeln entspricht, wird nur die passende Regel mit der höchsten Priorität angewendet:
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Whitelist-Integration
+
+Nutzer und Rollen in der Server-Whitelist umgehen alle AutoMod-Filter. Verwalten Sie Ausnahmen über das interaktive Panel:
+
+```
+/whitelist
+```
+
+Dies ist nützlich für Mitarbeiter, die legitim Links oder Einladungen posten können. Siehe [Whitelist-Referenz](/commands/whitelist).
+
+---
+
+*Verwandt: [AutoMod-Feature-Leitfaden](/automod) · [Moderationsbefehle](/commands/moderation) · [Whitelist](/commands/whitelist)*

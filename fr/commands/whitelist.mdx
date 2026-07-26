@@ -1,0 +1,66 @@
+---
+title: "/whitelist"
+description: "Gérez les exemptions par guilde — utilisateurs et rôles qui contournent toute la détection Nightfall."
+---
+
+La commande `/whitelist` ouvre un panneau interactif pour gérer la **liste blanche** par guilde. Les utilisateurs et rôles de la liste blanche contournent **toute** la détection Nightfall — Anti‑Nuke, Anti‑Raid, mentions de masse, et chaque filtre AutoMod.
+
+<Warning>
+  La liste blanche est puissante — un rôle en liste blanche exempte chaque membre qui le détient. Évitez de mettre en liste blanche des rôles étendus (par exemple `@everyone` ou un rôle que la plupart du serveur possède), sinon vous désactiverez efficacement la protection pour ces membres.
+</Warning>
+
+---
+
+## Commandes
+
+### `/whitelist`
+
+Publiez le panneau de gestion de la liste blanche interactif dans le salon actuel.
+
+Le panneau liste chaque entrée actuelle de la liste blanche et fournit trois boutons d'action :
+
+| Bouton | Action |
+|--------|--------|
+| **Add User** | Ouvre un sélecteur d'utilisateur privé ; l'utilisateur sélectionné est ajouté |
+| **Add Role** | Ouvre un sélecteur de rôle privé ; le rôle sélectionné est ajouté |
+| **Remove** | Ouvre un sélecteur privé des entrées existantes à retirer (désactivé lorsque la liste est vide) |
+
+Les sélecteurs sont éphémères — seul le membre du personnel qui a cliqué les voit. Après un ajout ou un retrait réussi, le panneau partagé est mis à jour afin que toute l'équipe voie l'état actuel.
+
+<Note>
+  Le sélecteur Remove affiche jusqu'à 25 entrées à la fois (une limite Discord). Si votre liste blanche a plus de 25 entrées, retirez‑en quelques‑unes et rouvrez le sélecteur pour voir le reste.
+</Note>
+
+---
+
+## Modèle de permission
+
+La liste blanche utilise un modèle à deux niveaux délibérément strict :
+
+| Capacité | Qui est autorisé |
+|----------|------------------|
+| **Voir** le panneau | Membres avec **Manage Server** |
+| **Modifier** (ajouter / retirer) | Le **propriétaire du serveur**, OU tout membre détenant un rôle qui est *à la fois* positionné **au‑dessus du rôle le plus élevé du bot** *et* qui a la permission **Administrator** |
+
+Le niveau de modification empêche l'escalade de privilèges — un administrateur compromis en dessous du rôle du bot ne peut pas mettre en liste blanche des attaquants pour contourner la protection. La permission de modification est revérifiée à chaque action d'ajout ou de retrait, pas seulement à l'ouverture du panneau.
+
+<Tip>
+  Si le rôle du bot est en haut ou près du haut de la liste des rôles, seul le propriétaire du serveur peut modifier la liste blanche. Positionnez le rôle du bot de manière appropriée si vous souhaitez que des administrateurs de confiance gèrent les exemptions.
+</Tip>
+
+---
+
+## Quand mettre en liste blanche
+
+| Cas d'usage | Quoi mettre en liste blanche |
+|-------------|------------------------------|
+| Administrateur de confiance effectuant une réorganisation de salons en masse | L'utilisateur administrateur spécifique |
+| Bot de partenariat qui ajoute plusieurs membres à la fois | Le compte utilisateur du bot |
+| Événement de migration massive | Temporaire : le compte utilisateur du bot de migration |
+| Personnel publiant des liens / invitations en chat | Le rôle du personnel |
+
+Privilégiez toujours la mise en liste blanche d'utilisateurs spécifiques plutôt que des rôles étendus. Retirez les entrées de la liste blanche lorsqu'elles ne sont plus nécessaires.
+
+---
+
+*Voir aussi : [Commandes de sécurité](/commands/security) · [Commandes AutoMod](/commands/automod) · [Anti‑Nuke](/anti-nuke)*

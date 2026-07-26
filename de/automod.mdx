@@ -1,0 +1,143 @@
+---
+title: "AutoMod"
+description: "Filtern Sie unsichere und störende Inhalte automatisch mit konfigurierbaren Regeln pro Server."
+---
+
+Das AutoMod-System von Nightfall scannt automatisch jede Nachricht auf dem Server und setzt konfigurierbare Inhaltsrichtlinien durch — löscht Verstöße, verwarnt Mitglieder oder eskaliert zu Kicks und Banns.
+
+---
+
+## Verfügbare Filter
+
+| Filter | Was er erkennt |
+|--------|----------------|
+| `links` | Jede URL in einer Nachricht (HTTP, HTTPS oder reine Domain) |
+| `invites` | Discord-Server-Einladungslinks (`discord.gg/...`, `discord.com/invite/...`) |
+| `caps` | Nachrichten mit einem übermäßigen Anteil an Großbuchstaben |
+| `words` | Nachrichten, die Wörter oder Phrasen aus einer benutzerdefinierten Blockliste enthalten |
+| `emojis` | Nachrichten mit einer übermäßigen Anzahl an Emoji-Zeichen |
+| `duplicate` | Wiederholte identische oder nahezu identische Nachrichten vom selben Nutzer |
+| `mentions` | Nachrichten, die eine übermäßige Anzahl an Nutzern oder Rollen pingen |
+
+---
+
+## Aktionen
+
+Jede Regel kann mit einer der folgenden Aktionen konfiguriert werden:
+
+| Aktion | Wirkung |
+|--------|--------|
+| `delete` | Die beanstandete Nachricht wird stillschweigend gelöscht |
+| `warn` | Nachricht gelöscht + formelle Verwarnung protokolliert + DM an das Mitglied gesendet |
+| `timeout` | Nachricht gelöscht + Verwarnung + Mitglied vorübergehend stummgeschaltet (10 Minuten) |
+| `kick` | Nachricht gelöscht + Mitglied vom Server gekickt |
+| `ban` | Nachricht gelöscht + Mitglied dauerhaft gebannt |
+
+---
+
+## Regelpriorität
+
+Wenn eine Nachricht mehreren Regeln entspricht, wird nur die passende Regel mit der höchsten Priorität angewendet:
+
+```
+1. invites
+2. links
+3. words
+4. caps
+5. mentions
+6. emojis
+7. duplicate
+```
+
+---
+
+## Filterdetails
+
+### Links
+
+Erkennt jede URL in einer Nachricht. Nützlich, um Spam-Bots am Posten von Phishing-Links zu hindern oder Kanäle auf reinen Text zu beschränken.
+
+### Invites
+
+Erkennt speziell Discord-Server-Einladungslinks. Verwenden Sie dies, um Mitglieder daran zu hindern, andere Server zu bewerben, während andere URLs weiterhin erlaubt sind.
+
+### Caps
+
+Erkennt Nachrichten mit einem übermäßigen Anteil an Großbuchstaben. Konfigurieren Sie den Schwellenwert (Prozentsatz) mit `/automod config rule:caps value:70` (Standard: 70 %).
+
+Nachrichten mit weniger als 8 Zeichen werden ignoriert, um falsch-positive Ergebnisse bei kurzen Ausrufen zu vermeiden.
+
+### Words
+
+Erkennt Nachrichten, die Wörter oder Phrasen aus einer benutzerdefinierten Blockliste enthalten. Groß-/Kleinschreibung wird ignoriert.
+
+**Beispiel:**
+```
+/automod config rule:words value:spam,advertisement,phishingdomain.com
+```
+
+### Emojis
+
+Erkennt Nachrichten mit einer übermäßigen Anzahl an Emoji-Zeichen (Standard-Unicode und benutzerdefinierte Discord-Emojis). Standard-Schwellenwert: 15 Emojis.
+
+### Duplicate
+
+Erkennt wiederholte identische oder nahezu identische Nachrichten vom selben Nutzer innerhalb eines kurzen Zeitfensters. Standard: 3 identische Nachrichten innerhalb von 30 Sekunden.
+
+### Mentions
+
+Erkennt Nachrichten, die eine übermäßige Anzahl an Nutzern oder Rollen in einer einzelnen Nachricht pingen. Standard-Schwellenwert: 8 Erwähnungen.
+
+---
+
+## Beispielkonfiguration
+
+Schützen Sie einen öffentlichen Server vor häufigen Bedrohungen:
+
+```
+# Block invite links with a warning
+/automod enable rule:invites action:warn
+
+# Block external links with silent deletion
+/automod enable rule:links action:delete
+
+# Flag excessive caps with deletion
+/automod enable rule:caps action:delete
+/automod config rule:caps value:80
+
+# Custom word blocklist
+/automod enable rule:words action:warn
+/automod config rule:words value:badword,spamphrase,phishingdomain.com
+
+# Mass‑mention protection
+/automod enable rule:mentions action:timeout
+/automod config rule:mentions value:6
+
+# Duplicate message spam
+/automod enable rule:duplicate action:warn
+/automod config rule:duplicate value:3
+```
+
+---
+
+## Whitelist-Integration
+
+Nutzer und Rollen, die zur Server-Whitelist hinzugefügt wurden, umgehen alle AutoMod-Prüfungen. Dies ist nützlich für Mitarbeiter, die legitim Links oder Einladungen posten können.
+
+Verwalten Sie Ausnahmen mit `/whitelist`. Siehe [Whitelist-Referenz](/commands/whitelist).
+
+---
+
+## Integration mit Anti‑Nuke / Anti‑Raid
+
+AutoMod und die Sicherheitserkennungssysteme sind **unabhängig**:
+
+- AutoMod behandelt einzelne Verstöße auf Nachrichtenebene
+- Anti‑Raid behandelt Beitrittsspitzen-Muster
+- Anti‑Nuke behandelt strukturelle Angriffe (Kanal-/Rollenlöschungen, Massen-Banns)
+
+Ein einzelnes Ereignis, das beides auslöst (z. B. eine Massenerwähnung während eines Raids), löst gleichzeitig die AutoMod-Aktion und den Sicherheitsalarm aus.
+
+---
+
+*Verwandt: [AutoMod-Befehle](/commands/automod) · [Moderationsbefehle](/commands/moderation)*

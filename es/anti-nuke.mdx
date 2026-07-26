@@ -1,0 +1,119 @@
+---
+title: "Anti‑Nuke"
+description: "Detecta y responde a ataques coordinados de destrucción de servidores."
+---
+
+El sistema Anti‑Nuke de Nightfall detecta **ataques coordinados de destrucción de servidores** — escenarios en los que un administrador comprometido o malicioso elimina rápidamente canales, roles o expulsa/banea a miembros en masa.
+
+---
+
+## ¿Qué es un ataque nuke?
+
+Un "nuke" en la terminología de Discord es cuando un actor malicioso con permisos elevados — a menudo una cuenta de administrador comprometida o un bot pícaro — intenta destruir un servidor mediante:
+
+- La eliminación rápida de todos los canales
+- La eliminación rápida de todos los roles
+- El baneo masivo de la mayoría o todos los miembros
+- Una combinación de las anteriores
+
+Estos ataques pueden destruir meses o años de estructura de comunidad en segundos. Nightfall detecta el patrón antes de que el daño se complete.
+
+---
+
+## Cómo funciona la detección
+
+Nightfall rastrea la tasa de eventos destructivos en tiempo real. Contadores separados supervisan:
+
+- Eliminaciones de canales por minuto
+- Eliminaciones de roles por minuto
+- Baneos masivos por minuto
+
+Si cualquier contador supera el umbral configurado para el gremio, se dispara una alerta inmediatamente.
+
+### Umbrales por defecto (configurables por gremio)
+
+| Evento | Umbral por defecto |
+|-------|-----------------|
+| Eliminaciones de canales | 3 por minuto |
+| Eliminaciones de roles | 3 por minuto |
+| Baneos masivos | 5 por minuto |
+
+Ajusta los umbrales con `/security config`.
+
+---
+
+## Detección del actor
+
+Cuando se supera un umbral, Nightfall lee el registro de auditoría de Discord para identificar al actor responsable y lo incluye en la tarjeta de alerta. Si el registro de auditoría no está disponible, la alerta se dispara igualmente sin atribuir un actor.
+
+**Permiso requerido:** `View Audit Log`
+
+---
+
+## Tarjetas de alerta
+
+```
+🛡️  Security Alert — ANTI_NUKE
+────────────────────────────────────────
+Channel deletion surge detected.
+4 channels deleted in the last 60 seconds.
+Threshold: 3 per minute.
+
+👥  Actor:    @suspiciousmod (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+---
+
+## Acciones automatizadas
+
+El modelo de seguridad de Nightfall es **estrictamente defensivo** — nunca realiza acciones sin una configuración explícita.
+
+| Ajuste `nuke_action` | Qué ocurre |
+|----------------------|-------------|
+| `alert_only` *(por defecto)* | Se publica una alerta en el canal de alertas |
+| `kick` | Se publica la alerta + el actor es expulsado del servidor |
+| `ban` | Se publica la alerta + el actor es baneado permanentemente |
+
+Configura con:
+```
+/security config nuke_action:kick
+```
+
+---
+
+## Activar y desactivar
+
+Anti‑Nuke está activado por defecto. Alternalo con:
+
+```
+/security toggle enabled:False
+```
+
+O mediante el asistente `/setup` (paso Feature Toggles).
+
+---
+
+## Lista blanca
+
+Los administradores o bots de confianza pueden estar en la lista blanca para omitir la detección de nuke. Sus acciones no incrementan ningún contador de tasa.
+
+```
+/whitelist
+```
+
+Usa los botones **Add User** o **Add Role** en el panel interactivo. Consulta la [referencia de Whitelist](/commands/whitelist) para conocer todos los detalles de permisos.
+
+---
+
+## Limitaciones
+
+- **Falsos positivos** — los administradores que realizan reorganizaciones masivas legítimas de canales pueden activar alertas. Añade a los administradores de confianza a la lista blanca o eleva temporalmente los umbrales durante el mantenimiento planificado.
+- **Retraso del registro de auditoría** — el registro de auditoría de Discord puede retrasarse de 1 a 3 segundos. La detección del actor puede fallar en eventos muy rápidos, aunque la alerta seguirá disparándose.
+- **Recuperación** — Nightfall alerta sobre la destrucción, pero no puede restaurar canales o roles eliminados. Utiliza las herramientas de copia de seguridad nativas de Discord para planificar la recuperación.
+
+---
+
+*Relacionado: [Anti‑Raid](/anti-raid) · [Comandos de seguridad](/commands/security) · [Whitelist](/commands/whitelist)*

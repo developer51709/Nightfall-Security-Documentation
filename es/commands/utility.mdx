@@ -1,0 +1,133 @@
+---
+title: "Comandos de utilidad"
+description: "Comandos de propósito general para el estado del bot, información del servidor y configuración."
+---
+
+Los comandos de utilidad proporcionan información general del bot y configuración. La mayoría están disponibles para todos los miembros del servidor.
+
+---
+
+## Comandos slash
+
+### `/ping`
+
+Comprueba la latencia del gateway del bot.
+
+**Respuesta:** Latencia en milisegundos con un indicador de estado codificado por color:
+- 🟢 **Verde** — menos de 150 ms (excelente)
+- 🟡 **Ámbar** — 150–300 ms (aceptable)
+- 🔴 **Rojo** — más de 300 ms (degradado)
+
+**Equivalente con prefijo:** `!ping`
+
+---
+
+### `/status`
+
+Muestra información completa sobre el estado del bot.
+
+**Muestra:**
+- Tiempo de actividad del bot
+- Latencia del gateway
+- Recuento de gremios y recuento total de miembros
+- Número de workers de eventos activos
+- Recuento de suscripciones Premium
+
+**Equivalente con prefijo:** `!status`
+
+---
+
+### `/info`
+
+Muestra información sobre el servidor actual.
+
+**Muestra:**
+- Nombre del servidor, ID e icono
+- Mención al propietario
+- Recuento de miembros (total, humanos, bots)
+- Recuentos de canales y roles
+- Fecha de creación del servidor y antigüedad
+- Nivel de verificación y nivel de boost
+- Funciones de seguridad activas (Anti‑Nuke, Verificación)
+- Estado Premium
+
+**Equivalente con prefijo:** `!info`
+
+---
+
+### `/help`
+
+Muestra la referencia completa de comandos organizada por categoría.
+
+Lista todos los comandos agrupados por: Seguridad, Moderación, AutoMod, Logging, Verificación, Premium, Afiliado, Utilidad y Propietario (solo propietarios).
+
+**Equivalente con prefijo:** `!help`
+
+---
+
+### `/setprefix`
+
+Cambia el prefijo de comando del bot para este servidor.
+
+| Opción | Tipo | Requerido | Descripción |
+|--------|------|:--------:|-------------|
+| `prefix` | String | ✅ | Nuevo prefijo (1–5 caracteres) |
+
+**Permiso requerido:** Administrator
+
+El nuevo prefijo se almacena y aplica inmediatamente. La mención al bot (`@Nightfall`) siempre funciona como prefijo independientemente del ajuste personalizado.
+
+**Equivalente con prefijo:** `!setprefix <new>`
+
+---
+
+### `/setup`
+
+Ejecuta el asistente de configuración interactivo para el onboarding de nuevos servidores.
+
+El asistente te guía por:
+1. **Canal de alertas** — dónde se publican las alertas de seguridad
+2. **Nivel de protección** — preajustes de umbrales Strict, Balanced o Relaxed
+3. **Toggles de funciones** — Anti‑Nuke, Verificación
+4. **Finalización** — resumen y aviso opcional de actualización a Premium
+
+---
+
+## Comandos con prefijo
+
+Todos los comandos con prefijo usan el prefijo configurado del servidor (por defecto: `!`). La mención al bot funciona en lugar del prefijo en cualquier momento.
+
+| Comando | Descripción |
+|---------|-------------|
+| `!ping` | Latencia del gateway |
+| `!status` | Estado del bot |
+| `!info` | Información del servidor |
+| `!help` | Listado de comandos |
+| `!setprefix <prefix>` | Cambiar prefijo (solo admin) |
+
+---
+
+## Respuesta a mención
+
+Hacer ping al bot sin nada más (`@Nightfall`) activa una tarjeta de información rápida que muestra:
+
+- Prefijo actual
+- Latencia del gateway
+- Recuento de gremios
+- Resumen de protecciones activas
+- Atajos clave de comandos
+
+---
+
+## Encontrar tu prefijo
+
+Si has olvidado el prefijo personalizado, siempre puedes usar la mención al bot:
+
+```
+@Nightfall help
+@Nightfall ping
+```
+
+---
+
+*Relacionado: [Comandos de seguridad](/commands/security) · [Guía rápida](/quickstart)*

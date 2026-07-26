@@ -10,55 +10,281 @@
   "favicon": "/favicon.svg",
 
   "navigation": {
-    "pages": [
+    "languages": [
       {
-        "group": "Getting Started",
+        "language": "en",
+        "default": true,
         "pages": [
-          "index",
-          "quickstart"
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Security Systems",
+            "pages": [
+              "security-systems",
+              "anti-nuke",
+              "anti-raid",
+              "automod",
+              "verification"
+            ]
+          },
+          {
+            "group": "Command Reference",
+            "pages": [
+              "commands/security",
+              "commands/moderation",
+              "commands/automod",
+              "commands/logging",
+              "commands/verification",
+              "commands/whitelist",
+              "commands/utility"
+            ]
+          },
+          {
+            "group": "Advanced Features",
+            "pages": [
+              "premium",
+              "affiliate"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "troubleshooting",
+              "changelog"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "legal/terms-of-service",
+              "legal/privacy-policy"
+            ]
+          }
         ]
       },
       {
-        "group": "Security Systems",
+        "language": "de",
         "pages": [
-          "security-systems",
-          "anti-nuke",
-          "anti-raid",
-          "automod",
-          "verification"
+          {
+            "group": "Erste Schritte",
+            "pages": [
+              "de/index",
+              "de/quickstart"
+            ]
+          },
+          {
+            "group": "Sicherheitssysteme",
+            "pages": [
+              "de/security-systems",
+              "de/anti-nuke",
+              "de/anti-raid",
+              "de/automod",
+              "de/verification"
+            ]
+          },
+          {
+            "group": "Befehlsreferenz",
+            "pages": [
+              "de/commands/security",
+              "de/commands/moderation",
+              "de/commands/automod",
+              "de/commands/logging",
+              "de/commands/verification",
+              "de/commands/whitelist",
+              "de/commands/utility"
+            ]
+          },
+          {
+            "group": "Erweiterte Funktionen",
+            "pages": [
+              "de/premium",
+              "de/affiliate"
+            ]
+          },
+          {
+            "group": "Support",
+            "pages": [
+              "de/troubleshooting",
+              "de/changelog"
+            ]
+          },
+          {
+            "group": "Rechtliches",
+            "pages": [
+              "de/legal/terms-of-service",
+              "de/legal/privacy-policy"
+            ]
+          }
         ]
       },
       {
-        "group": "Command Reference",
+        "language": "es",
         "pages": [
-          "commands/security",
-          "commands/moderation",
-          "commands/automod",
-          "commands/logging",
-          "commands/verification",
-          "commands/whitelist",
-          "commands/utility"
+          {
+            "group": "Primeros pasos",
+            "pages": [
+              "es/index",
+              "es/quickstart"
+            ]
+          },
+          {
+            "group": "Sistemas de seguridad",
+            "pages": [
+              "es/security-systems",
+              "es/anti-nuke",
+              "es/anti-raid",
+              "es/automod",
+              "es/verification"
+            ]
+          },
+          {
+            "group": "Referencia de comandos",
+            "pages": [
+              "es/commands/security",
+              "es/commands/moderation",
+              "es/commands/automod",
+              "es/commands/logging",
+              "es/commands/verification",
+              "es/commands/whitelist",
+              "es/commands/utility"
+            ]
+          },
+          {
+            "group": "Funciones avanzadas",
+            "pages": [
+              "es/premium",
+              "es/affiliate"
+            ]
+          },
+          {
+            "group": "Soporte",
+            "pages": [
+              "es/troubleshooting",
+              "es/changelog"
+            ]
+          },
+          {
+            "group": "Legal",
+            "pages": [
+              "es/legal/terms-of-service",
+              "es/legal/privacy-policy"
+            ]
+          }
         ]
       },
       {
-        "group": "Advanced Features",
+        "language": "fr",
         "pages": [
-          "premium",
-          "affiliate"
+          {
+            "group": "Démarrage",
+            "pages": [
+              "fr/index",
+              "fr/quickstart"
+            ]
+          },
+          {
+            "group": "Systèmes de sécurité",
+            "pages": [
+              "fr/security-systems",
+              "fr/anti-nuke",
+              "fr/anti-raid",
+              "fr/automod",
+              "fr/verification"
+            ]
+          },
+          {
+            "group": "Référence des commandes",
+            "pages": [
+              "fr/commands/security",
+              "fr/commands/moderation",
+              "fr/commands/automod",
+              "fr/commands/logging",
+              "fr/commands/verification",
+              "fr/commands/whitelist",
+              "fr/commands/utility"
+            ]
+          },
+          {
+            "group": "Fonctionnalités avancées",
+            "pages": [
+              "fr/premium",
+              "fr/affiliate"
+            ]
+          },
+          {
+            "group": "Assistance",
+            "pages": [
+              "fr/troubleshooting",
+              "fr/changelog"
+            ]
+          },
+          {
+            "group": "Mentions légales",
+            "pages": [
+              "fr/legal/terms-of-service",
+              "fr/legal/privacy-policy"
+            ]
+          }
         ]
       },
       {
-        "group": "Support",
+        "language": "ru",
         "pages": [
-          "troubleshooting",
-          "changelog"
-        ]
-      },
-      {
-        "group": "Legal",
-        "pages": [
-          "legal/terms-of-service",
-          "legal/privacy-policy"
+          {
+            "group": "Начало работы",
+            "pages": [
+              "ru/index",
+              "ru/quickstart"
+            ]
+          },
+          {
+            "group": "Системы безопасности",
+            "pages": [
+              "ru/security-systems",
+              "ru/anti-nuke",
+              "ru/anti-raid",
+              "ru/automod",
+              "ru/verification"
+            ]
+          },
+          {
+            "group": "Справочник команд",
+            "pages": [
+              "ru/commands/security",
+              "ru/commands/moderation",
+              "ru/commands/automod",
+              "ru/commands/logging",
+              "ru/commands/verification",
+              "ru/commands/whitelist",
+              "ru/commands/utility"
+            ]
+          },
+          {
+            "group": "Расширенные возможности",
+            "pages": [
+              "ru/premium",
+              "ru/affiliate"
+            ]
+          },
+          {
+            "group": "Поддержка",
+            "pages": [
+              "ru/troubleshooting",
+              "ru/changelog"
+            ]
+          },
+          {
+            "group": "Юридическая информация",
+            "pages": [
+              "ru/legal/terms-of-service",
+              "ru/legal/privacy-policy"
+            ]
+          }
         ]
       }
     ],

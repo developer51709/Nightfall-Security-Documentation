@@ -1,0 +1,103 @@
+---
+title: "/security"
+description: "Configura los umbrales de detección de amenazas, consulta el estado de seguridad en vivo y activa la protección."
+---
+
+El grupo de comandos `/security` permite a los administradores del servidor configurar los umbrales de detección de amenazas de Nightfall, consultar el estado de seguridad en vivo y activar o desactivar la protección.
+
+Todos los comandos `/security` requieren el permiso de **Administrador** y son exclusivos del gremio.
+
+---
+
+## Comandos
+
+### `/security config`
+
+Configura umbrales de seguridad por gremio y el canal de alertas.
+
+| Opción | Tipo | Descripción |
+|--------|------|-------------|
+| `alert_channel` | Channel | Dónde se publican las alertas de seguridad |
+| `max_joins` | 1–1000 | Máximo de entradas de miembros por minuto antes de disparar una alerta de raid |
+| `max_channel_deletes` | 1–100 | Máximo de eliminaciones de canales por minuto antes de disparar una alerta de nuke |
+| `max_role_deletes` | 1–100 | Máximo de eliminaciones de roles por minuto antes de disparar una alerta de nuke |
+| `max_bans` | 1–100 | Máximo de baneos por minuto antes de disparar una alerta de baneo masivo |
+| `max_mentions` | 1–100 | Máximo de menciones en un solo mensaje antes de disparar una alerta |
+| `min_account_age_days` | 0–365 | Antigüedad mínima de cuenta en días (0 = deshabilitado) |
+| `account_age_action` | `kick` \| `ban` \| `alert_only` | Acción para cuentas por debajo de la antigüedad mínima |
+| `raid_action` | `alert_only` \| `kick` \| `ban` | Respuesta automatizada cuando se detecta un raid |
+| `nuke_action` | `alert_only` \| `kick` \| `ban` | Respuesta automatizada cuando se detecta un nuke |
+| `mass_mention_action` | `alert_only` \| `warn` \| `kick` \| `ban` | Respuesta automatizada a menciones masivas |
+
+Todas las opciones son opcionales — omitir una deja el ajuste existente sin cambios.
+
+**Ejemplo:**
+```
+/security config alert_channel:#alerts max_joins:8 raid_action:kick
+```
+
+---
+
+### `/security overview`
+
+Muestra un panel de seguridad en vivo para el servidor actual, incluyendo:
+
+- Umbrales actuales de detección para todos los tipos de eventos
+- Eventos de amenaza recientes (últimas 10 alertas)
+- Tasas actuales de eventos en vivo (entradas/min, eliminaciones de canales/min, etc.)
+- Si Anti‑Nuke está activado
+- Estado Premium
+
+---
+
+### `/security toggle`
+
+Activa o desactiva la protección Anti‑Nuke de Nightfall para este servidor.
+
+| Opción | Tipo | Descripción |
+|--------|------|-------------|
+| `enabled` | Boolean | `True` para activar, `False` para desactivar |
+
+Cuando está desactivada, el bot permanece en el servidor y sigue registrando, pero no alertará ni tomará acciones automatizadas ante eventos de nuke o raid.
+
+---
+
+## Preajustes de umbrales
+
+El asistente `/setup` ofrece tres preajustes como punto de partida:
+
+| Preajuste | Entradas/min | Eliminaciones de canales/min | Eliminaciones de roles/min | Baneos/min | Menciones |
+|--------|-----------|--------------------|-----------------|---------|---------| 
+| **Strict** | 5 | 2 | 2 | 3 | 5 |
+| **Balanced** | 10 | 3 | 3 | 5 | 8 |
+| **Relaxed** | 20 | 6 | 6 | 10 | 15 |
+
+---
+
+## Tarjetas de alerta
+
+Cuando se supera un umbral, Nightfall publica una alerta formateada en tu canal de alertas configurado:
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────
+Join surge detected: 14 joins in 60 seconds (threshold: 10)
+
+👥  Actor: @username (123456789)
+⏰  Detected: 2 minutes ago
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+### Niveles de severidad
+
+| Nivel | Significado |
+|-------|---------|
+| **Low** | Anomalía menor — informativo |
+| **Medium** | Actividad sospechosa |
+| **High** | Amenaza activa detectada |
+| **Critical** | Ataque coordinado severo |
+
+---
+
+*Relacionado: [Anti‑Nuke](/anti-nuke) · [Anti‑Raid](/anti-raid) · [Whitelist](/commands/whitelist)*

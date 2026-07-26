@@ -1,0 +1,218 @@
+---
+title: "Datenschutzrichtlinie"
+description: "Datenschutzrichtlinie von Nightfall Security — gültig ab dem 20. Juli 2026."
+---
+
+**Nightfall Security**
+Datum des Inkrafttretens: 20. Juli 2026
+Zuletzt aktualisiert: 25. Juli 2026
+
+---
+
+## 1. Einleitung
+
+Diese Datenschutzrichtlinie erklärt, welche Daten Nightfall Security („der Bot", „wir", „uns") erfasst, warum wir sie erfassen, wie sie gespeichert werden und welche Rechte Sie in Bezug auf diese Daten haben.
+
+Indem Sie den Bot zu Ihrem Discord-Server hinzufügen oder mit ihm interagieren, stimmen Sie den in dieser Richtlinie beschriebenen Datenpraktiken zu. Wenn Sie eine selbstgehostete Instanz von Nightfall Security betreiben, sind Sie der Datenverantwortliche für Ihre Nutzer und sollten Ihre eigene Datenschutzrichtlinie veröffentlichen.
+
+---
+
+## 2. Welche Daten wir erfassen
+
+### 2.1 Server- (Gilden-) Daten
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| Gilden-ID | Ihren Server für serverspezifische Einstellungen identifizieren | Ja, dauerhaft |
+| Gildennname | In Logs und DM-Benachrichtigungen referenziert | Nein — nur zur Laufzeit abgerufen |
+| Besitzer-ID | Abonnement- und Erinnerungs-DMs | Ja, in Premium-Abonnement-Datensätzen |
+| Alarmkanal-ID | Sicherheitsalarme veröffentlichen | Ja, in den Server-Einstellungen |
+| Sicherheits-Schwellenwerte | Benutzerdefinierte Erkennungskonfiguration | Ja, in den Server-Einstellungen |
+| Audit-Log-Einträge | Akteurerkennung für Sicherheitsereignisse | Nein — zur Laufzeit abgerufen, nicht gespeichert |
+
+### 2.2 Mitglieds-/Nutzerdaten
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| Nutzer-ID | Moderationshistorie, Verwarnungen, Eigentum, Affiliate-Datensätze | Ja |
+| Nutzername / Anzeigename | In Log-Nachrichten referenziert | Nein — nur zur Laufzeit abgerufen |
+| Nachrichteninhalt | Auswertung von AutoMod-Regeln | Nein — im Speicher ausgewertet, niemals persistiert |
+| Nachrichtenlänge | Statistische Spam-Erkennung | Ja (nur Länge, kein Inhalt) |
+| Kontoerstellungsdatum | Erkennung von Raids mit neuen Konten | Nein — nur zur Laufzeit abgerufen |
+| Verifizierungsantworten | Bildcaptcha-Herausforderung | Temporär — nach der Verifizierung gelöscht (max. 10 Minuten) |
+
+### 2.3 Moderationsdaten
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| Verwarnungsdatensätze (Server, Nutzer, Moderator, Grund, Zeitstempel) | Moderationshistorie und Prüfspur | Ja, dauerhaft |
+| Sicherheitsereignis-Datensätze (Bedrohungstyp, Schweregrad, Akteur-ID, Detail) | Sicherheits-Audit-Log | Ja, für 90 Tage |
+
+### 2.4 Zahlungsdaten
+
+Nightfall Security verarbeitet Zahlungen **nicht** direkt. Zahlungen werden von OxaPay, einem Drittanbieter, abgewickelt. Wir speichern:
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| OxaPay-Rechnungs-Track-ID | Zahlung mit Abonnement verknüpfen | Ja, in Premium-Abonnement-Datensätzen |
+| Abonnement-Ablauf | Funktionszugriffssteuerung | Ja, in Premium-Abonnement-Datensätzen |
+
+Wir speichern keine Kreditkartennummern, Krypto-Wallet-Adressen oder Zahlungsdaten. Einzelheiten zu ihren Datenpraktiken finden Sie in der [Datenschutzrichtlinie von OxaPay](https://oxapay.com/privacy).
+
+### 2.5 Affiliate-Daten
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| Affiliate-Nutzer-ID | Empfehlungen gutschreiben und Stufen-Tracking | Ja, in Affiliate-Datensätzen |
+| Testphasenbeginn / -ablauf | Lebenszyklusverwaltung der Testphase | Ja, in Affiliate-Datensätzen |
+| Konversionsstatus | Affiliate-Analysen | Ja, in Affiliate-Datensätzen |
+| Rabatt-DM-Sende-Status | Doppelte DMs verhindern | Ja, in Affiliate-Datensätzen |
+
+### 2.6 Support-Ticket-Daten (Support-Bot)
+
+Der optionale **Support Bot** treibt den Community-Support-Server des Projekts an. Er ist nur relevant, wenn Sie diesem Server beitreten und ein Support-Ticket öffnen. Wenn Sie das tun:
+
+| Daten | Zweck | Gespeichert |
+|------|---------|--------|
+| Ihre Discord-Nutzer-ID | Ticket mit Ihnen verknüpfen und Kanalzugriff beschränken | Ja — in den Topic-Metadaten des Ticket-Kanals |
+| Ticket-Kategorie und -Status | Ihre Anfrage weiterleiten und verfolgen | Ja — in den Topic-Metadaten des Ticket-Kanals |
+| Ihre Problembeschreibung und Nachrichten | Support bereitstellen | Ja — als Nachrichten im privaten Ticket-Kanal, bis der Kanal gelöscht wird |
+| Zugewiesene Personal-ID | Ticket-Eigentümerschaft verfolgen | Ja — in den Topic-Metadaten des Ticket-Kanals |
+
+Ticket-Inhalte leben im Discord-Kanal selbst (nicht in der Datenbank des Bots) und sind nur für Sie und das Support-Personal sichtbar. Teilen Sie in einem Ticket keine sensiblen Zugangsdaten (Passwörter, Zahlungsdetails, Tokens). Das Support-Personal kann Ticket-Kanäle nach eigenem Ermessen löschen oder archivieren.
+
+---
+
+## 3. Was wir NICHT erfassen
+
+- **Nachrichteninhalt** — Nachrichten werden zur Auswertung von AutoMod-Regeln im Speicher verarbeitet und sofort verworfen. Es wird kein Nachrichtentext gespeichert. *(Ausnahme: Wenn Sie ein Support-Ticket öffnen, werden die Nachrichten, die Sie in diesem Ticket-Kanal senden, als Discord-Nachrichten aufbewahrt, bis der Kanal gelöscht wird — siehe §2.6.)*
+- **Sprachdaten** — wir protokollieren Sprachzustandsänderungsereignisse (Beitritt/Austritt/Mute) zu Prüfzwecken, zeichnen aber kein Audio auf.
+- **Direktnachrichten** — der Bot kann DMs senden (Erinnerungen, Checkout-Karten, Rabattangebote), liest oder speichert aber keine eingehenden DMs.
+- **E-Mail-Adressen** — wir haben kein Kontosystem; die Identität basiert vollständig auf Discord-Nutzer-IDs.
+- **Echte Namen oder Adressen** — wir erfassen keine personenbezogenen Daten über Discord-Nutzer-IDs und Gilden-IDs hinaus.
+- **Finanzinformationen** — Zahlungsdaten werden ausschließlich von OxaPay abgewickelt.
+
+---
+
+## 4. Wie wir Daten verwenden
+
+| Zweck | Verwendete Daten | Rechtsgrundlage |
+|---------|-----------|-------------|
+| Erkennung von und Alarmierung bei Sicherheitsbedrohungen | Server-Einstellungen, Ereigniszähler (im Speicher) | Berechtigtes Interesse (Serversicherheit) |
+| Moderationshistorie und Verwarnungen | Nutzer-ID, Moderator-ID, Grund, Zeitstempel | Berechtigtes Interesse (Serversicherheit) |
+| Bereitstellung von Premium-Funktionen | Server-ID, Abonnement-Ablauf | Vertragserfüllung |
+| Senden von Ablauf-Erinnerungs-DMs | Besitzer-ID, Abonnement-Ablauf | Vertragserfüllung |
+| Affiliate-Programm-Tracking | Affiliate-Code, Server-ID, Konversionsstatus | Berechtigtes Interesse (Programmbetrieb) |
+| Senden von Rabatt-DMs nach der Testphase | Server-Besitzer-ID | Berechtigtes Interesse (kommerzielle Kommunikation) |
+| Spam-/Nachrichtenraten-Erkennung | Nachrichtenlänge, Autor-ID, Zeitstempel | Berechtigtes Interesse (Serversicherheit) |
+| Bearbeitung von Support-Anfragen | Ticket-Nutzer-ID, Kategorie, Status und Nachrichten | Berechtigtes Interesse (Bereitstellung von Support) |
+
+---
+
+## 5. Aufbewahrung von Daten
+
+| Daten | Aufbewahrungsdauer |
+|------|----------------|
+| Server-Einstellungen | Bis der Server den Bot entfernt oder eine Löschung anfordert |
+| Verwarnungen | Dauerhaft (zur Wahrung der Prüfintegrität) |
+| Sicherheitsereignisse | 90 Tage (automatisch gelöscht) |
+| Nachrichtenstatistiken | 30 Tage (automatisch gelöscht) |
+| Premium-Abonnements | Bis 7 Tage nach Ablauf (automatisch gelöscht) |
+| Premium-Codes | Bis zur Löschung durch einen Bot-Besitzer |
+| Affiliate-Testphasen | Dauerhaft (setzt die Ein-Testphase-pro-Server-Regel durch) |
+| Verifizierungssitzungen | 10 Minuten (automatischer Ablauf) |
+| AutoMod-Ereignisse | 30 Tage (automatisch gelöscht) |
+| Support-Ticket-Kanäle und -Inhalte | Bis der Kanal vom Support-Personal geschlossen und gelöscht wird |
+
+---
+
+## 6. Datenweitergabe
+
+Wir verkaufen, vermieten oder geben Ihre Daten nicht an Dritte weiter, außer:
+
+**6.1 Discord Inc.** — Der Bot kommuniziert mit der API von Discord, um zu funktionieren. Die [Datenschutzrichtlinie](https://discord.com/privacy) von Discord gilt für alle Daten, die über ihre Plattform übertragen werden.
+
+**6.2 OxaPay** — Wenn Sie einen Premium-Kauf initiieren, werden Ihre Zahlungsinformationen an OxaPay gesendet. Wir teilen nur den Rechnungsbetrag, die Beschreibung und eine interne Bestell-ID.
+
+**6.3 Rechtliche Anforderungen** — Wir können Daten offenlegen, wenn dies gesetzlich, gerichtlich oder zum Schutz der Rechte und Sicherheit der Bot-Betreiber oder anderer erforderlich ist.
+
+---
+
+## 7. Datensicherheit
+
+Alle Daten werden sicher gespeichert mit:
+
+- Zugriffskontrolle auf Anwendungsebene, die sicherstellt, dass alle Schreibvorgänge sicher serialisiert werden
+- Sicherheit für gleichzeitige Lesevorgänge während Schreibvorgängen
+- Keiner öffentlich zugänglichen Daten-API
+
+Wir implementieren angemessene technische Maßnahmen zum Schutz Ihrer Daten. Kein System ist jedoch perfekt sicher. Sie sollten sicherstellen, dass Ihre Hosting-Umgebung angemessene Zugriffskontrollen und Festplattenverschlüsselung hat, falls Sie sensible Serverdaten verarbeiten.
+
+---
+
+## 8. Ihre Rechte
+
+### Für Serveradministratoren
+
+Als Administrator, der den Bot eingeladen hat, können Sie:
+
+- Auf die gespeicherten Einstellungen Ihres Servers über `/security overview`, `/automod status` und `/logging status` **zugreifen**
+- Einstellungen jederzeit über die entsprechenden Befehle **ändern**
+- Die Daten Ihres Servers **löschen**, indem Sie den Bot von Ihrem Server entfernen und uns für eine manuelle Datenlöschungsanfrage kontaktieren
+
+### Für Servermitglieder
+
+Als Servermitglied, dessen Daten gespeichert werden können (z. B. ein Verwarnungsdatensatz):
+
+- Sie können Zugriff auf, Berichtigung oder Löschung Ihrer personenbezogenen Daten beantragen, indem Sie den Serveradministrator kontaktieren, der in Ihrem Namen eine Löschungsanfrage einreichen kann
+- Discord-Nutzer-IDs gelten in den meisten Rahmenwerken als pseudonyme Kennungen, nicht als direkt identifizierbare personenbezogene Daten, aber wir respektieren angemessene Löschungsanfragen
+
+### Ausübung von Rechten
+
+Um Datenrechte auszuüben, kontaktieren Sie uns über den offiziellen Support-Server. Wir werden innerhalb von 30 Tagen antworten.
+
+---
+
+## 9. Datenschutz von Kindern
+
+Der Bot ist nicht für die Nutzung durch Personen unter 13 Jahren bestimmt, im Einklang mit dem Mindestalter von Discord. Wenn Sie glauben, dass ein Kind unter 13 Jahren mit dem Bot in einer Weise interagiert hat, die zur Datenerfassung geführt hat, kontaktieren Sie uns für eine sofortige Entfernung.
+
+---
+
+## 10. Selbstgehostete Instanzen
+
+Wenn Sie eine selbstgehostete Instanz von Nightfall Security betreiben:
+
+- Sie sind der Datenverantwortliche für alle von Ihrer Instanz erfassten Daten
+- Sie sind verantwortlich für die Einhaltung geltender Datenschutzgesetze (DSGVO, CCPA usw.)
+- Sie sollten Ihre eigene Datenschutzrichtlinie veröffentlichen und alle erforderlichen Einwilligungen von Ihren Nutzern einholen
+- Die ursprünglichen Projekt-Mitwirkenden sind nicht verantwortlich für die Datenpraktiken selbstgehosteter Betreiber
+
+---
+
+## 11. Änderungen dieser Richtlinie
+
+Wir können diese Datenschutzrichtlinie von Zeit zu Zeit aktualisieren. Wesentliche Änderungen werden über die offiziellen Kanäle des Projekts kommuniziert. Das Datum „Zuletzt aktualisiert" oben spiegelt die neueste Überarbeitung wider. Die weitere Nutzung des Bots nach Inkrafttreten von Änderungen stellt die Annahme der überarbeiteten Richtlinie dar.
+
+---
+
+## 12. Cookies und Tracking
+
+Nightfall Security verwendet keine Cookies, Tracking-Pixel oder Analysedienste jeglicher Art.
+
+---
+
+## 13. Kontakt
+
+Für datenschutzbezogene Fragen, Datenzugriffsanfragen oder um eine Datenschutzbedenken zu melden:
+
+- Öffnen Sie ein Ticket der Kategorie **Appeals & Administrative Requests** im [offiziellen Support-Server](https://discord.gg/CXzX38Z7J9)
+- E-Mail: `developer51709@proton.me`
+- Telefon: `+1 (762) 435-4135`
+
+Wir nehmen Datenschutzbedenken ernst und werden innerhalb von 30 Tagen antworten.
+
+---
+
+*Nightfall Security · MIT-Lizenz*
+*Diese Richtlinie gilt für den offiziellen gehosteten Dienst. Drittanbieter-Dienste sind eigenverantwortlich für ihre Datenpraktiken.*

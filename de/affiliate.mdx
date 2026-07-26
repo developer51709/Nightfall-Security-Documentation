@@ -1,0 +1,125 @@
+---
+title: "Affiliate-Programm"
+description: "Verdienen Sie Anerkennung und Belohnungen, indem Sie Discord-Server für Nightfall Premium empfehlen."
+---
+
+Mit dem Nightfall-Affiliate-Programm können zugelassene Partner Anerkennung und Vorteile verdienen, indem sie Discord-Server für die Premium-Stufe des Bots empfehlen. Affiliates teilen einen einzigartigen Code; jeder Server, der den Code einlöst, erhält eine 7‑tägige kostenlose Testphase, und Server, die zu einem bezahlten Premium wechseln, werden auf die Stufe des Affiliates angerechnet.
+
+---
+
+## So funktioniert es
+
+<Steps>
+  <Step title="Code erhalten">
+    Affiliate-Codes werden von den Administratoren des Nightfall-Bots ausgestellt. Nach Genehmigung erhalten Sie einen einzigartigen Code zum Teilen.
+  </Step>
+
+  <Step title="Code teilen">
+    Teilen Sie Ihren Code mit Discord-Serveradministratoren. Diese lösen ihn ein mit:
+
+    ```
+    /premium redeem code:YOUR-AFFILIATE-CODE
+    ```
+  </Step>
+
+  <Step title="Testphase wird aktiviert">
+    Der Server erhält sofort eine **7‑tägige kostenlose Testphase** von Nightfall Premium. Jeder Server kann nur eine einzige Affiliate-Testphase in Anspruch nehmen.
+  </Step>
+
+  <Step title="Konversionen verfolgen">
+    Überwachen Sie Ihre Testphasen, Konversionen und den Stufenfortschritt mit `/affiliate stats`.
+  </Step>
+
+  <Step title="Vorteile verdienen">
+    Mit steigender Anzahl an Konversionen steigen Sie durch die Stufen auf und schalten Anerkennung, Priority-Support und Auszahlungsberechtigung frei.
+  </Step>
+</Steps>
+
+---
+
+## Stufensystem
+
+| Stufe | Erforderliche Konversionen | Auszahlungsberechtigt | Vorteile |
+|------|---------------------|:---------------:|-------|
+| **Partner** | 0 | ❌ | Starten Sie das Tracking — teilen Sie Ihren Code und sammeln Sie Konversionen |
+| **Bronze** | 1+ | ❌ | Affiliate-Abzeichen in `/affiliate stats` |
+| **Silber** | 3+ | ❌ | Erwähnung im Priority-Support + benutzerdefinierte Analysen |
+| **Gold** | 7+ | ✅ | Berechtigung zur Umsatzbeteiligung + Auszahlungs-Wallet + Priority-Support |
+| **Diamant** | 15+ | ✅ | Berechtigung für Partner-Spotlight + alle Gold-Vorteile |
+
+Stufen werden live aus Ihrer Konversionsanzahl berechnet — eine manuelle Stufenzuweisung ist nicht erforderlich.
+
+---
+
+## Analysen
+
+Sehen Sie Ihr vollständiges Analyse-Dashboard mit:
+
+```
+/affiliate stats
+```
+
+| Metrik | Beschreibung |
+|--------|-------------|
+| Gesamttestphasen | Server, die Ihren Code eingelöst haben |
+| Aktive Testphasen | Aktuell laufende Testphasen |
+| Ausstehende Konversionen | Testphasen abgelaufen, Rabatt gesendet, wartet auf Kauf |
+| Konversionen | Server, die Premium nach der Testphase gekauft haben |
+| Konversionsrate | `conversions ÷ total_trials × 100` |
+
+---
+
+## Auszahlungssystem
+
+Affiliates ab der Stufe **Gold** (7+ Konversionen) können ein Krypto-Wallet für Auszahlungen registrieren.
+
+```
+/affiliate payout
+```
+
+Verwenden Sie den Button **Set / Update Wallet** im Panel, um Ihre Wallet-Adresse und das Netzwerk einzugeben. Unterstützte Netzwerke sind unter anderem Bitcoin (BTC), Ethereum (ETH), Solana (SOL), USDT‑TRC20, USDT‑ERC20, USDC‑ERC20, Litecoin (LTC) und weitere.
+
+Auszahlungen werden vom Nightfall-Team in einem laufenden Zeitplan für berechtigte Affiliates verarbeitet.
+
+---
+
+## Rabatt nach der Testphase
+
+Wenn eine Testphase abläuft, ohne dass der Server auf bezahltes Premium umsteigt, sendet Nightfall automatisch eine **einmalige DM** an den Serverbesitzer mit einem Rabattangebot (20 % Rabatt auf den ersten Monat). Wenn der Serverbesitzer später kauft, wird Ihrem Konto eine Konversion gutgeschrieben.
+
+---
+
+## Befehle
+
+| Befehl | Beschreibung |
+|---------|-------------|
+| `/affiliate code` | Sehen Sie Ihren Code, kopieren Sie die Anweisungen zum Teilen und sehen Sie Ihre aktuelle Stufe |
+| `/affiliate stats` | Vollständiges Analyse-Dashboard — Testphasen, Konversionen, Rate und Stufenfortschritt |
+| `/affiliate perks` | Durchsuchen Sie die Stufenleiter mit Anzeigen zu freigeschalteten und gesperrten Vorteilen |
+| `/affiliate payout` | Registrieren oder aktualisieren Sie Ihre Auszahlungs-Wallet (ab Stufe Gold) |
+| `/affiliate leaderboard` | Top-Affiliates nach Konversionen sortiert (nur für Bot-Administratoren sichtbar) |
+
+---
+
+## Affiliate werden
+
+Affiliate-Codes werden von registrierten Nightfall-Bot-Administratoren ausgestellt. So bewerben Sie sich:
+
+1. Treten Sie dem [offiziellen Support-Server](https://discord.gg/CXzX38Z7J9) bei
+2. Kontaktieren Sie das Team, um Interesse zu bekunden
+3. Bei Genehmigung wird Ihr Code sofort aktiviert
+4. Erreichen Sie die Stufe **Gold** (7+ Konversionen), um die Auszahlungsregistrierung freizuschalten
+
+---
+
+## Regeln
+
+- **Genaue Darstellung** — Affiliates müssen Nightfall und das Testangebot ehrlich darstellen. Irreführende oder täuschende Werbung ist untersagt.
+- **Keine betrügerischen Aktivitäten** — das Erstellen gefälschter Testeinlösungen, das Koordinieren falscher Konversionen oder jegliche andere Form von Affiliate-Betrug führt zum sofortigen Ausschluss und zur Stornierung ausstehender Vorteile.
+- **Code-Eigentum** — Affiliate-Codes bleiben Eigentum der Nightfall-Bot-Administratoren und können jederzeit widerrufen werden.
+
+Die vollständigen Affiliate-Richtlinien finden Sie in den [Nutzungsbedingungen](/legal/terms-of-service).
+
+---
+
+*Verwandt: [Premium](/premium) · [Nutzungsbedingungen](/legal/terms-of-service)*

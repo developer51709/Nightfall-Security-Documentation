@@ -1,0 +1,135 @@
+---
+title: "/logging"
+description: "Weisen Sie dedizierte Kanäle zu, um detaillierte Audit-Logs für jede Kategorie von Serveraktivitäten zu erhalten."
+---
+
+Mit der Befehlsgruppe `/logging` können Administratoren bestimmte Textkanäle zuweisen, um detaillierte Audit-Logs für verschiedene Kategorien von Serveraktivitäten zu erhalten.
+
+Alle `/logging`-Befehle erfordern die Berechtigung **Administrator**.
+
+---
+
+## Log-Kategorien
+
+| Kategorie | Protokollierte Ereignisse |
+|----------|--------------|
+| `members` | Mitgliederbeitritte, -austritte, -banns, -kicks, Änderungen von Spitznamen und Rollen |
+| `messages` | Nachrichtenbearbeitungen, Nachrichtenlöschungen, Massenlöschungen |
+| `channels` | Kanalerstellung, -löschung, Änderungen von Namen/Thema/Berechtigungen |
+| `roles` | Rollenerstellung, -löschung, Berechtigungsänderungen, Farbänderungen |
+| `voice` | Sprachkanal-Beitritte, -Austritte, -Verschiebungen, Mutes, Deafens |
+| `server` | Änderungen von Servername, Icon, Region und Einstellungen |
+| `moderation` | Alle Aktionen der `/mod`-Befehle |
+| `security` | Sicherheitsereignisse (nützlich als dediziertes Audit-Log neben dem Echtzeit-Alarmkanal) |
+
+---
+
+## Befehle
+
+### `/logging set`
+
+Weist einer bestimmten Kategorie einen Kanal zum Empfang von Logs zu.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | Die Log-Kategorie |
+| `channel` | TextChannel | ✅ | Kanal, in dem Logs veröffentlicht werden |
+
+Jede Kategorie wird einem Kanal zugeordnet. Erneutes Ausführen von `/logging set` für dieselbe Kategorie ersetzt die vorherige Zuweisung.
+
+**Beispiele:**
+```
+/logging set category:messages channel:#message-logs
+/logging set category:moderation channel:#mod-audit
+/logging set category:security channel:#security-log
+```
+
+---
+
+### `/logging remove`
+
+Beendet das Senden von Logs für eine bestimmte Kategorie.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | Die zu entfernende Log-Kategorie |
+
+---
+
+### `/logging status`
+
+Zeigt alle aktuellen Zuweisungen von Logging-Kanälen für diesen Server an.
+
+---
+
+### `/logging test`
+
+Veröffentlicht eine Beispiel-Log-Karte im zugewiesenen Kanal einer Kategorie, damit Sie Formatierung und Berechtigungen überprüfen können, bevor Sie sich darauf verlassen.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `category` | Choice | ✅ | Die zu testende Kategorie |
+
+---
+
+## Beispiel-Log-Karten
+
+### Mitgliederbeitritt
+```
+👥  Member Joined
+────────────────────────────────
+User:         @newmember (123456789)
+Account age:  3 days ⚠️
+Joined at:    <timestamp>
+Member count: 247
+
+─  Nightfall Security  •  Member Logging
+```
+
+### Nachrichtenlöschung
+```
+💬  Message Deleted
+────────────────────────────────
+Author:   @user (987654321)
+Channel:  #general
+Content:  "deleted message content here"
+Deleted:  <timestamp>
+
+─  Nightfall Security  •  Message Logging
+```
+
+### Moderationsaktion
+```
+⚖️  Member Banned
+────────────────────────────────
+Target:     @user (111222333)
+Moderator:  @mod (444555666)
+Reason:     Repeated spam violations
+
+─  Nightfall Security  •  Moderation Logging
+```
+
+---
+
+## Berechtigungsanforderungen
+
+Damit Nightfall Logs veröffentlichen kann, benötigt es diese Berechtigungen im Log-Kanal:
+
+- `View Channel`
+- `Send Messages`
+- `Embed Links`
+
+Wenn eine davon fehlt, wird der Log-Eintrag stillschweigend verworfen.
+
+---
+
+## Tipps
+
+- Erstellen Sie eine **private Log-Kategorie**, die nur für Administratoren sichtbar ist, mit einem Kanal pro Log-Typ
+- Verwenden Sie das `security`-Logging als dauerhafte Prüfspur getrennt vom Echtzeit-Alarmkanal
+- Das `moderation`-Log wird automatisch von allen `/mod`-Befehlen befüllt — keine zusätzliche Konfiguration erforderlich
+- Verwenden Sie `/logging test`, um jeden Kanal zu überprüfen, bevor Sie sich darauf verlassen
+
+---
+
+*Verwandt: [Moderationsbefehle](/commands/moderation) · [Sicherheitsbefehle](/commands/security)*

@@ -1,0 +1,111 @@
+---
+title: "/verification"
+description: "Configurez une porte d'entrée pour les membres avec un défi captcha image optionnel."
+---
+
+Le groupe de commandes `/verification` configure une porte de vérification des membres. Les nouveaux membres doivent compléter une étape de vérification avant de pouvoir accéder au reste du serveur.
+
+Lorsque le captcha est activé, Nightfall envoie aux membres un DM contenant un captcha image rendu — un défi de texte déformé. Les membres tapent les caractères qu'ils voient dans le DM pour se vérifier.
+
+Toutes les commandes `/verification` nécessitent la permission **Administrator**.
+
+---
+
+## Fonctionnement
+
+1. Les nouveaux membres rejoignent et ne peuvent pas accéder au serveur complet
+2. Ils voient un salon de vérification avec un bouton **Verify** persistant (publié par `/verification post`)
+3. Cliquer sur Verify :
+   - **Captcha OFF :** le rôle est attribué immédiatement
+   - **Captcha ON :** Nightfall envoie une carte DM avec des instructions et une image captcha
+4. Le membre tape les 5 caractères qu'il voit (insensible à la casse) directement dans le DM
+5. **Réponse correcte :** le DM est modifié sur place pour afficher l'état complété avec une superposition de coche verte ; le rôle vérifié est accordé
+6. **Réponse fausse :** une carte d'erreur est envoyée ; le membre doit cliquer à nouveau sur Verify pour une nouvelle image
+7. Les sessions expirent après **10 minutes** d'inactivité
+
+---
+
+## Commandes
+
+### `/verification panel`
+
+Ouvrez le panneau de configuration administrateur.
+
+Affiche les paramètres actuels et fournit :
+- Un sélecteur de rôle pour définir le **Verified Role**
+- Bascule **Enable / Disable** pour la porte de vérification
+- Bascule **Image Captcha: ON / OFF**
+
+---
+
+### `/verification post`
+
+Publiez le panneau de vérification persistant dans un salon.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `channel` | TextChannel | ✅ | Salon dans lequel publier le bouton Verify |
+
+**Exigences :**
+- Un rôle vérifié doit être configuré au préalable via `/verification panel`
+- Nightfall doit disposer de la permission `Send Messages` dans le salon cible
+
+Le bouton Verify persiste à travers les redémarrages du bot — les membres peuvent cliquer dessus à tout moment, même après une panne.
+
+<Warning>
+  Publiez le panneau une fois par salon. Supprimez l'ancien message avant d'en publier un nouveau.
+</Warning>
+
+---
+
+### `/verification reset`
+
+Retirez le rôle vérifié d'un membre et effacez toute session captcha en attente, le forçant à se vérifier à nouveau.
+
+| Option | Type | Requis | Description |
+|--------|------|:------:|-------------|
+| `member` | Member | ✅ | Membre à réinitialiser |
+
+**Permission requise :** Manage Roles
+
+---
+
+## Format du captcha
+
+| Propriété | Valeur |
+|-----------|--------|
+| Taille | 340 × 110 px |
+| Longueur de la réponse | 5 caractères |
+| Jeu de caractères | `A–Z`, `2–9` — pas de caractères ambigus (`O`, `0`, `I`, `1`, `l`) |
+| Sensibilité à la casse | Aucune — `a7k2m` et `A7K2M` sont tous deux acceptés |
+| Interférence | Points de bruit aléatoires, 6 lignes croisées, flou gaussien |
+| Expiration | 10 minutes |
+
+---
+
+## Configuration recommandée
+
+1. Créez un salon `#verify-here`
+2. Définissez les permissions du salon :
+   - `@everyone` → View Channel ✅ · Send Messages ❌ · tous les autres salons ❌
+   - `@Verified` → tous les salons ✅
+3. Créez un rôle `@Verified`
+4. Exécutez `/verification panel` → définissez le rôle → activez → activez Image Captcha
+5. Exécutez `/verification post channel:#verify-here`
+6. Déplacez le rôle du bot Nightfall **au‑dessus** du rôle `@Verified` dans **Paramètres du Serveur → Rôles**
+
+---
+
+## Dépannage
+
+| Problème | Solution |
+|----------|----------|
+| Le membre ne reçoit aucun DM | Il doit activer **Autoriser les messages directs des membres du serveur** dans les Paramètres de confidentialité |
+| Le bouton Verify ne fait rien | Assurez‑vous que Nightfall dispose de `Manage Roles` |
+| Impossible de voir les autres salons après vérification | Passez en revue les substitutions de permission de salon pour `@everyone` |
+| Erreur « Role no longer exists » | Définissez un nouveau rôle via `/verification panel` |
+| Captcha expiré | Le membre doit cliquer à nouveau sur Verify pour un nouveau défi |
+
+---
+
+*Voir aussi : [Guide de la fonctionnalité Vérification](/verification) · [Anti‑Raid](/anti-raid) · [Commandes de sécurité](/commands/security)*

@@ -1,0 +1,134 @@
+---
+title: "/mod"
+description: "Vollständige Moderationssuite mit Audit-Trail-Verwarnungsdatensätzen und automatisierter Protokollierung."
+---
+
+Die Befehlsgruppe `/mod` bietet eine vollständige Moderationssuite mit formatierten Aktionskarten, einem Audit-Trail-Verwarnungssystem und automatisierter Moderationsprotokollierung.
+
+Alle Moderationsbefehle erfordern die entsprechenden Discord-Berechtigungen. Antworten sind standardmäßig ephemer.
+
+---
+
+## Befehle
+
+### `/mod ban`
+
+Bannt ein Mitglied dauerhaft vom Server.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `user` | User | ✅ | Das zu bannende Mitglied |
+| `reason` | String | — | Grund für den Bann (im Audit-Log und in der Verwarnungs-DB festgehalten) |
+| `delete_days` | 0–7 | — | Tage an zu löschendem Nachrichtenverlauf |
+
+**Erforderliche Berechtigung:** Ban Members
+
+---
+
+### `/mod kick`
+
+Entfernt ein Mitglied vom Server. Es kann mit einer Einladung wieder beitreten.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | Das zu kickende Mitglied |
+| `reason` | String | — | Grund für den Kick |
+
+**Erforderliche Berechtigung:** Kick Members
+
+---
+
+### `/mod warn`
+
+Stellt einem Mitglied eine formelle Verwarnung aus. Verwarnungen werden dauerhaft für die Moderations-Prüfspur gespeichert.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | Das zu verwarnende Mitglied |
+| `reason` | String | ✅ | Grund für die Verwarnung |
+
+Verwarnungen enthalten die ID des Moderators, einen Zeitstempel und den Grund. Sie werden niemals automatisch gelöscht.
+
+---
+
+### `/mod timeout`
+
+Beschränkt ein Mitglied vorübergehend darin, Nachrichten zu senden oder Sprachkanälen beizutreten.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | Das zu timeout-ende Mitglied |
+| `duration` | String | ✅ | Dauer (z. B. `10m`, `1h`, `1d`) |
+| `reason` | String | — | Grund für den Timeout |
+
+**Erforderliche Berechtigung:** Moderate Members
+**Maximaler Timeout:** 28 Tage (Discord-Limit)
+
+---
+
+### `/mod history`
+
+Zeigt die Moderationshistorie (Verwarnungen) eines Mitglieds an.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `member` | Member | ✅ | Das nachzuschlagende Mitglied |
+
+Gibt eine formatierte Karte zurück, die alle Verwarnungen für das Mitglied im aktuellen Server auflistet, sortiert nach neuesten zuerst.
+
+---
+
+### `/mod unban`
+
+Widerruft einen Bann und ermöglicht dem Nutzer den Wiederbeitritt.
+
+| Option | Typ | Erforderlich | Beschreibung |
+|--------|------|:--------:|-------------|
+| `user_id` | String | ✅ | Die Discord-ID des gebannten Nutzers |
+| `reason` | String | — | Grund für das Aufheben des Banns |
+
+**Erforderliche Berechtigung:** Ban Members
+
+---
+
+## Aktionen im Rechtsklick-Kontextmenü
+
+Ein Rechtsklick auf ein Mitglied in Discord zeigt schnelle Moderationsaktionen an:
+
+| Aktion | Beschreibung |
+|--------|-------------|
+| **User Info** | Kontoalter, Rollen, Beitrittsdatum und Verwarnungsanzahl |
+| **Quick Kick** | Öffnet ein Modal zur Bestätigung des Kicks mit Grund |
+| **Quick Ban** | Öffnet ein Modal zur Bestätigung des Banns mit Grund |
+| **Quick Timeout** | Öffnet ein Modal zum Festlegen von Timeout-Dauer und Grund |
+| **Delete & Warn** | Löscht die anvisierte Nachricht und verwarnt den Autor |
+
+Diese sind im Rechtsklick-Menü auf jedem Servermitglied verfügbar, sofern der Moderator die erforderlichen Berechtigungen besitzt.
+
+---
+
+## Aktionskarten
+
+Jede Moderationsaktion erzeugt eine standardisierte Antwortkarte:
+
+```
+✅  Member Banned
+────────────────────────────────
+👥  Target:     @username (123456789)
+⚖️  Moderator:  @mod (987654321)
+✏️  Reason:     Repeated rule violations
+
+─  Nightfall Security  •  Moderation Log
+```
+
+---
+
+## Logging-Integration
+
+Wenn das `/logging`-Modul konfiguriert ist, werden alle Moderationsaktionen automatisch auch im zugewiesenen Moderations-Log-Kanal veröffentlicht — keine zusätzliche Einrichtung erforderlich.
+
+Siehe [Logging-Befehle](/commands/logging) für Einrichtungsanleitungen.
+
+---
+
+*Verwandt: [Logging-Befehle](/commands/logging) · [AutoMod-Befehle](/commands/automod)*

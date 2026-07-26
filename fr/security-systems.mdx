@@ -1,0 +1,100 @@
+---
+title: "Systèmes de sécurité"
+description: "Découvrez comment les couches de protection de Nightfall gardent votre serveur en sécurité face aux raids, nukes, spam et accès non autorisés."
+---
+
+Nightfall fournit plusieurs couches de protection indépendantes, chacune ciblant une classe distincte de menace. Elles fonctionnent ensemble de manière transparente — un événement unique peut déclencher plusieurs couches simultanément.
+
+<CardGroup cols={2}>
+  <Card title="Anti‑Nuke" icon="shield-halved" href="/anti-nuke">
+    Détectez et répondez à la destruction coordonnée du serveur — suppressions massives de salons/rôles, bannissements en masse et escalades de permissions.
+  </Card>
+
+  <Card title="Anti‑Raid" icon="users-slash" href="/anti-raid">
+    Détectez les attaques coordonnées d'arrivées massives, les flots de bots et les groupes de comptes suspects avant qu'ils ne causent des dommages.
+  </Card>
+
+  <Card title="AutoMod" icon="filter" href="/automod">
+    Filtrez automatiquement les contenus dangereux ou perturbateurs — liens, invitations, majuscules, mots personnalisés, spam d'emojis et mentions de masse.
+  </Card>
+
+  <Card title="Vérification" icon="circle-check" href="/verification">
+    Verrouillez l'entrée du serveur derrière une étape de vérification pour bloquer les bots et les comptes secondaires avant qu'ils ne puissent interagir.
+  </Card>
+</CardGroup>
+
+---
+
+## Comment les menaces sont détectées
+
+Nightfall utilise des **compteurs de taux à fenêtre glissante** pour suivre la fréquence des événements en temps réel. Un compteur par guilde suit combien d'événements de chaque type (suppressions de salons, suppressions de rôles, arrivées, bannissements, mentions) se sont produits dans les 60 dernières secondes. Lorsqu'un compteur dépasse le seuil configuré, une alerte se déclenche immédiatement.
+
+Cette approche est :
+- **Rapide** — pas de surcharge de base de données par événement ; les compteurs vivent en mémoire
+- **Précise** — une véritable fenêtre glissante de 60 secondes plutôt qu'un intervalle de temps fixe
+- **Par guilde** — chaque serveur a ses propres compteurs et seuils indépendants
+
+---
+
+## Cartes d'alerte
+
+Lorsqu'un seuil est dépassé, Nightfall publie une alerte formatée dans votre salon d'alerte configuré :
+
+```
+🛡️  Security Alert — ANTI_RAID
+────────────────────────────────────────
+Join surge detected: 14 joins in the last 60 seconds.
+Threshold: 10 per minute.
+
+👥  Actor:    @username (123456789)
+⏰  Detected: just now
+
+─  Nightfall Security  •  Severity: HIGH  •  Defensive mode only
+```
+
+Niveaux de gravité :
+
+| Niveau | Signification |
+|--------|---------------|
+| **Low** | Anomalie mineure — informative |
+| **Medium** | Activité suspecte |
+| **High** | Menace active détectée |
+| **Critical** | Attaque coordonnée sévère |
+
+---
+
+## Modèle strictement défensif
+
+Nightfall est conçu exclusivement pour **protéger**, jamais pour nuire :
+
+- ✅ Alerter les modérateurs via le salon d'alerte configuré
+- ✅ Prendre des actions automatisées configurables (kick, ban) sur les menaces détectées
+- ✅ Engager des verrous doux pour mettre en pause le suivi d'actions destructrices
+- ❌ N'initie jamais d'actions offensives contre d'autres serveurs ou utilisateurs
+- ❌ Ne prend jamais d'action au‑delà de ce que l'administrateur du serveur a explicitement configuré
+
+---
+
+## Préréglages de seuils
+
+L'assistant `/setup` propose trois préréglages de seuils comme point de départ :
+
+| Préréglage | Arrivées/min | Suppressions de salons/min | Suppressions de rôles/min | Bans/min | Mentions |
+|------------|--------------|----------------------------|---------------------------|----------|----------|
+| **Strict** | 5 | 2 | 2 | 3 | 5 |
+| **Balanced** | 10 | 3 | 3 | 5 | 8 |
+| **Relaxed** | 20 | 6 | 6 | 10 | 15 |
+
+Tous les seuils peuvent être ajustés à tout moment avec `/security config`. Consultez la [référence des commandes de sécurité](/commands/security) pour toutes les options disponibles.
+
+---
+
+## Liste blanche
+
+Les administrateurs, bots ou rôles de confiance peuvent être exemptés de toute détection. Les actions des entités en liste blanche n'incrémentent aucun compteur de taux.
+
+Gérez les exemptions avec la commande `/whitelist`. Consultez la [référence de la liste blanche](/commands/whitelist) pour les exigences de permission et l'utilisation.
+
+<Warning>
+  La liste blanche est puissante — un rôle en liste blanche exempte chaque membre qui le détient. Évitez de mettre en liste blanche des rôles étendus ou vous désactiverez efficacement la protection pour ces membres.
+</Warning>

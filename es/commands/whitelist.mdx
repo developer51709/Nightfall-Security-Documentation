@@ -1,0 +1,66 @@
+---
+title: "/whitelist"
+description: "Gestiona las exenciones por gremio — usuarios y roles que omiten toda la detección de Nightfall."
+---
+
+El comando `/whitelist` abre un panel interactivo para gestionar la **lista blanca** por gremio. Los usuarios y roles en la lista blanca omiten **toda** la detección de Nightfall — Anti‑Nuke, Anti‑Raid, mención masiva y todos los filtros de AutoMod.
+
+<Warning>
+  La lista blanca es poderosa — un rol en la lista blanca exime a todos los miembros que lo poseen. Evita añadir roles amplios (por ejemplo, `@everyone` o un rol que tenga la mayoría del servidor), o desactivarás efectivamente la protección para esos miembros.
+</Warning>
+
+---
+
+## Comandos
+
+### `/whitelist`
+
+Publica el panel interactivo de gestión de la lista blanca en el canal actual.
+
+El panel lista todas las entradas actuales de la lista blanca y proporciona tres botones de acción:
+
+| Botón | Acción |
+|--------|--------|
+| **Add User** | Abre un selector privado de usuarios; el usuario seleccionado se añade |
+| **Add Role** | Abre un selector privado de roles; el rol seleccionado se añade |
+| **Remove** | Abre un selector privado de entradas existentes para eliminar (deshabilitado cuando la lista está vacía) |
+
+Los selectores son efímeros — solo los ve el miembro del personal que hizo clic. Tras una adición o eliminación exitosa, el panel compartido se actualiza para que todo el equipo vea el estado actual.
+
+<Note>
+  El selector Remove muestra hasta 25 entradas a la vez (un límite de Discord). Si tu lista blanca tiene más de 25 entradas, elimina algunas y vuelve a abrir el selector para ver el resto.
+</Note>
+
+---
+
+## Modelo de permisos
+
+La lista blanca utiliza un modelo estricto de dos niveles deliberadamente:
+
+| Capacidad | Quién está permitido |
+|------------|----------------|
+| **Ver** el panel | Miembros con **Manage Server** |
+| **Editar** (añadir / eliminar) | El **propietario del servidor**, O cualquier miembro que posea un rol que esté *a la vez* posicionado **por encima del rol más alto del bot** *y* tenga el permiso **Administrator** |
+
+El nivel de edición previene la escalada de privilegios — un admin comprometido por debajo del rol del bot no puede añadir a atacantes a la lista blanca para evitar la protección. El permiso de edición se revisa en cada acción de añadir o eliminar, no solo cuando se abre el panel.
+
+<Tip>
+  Si el rol del bot está en o cerca de la parte superior de la lista de roles, solo el propietario del servidor puede editar la lista blanca. Posiciona el rol del bot adecuadamente si quieres que los administradores de confianza gestionen las exenciones.
+</Tip>
+
+---
+
+## Cuándo usar la lista blanca
+
+| Caso de uso | Qué añadir a la lista blanca |
+|---------|-------------------|
+| Admin de confianza haciendo reorganización masiva de canales | El usuario administrador específico |
+| Bot de partnership que une muchos miembros a la vez | La cuenta de usuario del bot |
+| Evento de migración masiva | Temporal: la cuenta del bot de migración |
+| Personal que publica enlaces / invitaciones en el chat | El rol de personal |
+
+Prefiere siempre añadir usuarios específicos a la lista blanca antes que roles amplios. Elimina las entradas de la lista blanca cuando ya no sean necesarias.
+
+---
+
+*Relacionado: [Comandos de seguridad](/commands/security) · [Comandos de AutoMod](/commands/automod) · [Anti‑Nuke](/anti-nuke)*
