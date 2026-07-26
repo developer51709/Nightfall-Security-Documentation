@@ -1,6 +1,6 @@
 ---
 title: "Anti‑Raid"
-description: "Detect and respond to coordinated mass‑join attacks and bot floods."
+description: "Stop Discord raids with Nightfall's anti-raid system that detects mass joins, bot floods, and coordinated attacks, then locks the server automatically."
 ---
 
 Nightfall's Anti‑Raid system detects **coordinated mass‑join attacks** — where many accounts join a server in a short window with the intent to spam, abuse, or overwhelm the community.
@@ -26,14 +26,14 @@ Nightfall uses two complementary detection signals:
 
 A real‑time counter tracks how many members joined in the last 60 seconds. If this count exceeds `max_joins_per_minute`, a raid alert fires immediately.
 
-**Default threshold:** 10 joins per minute
+**Default threshold:** 10 joins per minute  
 **Configure:** `/security config max_joins:8`
 
 ### 2. New account flooding (secondary signal)
 
 During join‑surge events, Nightfall also checks **account age**. If a significant proportion of joining accounts are younger than `min_account_age_days`, the raid confidence level escalates.
 
-**Default:** 7 days (accounts younger than 7 days are flagged)
+**Default:** 7 days (accounts younger than 7 days are flagged)  
 **Configure:** `/security config min_account_age_days:14`
 
 ---
