@@ -26,14 +26,14 @@ Nightfall uses two complementary detection signals:
 
 A real‑time counter tracks how many members joined in the last 60 seconds. If this count exceeds `max_joins_per_minute`, a raid alert fires immediately.
 
-**Default threshold:** 10 joins per minute
+**Default threshold:** 10 joins per minute  
 **Configure:** `/security config max_joins:8`
 
 ### 2. New account flooding (secondary signal)
 
 During join‑surge events, Nightfall also checks **account age**. If a significant proportion of joining accounts are younger than `min_account_age_days`, the raid confidence level escalates.
 
-**Default:** 7 days (accounts younger than 7 days are flagged)
+**Default:** 7 days (accounts younger than 7 days are flagged)  
 **Configure:** `/security config min_account_age_days:14`
 
 ---
